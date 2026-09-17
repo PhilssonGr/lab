@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Status — Blacklion Foundry</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 40rem; margin: 3rem auto; padding: 0 1.25rem; line-height: 1.45; }
+    a { color: #111; }
+    .meta, .err { color: #666; }
+    li { margin: 0.6rem 0; }
+    code { font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <p><a href="/">Home</a> · <a href="/learn">Learn</a></p>
+  <h1>Lab status</h1>
+  <p class="meta">Last five commits on PhilssonGr/lab, live from GitHub.</p>
+  <ul id="list"><li class="meta">Loading…</li></ul>
+  <p id="err" class="err"></p>
+  <script>
+    const list = document.getElementById("list");
+    const err = document.getElementById("err");
+    fetch("https://api.github.com/repos/PhilssonGr/lab/commits?per_page=5")
+      .then((r) => {
+        if (!r.ok) throw new Error("GitHub " + r.status);
+        return r.json();
+      })
+      .then((rows) => {
+        list.innerHTML = "";
+        rows.forEach((row) => {
+          const li = document.createElement("li");
+          const msg = (row.commit && row.commit.message) || "(no message)";
+          const when = row.commit && row.commit.author && row.commit.author.date
+            ? row.commit.author.date.slice(0, 16).replace("T", " ")
+            : "";
+          li.innerHTML = "<strong>" + msg.split("\n")[0] + "</strong><br /><span class='meta'>" + when + "</span>";
+          list.appendChild(li);
+        });
+      })
+      .catch((e) => {
+        list.innerHTML = "";
+        err.textContent = "Fetch failed: " + e.message;
+      });
+  </script>
+</body>
+</html>
