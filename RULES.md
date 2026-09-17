@@ -1,0 +1,4 @@
+- Draft first on anything public or paid
+- No RR files in this repo
+- No irlrugby.com content here
+- One live URL beats a new bot
