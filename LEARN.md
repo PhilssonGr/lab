@@ -3,3 +3,4 @@
 - GitHub: PhilssonGr / lab
 - Cursor: blocked on SMS (personal + work +49 rejected)
 - Next: Netlify deploy of this repo
+- First URL shipped from phone. Cursor SMS still blocked. That did not block the site.
