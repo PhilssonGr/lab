@@ -3,3 +3,6 @@
 - blacklionfoundry@outlook.com = public/recovery only
 - dmcafre@gmail.com stays IRL Rugby
 - No Grok Bot until Cursor verifies
+  
+2026-09-17
+- Lab live: https://bf-lab.netlify.app
