@@ -16,3 +16,5 @@ Lane B — IRL Rugby
 X + old Cursor: dmcafre@gmail.com (Grok Bot rugby bots)
 Netlify: same DMCC team, different site
 Domain: GoDaddy → www.irlrugby.com
+2026-09-17
+Cursor live = philssongroup@outlook.com.
