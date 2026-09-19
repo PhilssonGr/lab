@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tools — Blacklion Foundry</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 40rem; margin: 3rem auto; padding: 0 1.25rem; line-height: 1.5; color: #111; }
+    h1 { font-weight: 600; letter-spacing: 0.02em; }
+    p { color: #333; }
+    .meta { color: #666; font-size: 0.95rem; }
+    a { color: #111; }
+    textarea {
+      width: 100%;
+      min-height: 12rem;
+      box-sizing: border-box;
+      font: inherit;
+      line-height: 1.45;
+      padding: 0.6rem 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      resize: vertical;
+    }
+    .stats { margin: 0.75rem 0; color: #666; font-size: 0.95rem; }
+    .stats span { margin-right: 1rem; }
+    button {
+      font: inherit;
+      padding: 0.4rem 0.85rem;
+      border: 1px solid #111;
+      background: #111;
+      color: #fff;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    button:active { opacity: 0.85; }
+    #copy-status { margin-left: 0.75rem; color: #666; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <p><a href="/">Home</a> · <a href="/learn">Learn</a> · <a href="/status">Status</a></p>
+  <h1>Tools</h1>
+  <p class="meta">Paste text. Counts update as you type. Copy cleans trim + blank lines.</p>
+  <textarea id="input" placeholder="Paste here…" aria-label="Text to measure"></textarea>
+  <p class="stats">
+    <span><strong id="words">0</strong> words</span>
+    <span><strong id="chars">0</strong> characters</span>
+    <span><strong id="mins">0</strong> min read</span>
+  </p>
+  <p>
+    <button type="button" id="copy-btn">Copy cleaned text</button>
+    <span id="copy-status" aria-live="polite"></span>
+  </p>
+  <script>
+    const input = document.getElementById("input");
+    const wordsEl = document.getElementById("words");
+    const charsEl = document.getElementById("chars");
+    const minsEl = document.getElementById("mins");
+    const copyBtn = document.getElementById("copy-btn");
+    const copyStatus = document.getElementById("copy-status");
+    const WPM = 200;
+
+    function wordCount(text) {
+      const t = text.trim();
+      if (!t) return 0;
+      return t.split(/\s+/).filter(Boolean).length;
+    }
+
+    function cleanText(text) {
+      return text
+        .replace(/\r\n/g, "\n")
+        .replace(/[ \t]+\n/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+    }
+
+    function update() {
+      const text = input.value;
+      const w = wordCount(text);
+      wordsEl.textContent = String(w);
+      charsEl.textContent = String(text.length);
+      minsEl.textContent = w === 0 ? "0" : String(Math.max(1, Math.ceil(w / WPM)));
+    }
+
+    input.addEventListener("input", update);
+    copyBtn.addEventListener("click", async () => {
+      const cleaned = cleanText(input.value);
+      try {
+        await navigator.clipboard.writeText(cleaned);
+        copyStatus.textContent = "Copied.";
+      } catch (e) {
+        copyStatus.textContent = "Copy failed.";
+      }
+      setTimeout(() => { copyStatus.textContent = ""; }, 2000);
+    });
+    update();
+  </script>
+</body>
+</html>
