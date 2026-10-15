@@ -295,12 +295,346 @@
     });
   }
 
+  var PROGRESS_KEY = "bf-concepts-opened";
+
+  var CONCEPTS = [
+    { id: "tokens", title: "Tokens", href: "/concepts/tokens" },
+    { id: "context-window", title: "Context Window", href: "/concepts/context-window" },
+    { id: "prompting", title: "Prompting", href: "/concepts/prompting" }
+  ];
+
+  var EDGES = [
+    { a: "tokens", b: "context-window", label: "Limits count tokens" },
+    { a: "tokens", b: "prompting", label: "A prompt is made of tokens" },
+    { a: "context-window", b: "prompting", label: "The prompt sits in the window" }
+  ];
+
+  function emptyProgress() {
+    return { tokens: false, "context-window": false, prompting: false };
+  }
+
+  function readProgress() {
+    var data = emptyProgress();
+    try {
+      var raw = localStorage.getItem(PROGRESS_KEY);
+      if (!raw) return data;
+      var parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return data;
+      CONCEPTS.forEach(function (concept) {
+        data[concept.id] = parsed[concept.id] === true;
+      });
+    } catch (err) {
+      return emptyProgress();
+    }
+    return data;
+  }
+
+  function writeProgress(data) {
+    var out = emptyProgress();
+    CONCEPTS.forEach(function (concept) {
+      out[concept.id] = data[concept.id] === true;
+    });
+    try {
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(out));
+    } catch (err) {}
+    return out;
+  }
+
+  function clearProgress() {
+    try {
+      localStorage.removeItem(PROGRESS_KEY);
+    } catch (err) {}
+  }
+
+  function anyOpened(data) {
+    return CONCEPTS.some(function (concept) { return data[concept.id]; });
+  }
+
+  function openedCount(data) {
+    return CONCEPTS.filter(function (concept) { return data[concept.id]; }).length;
+  }
+
+  function markVisit() {
+    var id = document.body.getAttribute("data-concept");
+    if (!id) return;
+    var known = CONCEPTS.some(function (concept) { return concept.id === id; });
+    if (!known) return;
+    var data = readProgress();
+    if (data[id]) return;
+    data[id] = true;
+    writeProgress(data);
+  }
+
+  function applyNodeState(scope, data) {
+    scope.querySelectorAll("[data-node]").forEach(function (node) {
+      var id = node.getAttribute("data-node");
+      var opened = data[id] === true;
+      node.classList.toggle("is-opened", opened);
+      var state = node.querySelector(".map-node-state");
+      if (state) state.textContent = opened ? "Opened" : "Not opened";
+    });
+  }
+
+  function renderNext(root, data) {
+    var body = root.querySelector("[data-next-body]");
+    if (!body) return;
+    var pending = CONCEPTS.filter(function (concept) { return !data[concept.id]; });
+    body.replaceChildren();
+    if (!pending.length) {
+      body.appendChild(el("p", "fine", "All three Foundations cards are opened in this browser."));
+      return;
+    }
+    var showing = pending.slice(0, 2);
+    var message;
+    if (showing.length === 1) message = "One Foundations card is still unopened.";
+    else if (pending.length > 2) message = "Start with these two.";
+    else message = "These two are still unopened.";
+    body.appendChild(el("p", "fine", message));
+    var list = el("div", "next-list");
+    showing.forEach(function (concept) {
+      var link = el("a", "next-card");
+      link.href = concept.href;
+      link.appendChild(el("span", null, "Foundations"));
+      link.appendChild(el("strong", null, concept.title));
+      list.appendChild(link);
+    });
+    body.appendChild(list);
+  }
+
+  function initNext(root) {
+    renderNext(root, readProgress());
+    window.addEventListener("storage", function (event) {
+      if (event.key === PROGRESS_KEY) renderNext(root, readProgress());
+    });
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) renderNext(root, readProgress());
+    });
+  }
+
+  function borderPoint(from, toward, box, gap) {
+    var cx = box.x + box.w / 2;
+    var cy = box.y + box.h / 2;
+    var dx = toward.x - from.x;
+    var dy = toward.y - from.y;
+    if (!dx && !dy) return { x: cx, y: cy };
+    var hw = box.w / 2 + gap;
+    var hh = box.h / 2 + gap;
+    var scale = 1 / Math.max(Math.abs(dx) / hw, Math.abs(dy) / hh);
+    return { x: cx + dx * scale, y: cy + dy * scale };
+  }
+
+  function initMap(root) {
+    var canvas = root.querySelector("[data-map-canvas]");
+    var svg = root.querySelector("[data-map-edges]");
+    var count = root.querySelector("[data-progress-count]");
+    var reset = root.querySelector("[data-reset-progress]");
+    if (!canvas || !svg) return;
+
+    var ns = "http://www.w3.org/2000/svg";
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var narrowQuery = window.matchMedia("(max-width: 720px)");
+    var animated = false;
+    var hot = null;
+    var frame = 0;
+    var wantIntro = false;
+    var ready = false;
+
+    function paintCount(data, prefix) {
+      if (!count) return;
+      var n = openedCount(data);
+      count.textContent = (prefix ? prefix + " " : "") + n + " of 3 opened";
+    }
+
+    function syncProgress() {
+      var data = readProgress();
+      applyNodeState(root, data);
+      paintCount(data);
+      if (reset) reset.disabled = !anyOpened(data);
+      return data;
+    }
+
+    function draw(allowIntro) {
+      var width = canvas.clientWidth;
+      var height = canvas.clientHeight;
+      if (!width || !height) return false;
+      var origin = canvas.getBoundingClientRect();
+      var boxes = {};
+      var centers = {};
+      canvas.querySelectorAll("[data-node]").forEach(function (node) {
+        var id = node.getAttribute("data-node");
+        var rect = node.getBoundingClientRect();
+        boxes[id] = {
+          x: rect.left - origin.left,
+          y: rect.top - origin.top,
+          w: rect.width,
+          h: rect.height
+        };
+        centers[id] = {
+          x: boxes[id].x + boxes[id].w / 2,
+          y: boxes[id].y + boxes[id].h / 2
+        };
+      });
+
+      var ids = Object.keys(centers);
+      var centroid = { x: 0, y: 0 };
+      ids.forEach(function (id) {
+        centroid.x += centers[id].x;
+        centroid.y += centers[id].y;
+      });
+      if (ids.length) {
+        centroid.x /= ids.length;
+        centroid.y /= ids.length;
+      }
+
+      svg.setAttribute("viewBox", "0 0 " + width + " " + height);
+      svg.setAttribute("width", String(width));
+      svg.setAttribute("height", String(height));
+      svg.replaceChildren();
+
+      var showLabels = !narrowQuery.matches;
+      EDGES.forEach(function (edge) {
+        if (!boxes[edge.a] || !boxes[edge.b]) return;
+        var p1 = borderPoint(centers[edge.a], centers[edge.b], boxes[edge.a], 12);
+        var p2 = borderPoint(centers[edge.b], centers[edge.a], boxes[edge.b], 12);
+        var path = document.createElementNS(ns, "path");
+        var classes = "edge";
+        if (hot === edge.a || hot === edge.b) classes += " is-hot";
+        path.setAttribute("data-a", edge.a);
+        path.setAttribute("data-b", edge.b);
+        path.setAttribute("d", "M " + p1.x.toFixed(1) + " " + p1.y.toFixed(1) + " L " + p2.x.toFixed(1) + " " + p2.y.toFixed(1));
+        svg.appendChild(path);
+        if (allowIntro && !reduced) {
+          var len = path.getTotalLength();
+          path.style.setProperty("--len", String(len));
+          classes += " is-draw";
+        }
+        path.setAttribute("class", classes);
+
+        if (!showLabels) return;
+        var mx = (p1.x + p2.x) / 2;
+        var my = (p1.y + p2.y) / 2;
+        var vx = mx - centroid.x;
+        var vy = my - centroid.y;
+        var vlen = Math.hypot(vx, vy) || 1;
+        var half = Math.min(128, edge.label.length * 3.4);
+        var labelH = 11;
+        function place(sign) {
+          var x = mx + sign * (vx / vlen) * 20;
+          var y = my + sign * (vy / vlen) * 18;
+          x = Math.max(half + 4, Math.min(width - half - 4, x));
+          y = Math.max(labelH + 4, Math.min(height - labelH - 4, y));
+          return { x: x, y: y };
+        }
+        function overlaps(point) {
+          return ids.some(function (id) {
+            var b = boxes[id];
+            return point.x + half > b.x - 8 && point.x - half < b.x + b.w + 8 && point.y + labelH > b.y - 8 && point.y - labelH < b.y + b.h + 8;
+          });
+        }
+        var spot = place(1);
+        if (overlaps(spot)) spot = place(-1);
+        if (overlaps(spot)) return;
+        var lx = spot.x;
+        var ly = spot.y;
+        var text = document.createElementNS(ns, "text");
+        text.setAttribute("class", "edge-label");
+        text.setAttribute("x", lx.toFixed(1));
+        text.setAttribute("y", ly.toFixed(1));
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("dominant-baseline", "middle");
+        text.textContent = edge.label;
+        svg.appendChild(text);
+      });
+
+      if (allowIntro) animated = true;
+      return true;
+    }
+
+    function schedule(intro) {
+      if (intro) wantIntro = true;
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(function () {
+        frame = 0;
+        var introNow = wantIntro || !animated;
+        wantIntro = false;
+        draw(introNow && !reduced);
+      });
+    }
+
+    function highlight(id) {
+      hot = id;
+      svg.querySelectorAll("path.edge").forEach(function (path) {
+        var on = id && (path.getAttribute("data-a") === id || path.getAttribute("data-b") === id);
+        path.classList.toggle("is-hot", !!on);
+      });
+    }
+
+    canvas.querySelectorAll("[data-node]").forEach(function (node) {
+      var id = node.getAttribute("data-node");
+      node.addEventListener("mouseenter", function () { highlight(id); });
+      node.addEventListener("mouseleave", function () { highlight(null); });
+      node.addEventListener("focus", function () { highlight(id); });
+      node.addEventListener("blur", function () { highlight(null); });
+    });
+
+    if (reset) {
+      reset.addEventListener("click", function () {
+        clearProgress();
+        syncProgress();
+        paintCount(readProgress(), "Progress reset.");
+        draw(false);
+      });
+    }
+
+    window.addEventListener("storage", function (event) {
+      if (event.key !== PROGRESS_KEY) return;
+      syncProgress();
+      draw(false);
+    });
+
+    window.addEventListener("pageshow", function (event) {
+      if (!event.persisted) return;
+      syncProgress();
+      draw(false);
+    });
+
+    if (window.ResizeObserver) {
+      var observer = new ResizeObserver(function () {
+        if (!ready) return;
+        schedule(false);
+      });
+      observer.observe(canvas);
+    } else {
+      window.addEventListener("resize", function () {
+        if (ready) schedule(false);
+      });
+    }
+
+    if (narrowQuery.addEventListener) {
+      narrowQuery.addEventListener("change", function () {
+        if (ready) schedule(false);
+      });
+    }
+
+    syncProgress();
+    schedule(true);
+    window.addEventListener("load", function () { draw(false); });
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { ready = true; });
+    });
+  }
+
   onReady(function () {
+    markVisit();
     document.querySelectorAll("[data-tabs]").forEach(initTabs);
     document.querySelectorAll("[data-widget='tokens']").forEach(initTokens);
     document.querySelectorAll("[data-widget='context']").forEach(initContext);
     document.querySelectorAll("[data-widget='prompt']").forEach(initPrompt);
     var ask = document.querySelector("[data-widget='ask']");
     if (ask) initAsk(ask);
+    var map = document.querySelector("[data-widget='map']");
+    if (map) initMap(map);
+    var next = document.querySelector("[data-widget='next']");
+    if (next) initNext(next);
   });
 })();
