@@ -11,8 +11,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0c0b0a" />
   <title>Tokens · BuildSpark AI</title>
-  <meta name="description" content="The unit models read, write, and bill in." />
+  <meta name="description" content="Tokens are the pieces of text a model reads, writes, and bills for. A free BuildSpark AI concept card." />
+  <link rel="canonical" href="https://bf-lab.netlify.app/tokens" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="BuildSpark AI" />
+  <meta property="og:title" content="Tokens · BuildSpark AI" />
+  <meta property="og:description" content="Tokens are the pieces of text a model reads, writes, and bills for. A free BuildSpark AI concept card." />
+  <meta property="og:url" content="https://bf-lab.netlify.app/tokens" />
+  <meta property="og:image" content="https://bf-lab.netlify.app/assets/brand/icon-512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tokens · BuildSpark AI" />
+  <meta name="twitter:description" content="Tokens are the pieces of text a model reads, writes, and bills for. A free BuildSpark AI concept card." />
+  <meta name="twitter:image" content="https://bf-lab.netlify.app/assets/brand/icon-512.png" />
   <link rel="stylesheet" href="/concepts.css" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LearningResource",
+      "@id": "https://bf-lab.netlify.app/tokens#card",
+      "name": "Tokens",
+      "description": "Tokens are the pieces of text a model reads, writes, and bills for.",
+      "url": "https://bf-lab.netlify.app/tokens",
+      "learningResourceType": "Concept card",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "provider": {
+        "@type": "Organization",
+        "name": "BuildSpark AI",
+        "url": "https://bf-lab.netlify.app/"
+      },
+      "dateModified": "2026-10-16"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://bf-lab.netlify.app/tokens#faq",
+      "url": "https://bf-lab.netlify.app/tokens",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a token?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tokens are the pieces of text a model reads, writes, and bills for. A token is often part of a word, not the whole word."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the same text the same number of tokens on every model?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Tokenizers change between models and between versions of a model."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What can happen to the input rate past a size threshold?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Some models charge a higher rate once a prompt passes a size threshold."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body class="concepts" data-concept="tokens">
   <a class="skip" href="#content">Skip to content</a>
@@ -23,22 +88,25 @@
         <a href="/map">Map</a>
         <a href="/ask">Ask</a>
         <a href="/apply">Apply</a>
+        <a href="/pricing">Pricing</a>
       </nav>
     </header>
 
     <main id="content" tabindex="-1">
-    <p class="crumb"><a href="/map">Map</a> · Foundations · <span data-crumb-index>01</span> · Tokens</p>
+    <p class="crumb"><a href="/map">Map</a> · <a href="/tracks/foundations">Foundations</a> · <span data-crumb-index>01</span> · Tokens</p>
 
     <div data-tabs>
       <div class="card-top">
         <div>
           <p class="kicker">Concept card · Foundations</p>
           <h1>Tokens</h1>
+          <p class="definition" data-definition>Tokens are the pieces of text a model reads, writes, and bills for.</p>
           <p class="lede" data-summary>The unit models read, write, and bill in.</p>
         </div>
         <div class="card-meta">
           <p>
             <span class="pill accent" data-last-checked>Last checked 2026-10-16</span>
+            <span class="pill" data-access>Free card</span>
             <span class="pill">4 min</span>
           </p>
           <div class="tabs" role="tablist" aria-label="Depth">
@@ -145,8 +213,8 @@
             </section>
             <section class="side-card side-apply">
               <h2>Apply pack</h2>
-              <p>Not open yet. The token budget pack will show what a prompt you already send is spending.</p>
-              <a href="/apply">Apply packs</a>
+              <p>Not open yet. Practice for this track will be the Foundations pack, including a token budget set.</p>
+              <a href="/packs/foundations">Foundations pack</a>
             </section>
           </aside>
         </div>
@@ -160,12 +228,25 @@
         <p class="soon-note">Coming soon. How a real tokenizer differs from this slice illustration.</p>
       </div>
     </div>
+
+    <section class="faq" aria-labelledby="tokens-faq">
+      <h2 id="tokens-faq">Questions</h2>
+      <dl>
+        <dt>What is a token?</dt>
+        <dd>Tokens are the pieces of text a model reads, writes, and bills for. A token is often part of a word, not the whole word.</dd>
+        <dt>Is the same text the same number of tokens on every model?</dt>
+        <dd>No. Tokenizers change between models and between versions of a model.</dd>
+        <dt>What can happen to the input rate past a size threshold?</dt>
+        <dd>Some models charge a higher rate once a prompt passes a size threshold.</dd>
+      </dl>
+    </section>
     </main>
 
     <footer class="foot">
-      <a href="/">Home</a> · <a href="/map">Map</a>
+      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>
     </footer>
   </div>
+  <script src="/site.js"></script>
   <script src="/concepts-data.js"></script>
   <script src="/concepts.js"></script>
 </body>

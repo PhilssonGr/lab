@@ -1721,3 +1721,133 @@ a.cnode:focus-visible { border-color: var(--accent); }
   .cnode.is-next { border-color: Highlight; }
   .cmap-edges .cedge { stroke: CanvasText; }
 }
+
+.definition {
+  margin: 0.15rem 0 0.85rem;
+  max-width: 40rem;
+  padding: 0.1rem 0 0.1rem 0.85rem;
+  border-left: 3px solid var(--fill);
+  color: var(--text);
+  font-size: 1.12rem;
+  line-height: 1.45;
+}
+
+.faq { margin-top: 2rem; }
+
+.faq dl { margin: 0; }
+
+.faq dt {
+  margin-top: 0.95rem;
+  font-weight: 650;
+}
+
+.faq dd {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+}
+
+.track-hub {
+  display: inline-block;
+  margin: -0.4rem 0 0.7rem;
+  color: var(--accent-2);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.track-hub:hover { color: var(--text); }
+
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.tier {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 1rem 1rem 1.1rem;
+  background:
+    linear-gradient(180deg, rgba(255, 244, 230, 0.045), transparent 38%),
+    var(--raised);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 rgba(255, 244, 230, 0.05), var(--shadow);
+}
+
+.tier .kicker { margin-bottom: 0; }
+
+.tier-price {
+  margin: 0;
+  font-size: 1.85rem;
+  font-weight: 620;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.tier-price span {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 560;
+  letter-spacing: 0;
+}
+
+.tier ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--muted);
+}
+
+.tier .cta-row { margin-top: auto; }
+
+a.button.ghost {
+  color: var(--text);
+  background: transparent;
+  border-color: var(--line-strong);
+}
+
+a.button.ghost:hover {
+  border-color: var(--accent);
+  filter: none;
+}
+
+.concept-index {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.concept-index li {
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.concept-index li:last-child { border-bottom: 1px solid var(--line); }
+
+.concept-index a,
+.concept-index .name {
+  color: var(--text);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.concept-index a:hover { color: var(--accent-2); }
+
+.concept-index .pill {
+  margin: 0 0 0 0.4rem;
+  vertical-align: middle;
+}
+
+.concept-index p {
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+}
+
+.prose-links a:not(.button) { color: var(--accent-2); }
+
+.prose-links a:not(.button):hover { color: var(--text); }

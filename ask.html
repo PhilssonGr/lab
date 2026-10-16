@@ -11,7 +11,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0c0b0a" />
   <title>Ask · BuildSpark AI</title>
-  <meta name="description" content="Match a question to the concept cards that exist. Keyword match in the browser. No model call." />
+  <meta name="description" content="Match a question to a BuildSpark AI concept card. Keyword match in the browser, with no model call and no account." />
+  <link rel="canonical" href="https://bf-lab.netlify.app/ask" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="BuildSpark AI" />
+  <meta property="og:title" content="Ask · BuildSpark AI" />
+  <meta property="og:description" content="Match a question to a BuildSpark AI concept card. Keyword match in the browser, with no model call and no account." />
+  <meta property="og:url" content="https://bf-lab.netlify.app/ask" />
+  <meta property="og:image" content="https://bf-lab.netlify.app/assets/brand/icon-512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ask · BuildSpark AI" />
+  <meta name="twitter:description" content="Match a question to a BuildSpark AI concept card. Keyword match in the browser, with no model call and no account." />
+  <meta name="twitter:image" content="https://bf-lab.netlify.app/assets/brand/icon-512.png" />
   <link rel="stylesheet" href="/concepts.css" />
 </head>
 <body class="concepts">
@@ -23,6 +34,7 @@
         <a href="/map">Map</a>
         <a href="/ask" aria-current="page">Ask</a>
         <a href="/apply">Apply</a>
+        <a href="/pricing">Pricing</a>
       </nav>
     </header>
 
@@ -30,6 +42,7 @@
     <p class="kicker">Ask</p>
     <h1>Match a card.</h1>
     <p class="lede">Type in your own words. This page matches keywords against the concept registry. Live cards link through. Other names are listed as coming soon. It does not call a model, and it sends nothing to a server.</p>
+    <p class="fine prose-links">Live cards: <a href="/tokens">Tokens</a>, <a href="/context-window">Context Window</a>, <a href="/prompting">Prompting</a>.</p>
 
     <form class="panel" data-widget="ask" action="/ask" method="get">
       <label class="field" for="ask-q">Question</label>
@@ -45,9 +58,10 @@
     </main>
 
     <footer class="foot">
-      <a href="/">Home</a> · <a href="/map">Map</a>
+      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>
     </footer>
   </div>
+  <script src="/site.js"></script>
   <script src="/concepts-data.js"></script>
   <script src="/concepts.js"></script>
 </body>

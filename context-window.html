@@ -11,8 +11,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0c0b0a" />
   <title>Context Window · BuildSpark AI</title>
-  <meta name="description" content="The fixed text one request can hold: instructions, history, documents, and the answer." />
+  <meta name="description" content="The context window is the fixed text one request can hold: instructions, history, documents, and the answer. A free BuildSpark AI concept card." />
+  <link rel="canonical" href="https://bf-lab.netlify.app/context-window" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="BuildSpark AI" />
+  <meta property="og:title" content="Context Window · BuildSpark AI" />
+  <meta property="og:description" content="The context window is the fixed text one request can hold: instructions, history, documents, and the answer. A free BuildSpark AI concept card." />
+  <meta property="og:url" content="https://bf-lab.netlify.app/context-window" />
+  <meta property="og:image" content="https://bf-lab.netlify.app/assets/brand/icon-512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Context Window · BuildSpark AI" />
+  <meta name="twitter:description" content="The context window is the fixed text one request can hold: instructions, history, documents, and the answer. A free BuildSpark AI concept card." />
+  <meta name="twitter:image" content="https://bf-lab.netlify.app/assets/brand/icon-512.png" />
   <link rel="stylesheet" href="/concepts.css" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LearningResource",
+      "@id": "https://bf-lab.netlify.app/context-window#card",
+      "name": "Context Window",
+      "description": "The context window is the fixed text one request can hold: instructions, history, documents, and the answer.",
+      "url": "https://bf-lab.netlify.app/context-window",
+      "learningResourceType": "Concept card",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "provider": {
+        "@type": "Organization",
+        "name": "BuildSpark AI",
+        "url": "https://bf-lab.netlify.app/"
+      },
+      "dateModified": "2026-10-16"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://bf-lab.netlify.app/context-window#faq",
+      "url": "https://bf-lab.netlify.app/context-window",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a context window?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The context window is the fixed text one request can hold: instructions, history, documents, and the answer. Text that does not fit is not visible to the model for that request."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the model still see the start of a long thread?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not once those messages fall outside the window. What does not fit is outside that request."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What can change the cost of sending the same document on every turn?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Prompt caching can make the repeated part much cheaper. Sending it again without caching adds up."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body class="concepts" data-concept="context-window">
   <a class="skip" href="#content">Skip to content</a>
@@ -23,22 +88,25 @@
         <a href="/map">Map</a>
         <a href="/ask">Ask</a>
         <a href="/apply">Apply</a>
+        <a href="/pricing">Pricing</a>
       </nav>
     </header>
 
     <main id="content" tabindex="-1">
-    <p class="crumb"><a href="/map">Map</a> · Foundations · <span data-crumb-index>02</span> · Context Window</p>
+    <p class="crumb"><a href="/map">Map</a> · <a href="/tracks/foundations">Foundations</a> · <span data-crumb-index>02</span> · Context Window</p>
 
     <div data-tabs>
       <div class="card-top">
         <div>
           <p class="kicker">Concept card · Foundations</p>
           <h1>Context Window</h1>
+          <p class="definition" data-definition>The context window is the fixed text one request can hold: instructions, history, documents, and the answer.</p>
           <p class="lede" data-summary>The fixed text one request can hold: instructions, history, documents, and the answer.</p>
         </div>
         <div class="card-meta">
           <p>
             <span class="pill accent" data-last-checked>Last checked 2026-10-16</span>
+            <span class="pill" data-access>Free card</span>
             <span class="pill">4 min</span>
           </p>
           <div class="tabs" role="tablist" aria-label="Depth">
@@ -158,8 +226,8 @@
             </section>
             <section class="side-card side-apply">
               <h2>Apply pack</h2>
-              <p>Not open yet. The context layout pack will decide what stays in one real request.</p>
-              <a href="/apply">Apply packs</a>
+              <p>Not open yet. Practice for this track will be the Foundations pack, including a context layout set.</p>
+              <a href="/packs/foundations">Foundations pack</a>
             </section>
           </aside>
         </div>
@@ -173,12 +241,25 @@
         <p class="soon-note">Coming soon. How products differ when the window is full: some refuse, some trim, some cut.</p>
       </div>
     </div>
+
+    <section class="faq" aria-labelledby="context-faq">
+      <h2 id="context-faq">Questions</h2>
+      <dl>
+        <dt>What is a context window?</dt>
+        <dd>The context window is the fixed text one request can hold: instructions, history, documents, and the answer. Text that does not fit is not visible to the model for that request.</dd>
+        <dt>Does the model still see the start of a long thread?</dt>
+        <dd>Not once those messages fall outside the window. What does not fit is outside that request.</dd>
+        <dt>What can change the cost of sending the same document on every turn?</dt>
+        <dd>Prompt caching can make the repeated part much cheaper. Sending it again without caching adds up.</dd>
+      </dl>
+    </section>
     </main>
 
     <footer class="foot">
-      <a href="/">Home</a> · <a href="/map">Map</a>
+      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>
     </footer>
   </div>
+  <script src="/site.js"></script>
   <script src="/concepts-data.js"></script>
   <script src="/concepts.js"></script>
 </body>

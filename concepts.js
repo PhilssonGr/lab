@@ -474,6 +474,12 @@
       checked.textContent = concept.lastChecked ? "Last checked " + concept.lastChecked : "Not checked yet";
     }
 
+    var accessEl = document.querySelector("[data-access]");
+    if (accessEl && concept.access) {
+      var accessLabel = { free: "Free card", pack: "Pack", "all-access": "All-access" };
+      accessEl.textContent = accessLabel[concept.access] || concept.access;
+    }
+
     var crumb = document.querySelector("[data-crumb-index]");
     if (crumb) {
       var n = indexInTrack(concept);
@@ -596,6 +602,17 @@
     trackNames().forEach(function (track) {
       var col = el("section", "track-col");
       col.appendChild(el("h2", null, track));
+      var trackMeta = null;
+      if (typeof BF_SITE !== "undefined" && BF_SITE.tracks) {
+        for (var t = 0; t < BF_SITE.tracks.length; t++) {
+          if (BF_SITE.tracks[t].name === track) trackMeta = BF_SITE.tracks[t];
+        }
+      }
+      if (trackMeta) {
+        var hub = el("a", "track-hub", "Track page");
+        hub.href = "/tracks/" + trackMeta.slug;
+        col.appendChild(hub);
+      }
       inTrack(track).forEach(function (concept) {
         if (concept.status === "live") {
           var link = el("a", "node", concept.title);
