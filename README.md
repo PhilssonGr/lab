@@ -2,31 +2,44 @@
 
 The site is the concepts product: a practical map and cards for builders who already use AI.
 
-Account: philssongroup@outlook.com
-No IRL Rugby. No RR data.
-
 Live: https://bf-lab.netlify.app
 
-Static HTML, CSS, and JS. No backend. Pages load `concepts.css` and `concepts.js`.
+Static HTML, CSS, and JS. No backend and no build step. Pages load `concepts.css`, `concepts-data.js`, and `concepts.js`.
+
+## Registry
+
+`concepts-data.js` is the curriculum. Each concept has an id, title, track, prerequisites, status (`live` or `coming-soon`), a one-line summary, and `lastChecked`. `lastChecked` is null until a card exists.
+
+Tracks: Foundations, Retrieval & Grounding, Agents, Ship & Maintain.
+
+Only Tokens, Context Window, and Prompting are live. Coming soon concepts are not links.
+
+Related concepts on a card are the concepts that list it as a prerequisite. The map draws an arrow along each prerequisite link.
 
 ## Card model
 
-Each concept card has four parts:
+Each live card uses the v2 template:
 
-1. What it is — short text and a plain interactive.
-2. Why it matters — three lines: Cost, Quality, Risk.
-3. How to apply it — one thing to try today, and one common mistake.
-4. Related concepts — links to cards that exist. Temperature, Embeddings, RAG, Evaluation, and Agents are listed as coming soon, not links.
+1. Glance, Practice, and Deep. Glance is filled. Practice and Deep are marked coming soon.
+2. What it is, with a plain interactive.
+3. Why it matters: Cost, Quality, and Risk.
+4. How to apply: one thing to try today.
+5. A separate common-mistake block.
+6. A self-check question.
+7. Sources. Pending until a claim cites a provider doc.
+8. Prerequisites and related concepts, filled from the registry.
+9. Last checked date and a What changed note.
 
-A card also shows its track and depth tabs (Glance, Practice, Deep). Tokens, Context Window, and Prompting are Foundations. Glance is filled. Practice and Deep are marked coming soon.
+Opened live cards are stored in this browser under `localStorage` key `bf-concepts-opened`.
 
 ## Pages
 
-- `index.html` — home: positioning, Next for you, three cards, map stub, Ask box, apply-pack waitlist.
-- `tokens.html`, `context-window.html`, `prompting.html` — the three cards.
-- `map.html` — tracks: Foundations, Retrieval & Grounding, Agents, Ship & Maintain. Opened cards are stored in `localStorage` under `bf-concepts-opened`.
+- `index.html` — home, Next for you, the live cards, and the track list.
+- `tokens.html`, `context-window.html`, `prompting.html` — the three live cards.
+- `map.html` — the four tracks. Coming soon names are not links.
 - `ask.html` — keyword match in the browser. No model and no backend.
 - `apply.html` — apply packs, with a disabled waitlist button. No form.
+- `concepts-data.js` — the concept registry.
 - `concepts.css`, `concepts.js` — theme and shared behavior.
 - `_redirects` — `/concepts` and `/concepts/*` permanently redirect to the same pages at the site root.
 

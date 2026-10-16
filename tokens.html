@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0c0b0a" />
   <title>Tokens — Concepts</title>
-  <meta name="description" content="A token is a piece of text a model reads or writes. This card shows an approximate split." />
+  <meta name="description" content="The unit models read, write, and bill in." />
   <link rel="stylesheet" href="/concepts.css" />
 </head>
 <body class="concepts" data-concept="tokens">
@@ -21,87 +21,146 @@
     </header>
 
     <main id="content" tabindex="-1">
-    <p class="crumb"><a href="/map">Map</a> · Foundations · Tokens</p>
-    <div class="head">
-      <h1>Tokens</h1>
-      <p class="track">Track · Foundations</p>
-    </div>
+    <p class="crumb"><a href="/map">Map</a> · Foundations · <span data-crumb-index>01</span> · Tokens</p>
 
     <div data-tabs>
-    <div class="tabs" role="tablist" aria-label="Depth">
-      <button type="button" role="tab" data-tab="glance" aria-selected="true" aria-controls="panel-glance">Glance</button>
-      <button type="button" role="tab" data-tab="practice" aria-selected="false" tabindex="-1" aria-controls="panel-practice">Practice</button>
-      <button type="button" role="tab" data-tab="deep" aria-selected="false" tabindex="-1" aria-controls="panel-deep">Deep</button>
-    </div>
-
-    <div id="panel-glance" role="tabpanel" data-panel="glance">
-      <section class="part">
-        <h2><span class="num">01</span> What it is</h2>
-        <p>A token is a piece of text the model reads or writes. A token may be a whole word, part of a word, a number, or punctuation. Models measure the request and the reply in tokens.</p>
-        <div class="widget panel" data-widget="tokens">
-          <label class="field" for="token-input">Text</label>
-          <textarea id="token-input">Ship the notes today. Tokenization is uneven — a budget, not a vibe.</textarea>
-          <p class="count" aria-live="polite"><strong data-token-count>0</strong> approximate tokens</p>
-          <div class="chips" data-token-chips></div>
-          <p class="fine" data-token-note></p>
-          <p class="fine">Approximate. Words and punctuation are split apart. A word or number longer than four characters is cut into slices of four. Spaces and line breaks are their own chips. An API tokenizer will not match this count.</p>
+      <div class="card-top">
+        <div>
+          <p class="kicker">Concept card · Foundations</p>
+          <h1>Tokens</h1>
+          <p class="lede" data-summary>The unit models read, write, and bill in.</p>
         </div>
-      </section>
-
-      <section class="part">
-        <h2><span class="num">02</span> Why it matters</h2>
-        <ul class="why">
-          <li><strong>Cost</strong><span>Hosted models bill by token. A longer prompt and a longer reply both add to the bill.</span></li>
-          <li><strong>Quality</strong><span>Tokens spent on leftover instructions are tokens the reply cannot use.</span></li>
-          <li><strong>Risk</strong><span>Anything you paste is sent as tokens, including keys, customer text, and private notes.</span></li>
-        </ul>
-      </section>
-
-      <section class="part">
-        <h2><span class="num">03</span> How to apply it</h2>
-        <div class="split">
-          <article>
-            <h3>Try today</h3>
-            <p>Take a prompt you reuse. Run it through the splitter. Delete one sentence that does not change the task.</p>
-          </article>
-          <article>
-            <h3>Common mistake</h3>
-            <p>Treating a character count or a word count as the token count.</p>
-          </article>
+        <div class="card-meta">
+          <p>
+            <span class="pill accent" data-last-checked>Last checked 2026-10-16</span>
+            <span class="pill">4 min</span>
+          </p>
+          <div class="tabs" role="tablist" aria-label="Depth">
+            <button type="button" role="tab" data-tab="glance" aria-selected="true" aria-controls="panel-glance">Glance</button>
+            <button type="button" role="tab" data-tab="practice" aria-selected="false" tabindex="-1" aria-controls="panel-practice">Practice</button>
+            <button type="button" role="tab" data-tab="deep" aria-selected="false" tabindex="-1" aria-controls="panel-deep">Deep</button>
+          </div>
+          <p class="ask-about"><a href="/ask?q=tokens">Ask about Tokens</a></p>
         </div>
-      </section>
+      </div>
 
-      <section class="part">
-        <h2><span class="num">04</span> Related concepts</h2>
-        <ul class="related">
-          <li><a href="/context-window">Context Window</a></li>
-          <li><a href="/prompting">Prompting</a></li>
-        </ul>
-        <ul class="soon-list">
-          <li>Temperature <span>Coming soon</span></li>
-          <li>Embeddings <span>Coming soon</span></li>
-          <li>RAG <span>Coming soon</span></li>
-          <li>Evaluation <span>Coming soon</span></li>
-          <li>Agents <span>Coming soon</span></li>
-        </ul>
-      </section>
-    </div>
+      <div id="panel-glance" role="tabpanel" data-panel="glance">
+        <div class="changed">
+          <strong>What changed</strong>
+          <p>Oct 16: Cost now covers output versus input, cached input, and a higher rate past a size threshold, in general terms. The common mistake is that the same text is not the same token count on every model.</p>
+        </div>
 
-    <div id="panel-practice" role="tabpanel" data-panel="practice" hidden>
-      <p class="soon-note">Coming soon. One pass over a prompt you already send, cutting text that does not change the task.</p>
-    </div>
+        <div class="card-grid">
+          <div class="card-main">
+            <section class="part">
+              <h2><span class="num">1</span> What it is</h2>
+              <p>Models don't see words. They see tokens: chunks of text, often parts of words. Every prompt and every reply is counted in tokens.</p>
+              <div class="widget panel" data-widget="tokens">
+                <div class="token-bar">
+                  <label class="field" for="token-input">Type to see the tokens</label>
+                  <p class="token-tally" aria-live="polite"><strong data-token-count>0</strong> tokens · <span data-char-count>0</span> chars</p>
+                </div>
+                <textarea id="token-input">Tokenization isn't free, it's metered.</textarea>
+                <div class="chips" data-token-chips></div>
+                <p class="fine" data-token-note></p>
+                <div class="toggle" role="group" aria-label="Approximate split">
+                  <button type="button" class="ghost" data-slice="4" aria-pressed="true">Split of 4</button>
+                  <button type="button" class="ghost" data-slice="3" aria-pressed="false">Split of 3</button>
+                </div>
+                <p class="fine">Two illustrations. A word longer than the split size is cut into slices. Spaces and punctuation are their own chips. A provider tokenizer will not match either count, and two models can disagree.</p>
+              </div>
+            </section>
 
-    <div id="panel-deep" role="tabpanel" data-panel="deep" hidden>
-      <p class="soon-note">Coming soon. How a real tokenizer differs from this four-character split.</p>
-    </div>
-    </div>
+            <section class="part">
+              <h2><span class="num">2</span> Why it matters</h2>
+              <div class="why-grid">
+                <article>
+                  <h3>Cost</h3>
+                  <p>Hosted models bill by token, but not every token costs the same. Output usually costs more than input. Cached input can be much cheaper. Some models charge a higher rate once a prompt passes a size threshold.</p>
+                </article>
+                <article>
+                  <h3>Quality</h3>
+                  <p>Tokens spent on leftover instructions are tokens the reply cannot use.</p>
+                </article>
+                <article>
+                  <h3>Risk</h3>
+                  <p>Anything you paste is sent as tokens, including keys, customer text, and private notes.</p>
+                </article>
+              </div>
+            </section>
 
+            <div class="apply-grid">
+              <section class="apply-card">
+                <h2><span class="num">3</span> How to apply · try today</h2>
+                <p>Paste one real prompt into your provider's token counter. Note the input and output tokens, then multiply by the current rates. That gives you the cost per run.</p>
+              </section>
+              <section class="mistake">
+                <h2>Common mistake</h2>
+                <p>Assuming the same text is the same number of tokens on every model. Tokenizers change between model versions.</p>
+              </section>
+            </div>
+
+            <section class="check" data-quiz data-note-right="That's the one. Some models charge a higher rate past a size threshold." data-note-wrong="Not this one. Read the Cost section again.">
+              <h2>Self-check</h2>
+              <p class="check-q">A prompt is longer than a model's size threshold. What can happen to the input rate?</p>
+              <div class="check-options" role="group" aria-label="Answer">
+                <button type="button" class="check-opt" data-choice="a" aria-pressed="false">A · Nothing changes</button>
+                <button type="button" class="check-opt" data-choice="b" data-correct="true" aria-pressed="false">B · A higher tier can apply</button>
+                <button type="button" class="check-opt" data-choice="c" aria-pressed="false">C · The request fails</button>
+              </div>
+              <p class="fine" data-quiz-note></p>
+            </section>
+          </div>
+
+          <aside class="card-side">
+            <section class="side-card">
+              <h2>Prerequisites</h2>
+              <div data-prereqs>
+                <p class="fine">None. This is a starting card.</p>
+              </div>
+            </section>
+            <section class="side-card">
+              <h2>Related concepts</h2>
+              <div data-related>
+                <ul class="side-links">
+                  <li><a href="/context-window">Context Window</a></li>
+                  <li><span class="is-muted">Prompt Caching</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Embeddings</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Tokenization</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Multimodal inputs</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Chunking</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Cost forecasting</span> <span class="side-tag">Soon</span></li>
+                </ul>
+              </div>
+            </section>
+            <section class="side-card">
+              <h2>Sources</h2>
+              <p class="fine">Sources pending. No provider doc is cited on this card yet.</p>
+            </section>
+            <section class="side-card side-apply">
+              <h2>Apply pack</h2>
+              <p>Not open yet. The token budget pack will show what a prompt you already send is spending.</p>
+              <a href="/apply">Apply packs</a>
+            </section>
+          </aside>
+        </div>
+      </div>
+
+      <div id="panel-practice" role="tabpanel" data-panel="practice" hidden>
+        <p class="soon-note">Coming soon. One pass over a prompt you already send, cutting text that does not change the task.</p>
+      </div>
+
+      <div id="panel-deep" role="tabpanel" data-panel="deep" hidden>
+        <p class="soon-note">Coming soon. How a real tokenizer differs from this slice illustration.</p>
+      </div>
+    </div>
     </main>
 
     <footer class="foot">
       <a href="/">Home</a> · <a href="/map">Map</a>
     </footer>
   </div>
+  <script src="/concepts-data.js"></script>
   <script src="/concepts.js"></script>
 </body>
 </html>
