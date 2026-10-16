@@ -305,8 +305,8 @@
 
   var EDGES = [
     { a: "tokens", b: "context-window", label: "Limits count tokens" },
-    { a: "tokens", b: "prompting", label: "A prompt is made of tokens" },
-    { a: "context-window", b: "prompting", label: "The prompt sits in the window" }
+    { a: "tokens", b: "prompting", label: "Made of tokens" },
+    { a: "context-window", b: "prompting", label: "Sits in the window" }
   ];
 
   function emptyProgress() {
@@ -476,32 +476,51 @@
       });
 
       var ids = Object.keys(centers);
-      var centroid = { x: 0, y: 0 };
-      ids.forEach(function (id) {
-        centroid.x += centers[id].x;
-        centroid.y += centers[id].y;
-      });
-      if (ids.length) {
-        centroid.x /= ids.length;
-        centroid.y /= ids.length;
-      }
 
       svg.setAttribute("viewBox", "0 0 " + width + " " + height);
       svg.setAttribute("width", String(width));
       svg.setAttribute("height", String(height));
       svg.replaceChildren();
 
-      var showLabels = !narrowQuery.matches;
+      function segmentHits(p1, p2, box) {
+        var steps = 8;
+        for (var i = 1; i < steps; i++) {
+          var t = i / steps;
+          var x = p1.x + (p2.x - p1.x) * t;
+          var y = p1.y + (p2.y - p1.y) * t;
+          if (x > box.x + 6 && x < box.x + box.w - 6 && y > box.y + 6 && y < box.y + box.h - 6) return true;
+        }
+        return false;
+      }
+
       EDGES.forEach(function (edge) {
         if (!boxes[edge.a] || !boxes[edge.b]) return;
         var p1 = borderPoint(centers[edge.a], centers[edge.b], boxes[edge.a], 12);
         var p2 = borderPoint(centers[edge.b], centers[edge.a], boxes[edge.b], 12);
+        var blocked = ids.some(function (id) {
+          if (id === edge.a || id === edge.b) return false;
+          return segmentHits(p1, p2, boxes[id]);
+        });
+        var d;
+        if (blocked) {
+          var right = 0;
+          ids.forEach(function (id) { right = Math.max(right, boxes[id].x + boxes[id].w); });
+          var chordX = (p1.x + p2.x) / 2;
+          var gutterX = Math.min(width - 12, right + 20);
+          var qx = (2 * gutterX) - chordX;
+          var qy = (p1.y + p2.y) / 2;
+          d = "M " + p1.x.toFixed(1) + " " + p1.y.toFixed(1) +
+            " Q " + qx.toFixed(1) + " " + qy.toFixed(1) +
+            " " + p2.x.toFixed(1) + " " + p2.y.toFixed(1);
+        } else {
+          d = "M " + p1.x.toFixed(1) + " " + p1.y.toFixed(1) + " L " + p2.x.toFixed(1) + " " + p2.y.toFixed(1);
+        }
         var path = document.createElementNS(ns, "path");
         var classes = "edge";
         if (hot === edge.a || hot === edge.b) classes += " is-hot";
         path.setAttribute("data-a", edge.a);
         path.setAttribute("data-b", edge.b);
-        path.setAttribute("d", "M " + p1.x.toFixed(1) + " " + p1.y.toFixed(1) + " L " + p2.x.toFixed(1) + " " + p2.y.toFixed(1));
+        path.setAttribute("d", d);
         svg.appendChild(path);
         if (allowIntro && !reduced) {
           var len = path.getTotalLength();
@@ -510,36 +529,51 @@
         }
         path.setAttribute("class", classes);
 
-        if (!showLabels) return;
         var mx = (p1.x + p2.x) / 2;
         var my = (p1.y + p2.y) / 2;
-        var vx = mx - centroid.x;
-        var vy = my - centroid.y;
-        var vlen = Math.hypot(vx, vy) || 1;
-        var half = Math.min(128, edge.label.length * 3.4);
-        var labelH = 11;
-        function place(sign) {
-          var x = mx + sign * (vx / vlen) * 20;
-          var y = my + sign * (vy / vlen) * 18;
-          x = Math.max(half + 4, Math.min(width - half - 4, x));
-          y = Math.max(labelH + 4, Math.min(height - labelH - 4, y));
-          return { x: x, y: y };
-        }
+        var half = Math.min(132, edge.label.length * 3.45);
+        var labelH = 12;
         function overlaps(point) {
           return ids.some(function (id) {
             var b = boxes[id];
-            return point.x + half > b.x - 8 && point.x - half < b.x + b.w + 8 && point.y + labelH > b.y - 8 && point.y - labelH < b.y + b.h + 8;
+            return point.x + half > b.x - 6 && point.x - half < b.x + b.w + 6 && point.y + labelH > b.y - 6 && point.y - labelH < b.y + b.h + 6;
           });
         }
-        var spot = place(1);
-        if (overlaps(spot)) spot = place(-1);
-        if (overlaps(spot)) return;
-        var lx = spot.x;
-        var ly = spot.y;
+        function labelHitsPath(point) {
+          var len = path.getTotalLength();
+          var steps = 32;
+          for (var i = 0; i <= steps; i++) {
+            var at = path.getPointAtLength(len * i / steps);
+            if (Math.abs(at.x - point.x) <= half && Math.abs(at.y - point.y) <= labelH + 4) return true;
+          }
+          return false;
+        }
+        function acceptable(point) {
+          if (point.x < half + 2 || point.x > width - half - 2) return false;
+          if (point.y < labelH + 2 || point.y > height - labelH - 2) return false;
+          if (labelHitsPath(point)) return false;
+          return !overlaps(point);
+        }
+        var edx = p2.x - p1.x;
+        var edy = p2.y - p1.y;
+        var elen = Math.hypot(edx, edy) || 1;
+        var nx = -edy / elen;
+        var ny = edx / elen;
+        var need = half * Math.abs(nx) + (labelH + 8) * Math.abs(ny) + 8;
+        var spot = null;
+        [1, -1].forEach(function (sign) {
+          if (spot) return;
+          var candidate = {
+            x: mx + nx * need * sign,
+            y: my + ny * need * sign
+          };
+          if (acceptable(candidate)) spot = candidate;
+        });
+        if (!spot) return;
         var text = document.createElementNS(ns, "text");
         text.setAttribute("class", "edge-label");
-        text.setAttribute("x", lx.toFixed(1));
-        text.setAttribute("y", ly.toFixed(1));
+        text.setAttribute("x", spot.x.toFixed(1));
+        text.setAttribute("y", spot.y.toFixed(1));
         text.setAttribute("text-anchor", "middle");
         text.setAttribute("dominant-baseline", "middle");
         text.textContent = edge.label;
