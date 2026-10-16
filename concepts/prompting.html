@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c0b0a" />
+  <title>Prompting — Concepts</title>
+  <meta name="description" content="Prompting is how you state the task for this turn. Compare a weak prompt and a strong prompt for the same job." />
+  <link rel="stylesheet" href="/concepts/concepts.css" />
+</head>
+<body class="concepts" data-concept="prompting">
+  <a class="skip" href="#content">Skip to content</a>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/concepts">Foundry <span>Concepts</span></a>
+      <nav class="nav" aria-label="Concepts">
+        <a href="/concepts/map">Map</a>
+        <a href="/concepts/ask">Ask</a>
+        <a href="/concepts/apply">Apply</a>
+        <a href="/">Lab</a>
+      </nav>
+    </header>
+
+    <main id="content" tabindex="-1">
+    <p class="crumb"><a href="/concepts/map">Map</a> · Foundations · Prompting</p>
+    <div class="head">
+      <h1>Prompting</h1>
+      <p class="track">Track · Foundations</p>
+    </div>
+
+    <div data-tabs>
+    <div class="tabs" role="tablist" aria-label="Depth">
+      <button type="button" role="tab" data-tab="glance" aria-selected="true" aria-controls="panel-glance">Glance</button>
+      <button type="button" role="tab" data-tab="practice" aria-selected="false" tabindex="-1" aria-controls="panel-practice">Practice</button>
+      <button type="button" role="tab" data-tab="deep" aria-selected="false" tabindex="-1" aria-controls="panel-deep">Deep</button>
+    </div>
+
+    <div id="panel-glance" role="tabpanel" data-panel="glance">
+      <section class="part">
+        <h2><span class="num">01</span> What it is</h2>
+        <p>Prompting is how you state the task for this turn: the instruction, the material, and the constraints. A weak prompt and a strong prompt can ask for the same outcome and still give the model different jobs.</p>
+        <div class="widget panel" data-widget="prompt" data-state="weak">
+          <p class="fine">Same task: summarize meeting notes for someone who was not there. Toggle the prompt. Highlights show what the strong version adds.</p>
+          <div class="toggle" role="group" aria-label="Prompt version">
+            <button type="button" class="ghost" data-set="weak" aria-pressed="true">Weak</button>
+            <button type="button" class="ghost" data-set="strong" aria-pressed="false">Strong</button>
+          </div>
+          <div class="prompt-block" data-show="weak">summarize this
+
+[paste notes here]
+<div class="missing"><span>No reader</span><span>No output shape</span><span>Nothing to leave out</span><span>No rule if unclear</span></div></div>
+          <div class="prompt-block" data-show="strong" hidden>Summarize these meeting notes <mark>for a teammate who was not there</mark>.
+
+Use <mark>three short sections: Decisions, Owners, and Open questions</mark>.
+
+<mark>Leave out small talk.</mark> <mark>If a decision is not clear in the notes, say it is unclear.</mark> Do not add decisions that are not in the notes.</div>
+          <ul class="diff">
+            <li><b>Reader</b><span class="when-weak">Not named.</span><span class="when-strong">Named: a teammate who was not there.</span></li>
+            <li><b>Output shape</b><span class="when-weak">Not set.</span><span class="when-strong">Three short sections: decisions, owners, open questions.</span></li>
+            <li><b>Leave out</b><span class="when-weak">Not set.</span><span class="when-strong">Small talk stays out.</span></li>
+            <li><b>If unclear</b><span class="when-weak">Not set.</span><span class="when-strong">Say it is unclear. Do not invent a decision.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="part">
+        <h2><span class="num">02</span> Why it matters</h2>
+        <ul class="why">
+          <li><strong>Cost</strong><span>A vague prompt often leads to another turn to get something you can use.</span></li>
+          <li><strong>Quality</strong><span>Naming the reader, the format, and what to leave out gives the reply a finish line.</span></li>
+          <li><strong>Risk</strong><span>An open prompt is easier to steer off the task, including by text inside a document you attached.</span></li>
+        </ul>
+      </section>
+
+      <section class="part">
+        <h2><span class="num">03</span> How to apply it</h2>
+        <div class="split">
+          <article>
+            <h3>Try today</h3>
+            <p>Rewrite one prompt you use so it names the reader, the output shape, and one thing to leave out.</p>
+          </article>
+          <article>
+            <h3>Common mistake</h3>
+            <p>Adding adjectives (“be detailed and insightful”) instead of a concrete constraint.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="part">
+        <h2><span class="num">04</span> Related concepts</h2>
+        <ul class="related">
+          <li><a href="/concepts/tokens">Tokens</a></li>
+          <li><a href="/concepts/context-window">Context Window</a></li>
+        </ul>
+        <ul class="soon-list">
+          <li>Temperature <span>Coming soon</span></li>
+          <li>Embeddings <span>Coming soon</span></li>
+          <li>RAG <span>Coming soon</span></li>
+          <li>Evaluation <span>Coming soon</span></li>
+          <li>Agents <span>Coming soon</span></li>
+        </ul>
+      </section>
+    </div>
+
+    <div id="panel-practice" role="tabpanel" data-panel="practice" hidden>
+      <p class="soon-note">Coming soon. Rewrite one prompt you use and name the reader, the shape, and one omission.</p>
+    </div>
+
+    <div id="panel-deep" role="tabpanel" data-panel="deep" hidden>
+      <p class="soon-note">Coming soon. What belongs in the prompt, and what belongs in standing instructions or in the document.</p>
+    </div>
+    </div>
+
+    </main>
+
+    <footer class="foot">
+      <a href="/concepts">Concepts</a> · <a href="/concepts/map">Map</a> · <a href="/">Lab</a>
+    </footer>
+  </div>
+  <script src="/concepts/concepts.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c0b0a" />
+  <title>Context Window — Concepts</title>
+  <meta name="description" content="The context window is how much text one request can hold before something is left out." />
+  <link rel="stylesheet" href="/concepts/concepts.css" />
+</head>
+<body class="concepts" data-concept="context-window">
+  <a class="skip" href="#content">Skip to content</a>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/concepts">Foundry <span>Concepts</span></a>
+      <nav class="nav" aria-label="Concepts">
+        <a href="/concepts/map">Map</a>
+        <a href="/concepts/ask">Ask</a>
+        <a href="/concepts/apply">Apply</a>
+        <a href="/">Lab</a>
+      </nav>
+    </header>
+
+    <main id="content" tabindex="-1">
+    <p class="crumb"><a href="/concepts/map">Map</a> · Foundations · Context Window</p>
+    <div class="head">
+      <h1>Context Window</h1>
+      <p class="track">Track · Foundations</p>
+    </div>
+
+    <div data-tabs>
+    <div class="tabs" role="tablist" aria-label="Depth">
+      <button type="button" role="tab" data-tab="glance" aria-selected="true" aria-controls="panel-glance">Glance</button>
+      <button type="button" role="tab" data-tab="practice" aria-selected="false" tabindex="-1" aria-controls="panel-practice">Practice</button>
+      <button type="button" role="tab" data-tab="deep" aria-selected="false" tabindex="-1" aria-controls="panel-deep">Deep</button>
+    </div>
+
+    <div id="panel-glance" role="tabpanel" data-panel="glance">
+      <section class="part">
+        <h2><span class="num">01</span> What it is</h2>
+        <p>The context window is how much text one request can hold. That includes the system prompt, the conversation so far, documents you attach, and the answer the model is still writing. Text that does not fit is not visible to the model for that request.</p>
+        <div class="widget panel" data-widget="context">
+          <p class="fine">This meter is a picture of a fixed 100-unit window. The number is not a real model limit. Pieces fill in order: system prompt, history, documents, then the answer. What does not fit is left out. Real products differ: some refuse the request instead of cutting.</p>
+          <div class="meter" data-meter aria-hidden="true"></div>
+          <ul class="legend">
+            <li><i class="system"></i>System prompt</li>
+            <li><i class="history"></i>History</li>
+            <li><i class="documents"></i>Documents</li>
+            <li><i class="answer"></i>Answer</li>
+          </ul>
+          <div class="slider-row">
+            <div class="slider-label"><span>System prompt</span><b data-readout="system">18</b></div>
+            <input type="range" min="0" max="100" value="18" data-part="system" aria-label="System prompt size" />
+          </div>
+          <div class="slider-row">
+            <div class="slider-label"><span>History</span><b data-readout="history">22</b></div>
+            <input type="range" min="0" max="100" value="22" data-part="history" aria-label="History size" />
+          </div>
+          <div class="slider-row">
+            <div class="slider-label"><span>Documents</span><b data-readout="documents">28</b></div>
+            <input type="range" min="0" max="100" value="28" data-part="documents" aria-label="Documents size" />
+          </div>
+          <div class="slider-row">
+            <div class="slider-label"><span>Answer</span><b data-readout="answer">16</b></div>
+            <input type="range" min="0" max="100" value="16" data-part="answer" aria-label="Answer size" />
+          </div>
+          <div class="cut" data-cut aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="part">
+        <h2><span class="num">02</span> Why it matters</h2>
+        <ul class="why">
+          <li><strong>Cost</strong><span>You pay for the tokens that sit in the window, including history and documents the question may not need.</span></li>
+          <li><strong>Quality</strong><span>When the window is full of old turns or long documents, less room is left for the question and the answer.</span></li>
+          <li><strong>Risk</strong><span>A full window is a common reason a reply ignores an instruction or a fact that was pushed out of view.</span></li>
+        </ul>
+      </section>
+
+      <section class="part">
+        <h2><span class="num">03</span> How to apply it</h2>
+        <div class="split">
+          <article>
+            <h3>Try today</h3>
+            <p>On a long chat, start a fresh thread and paste only the brief and the source you still need.</p>
+          </article>
+          <article>
+            <h3>Common mistake</h3>
+            <p>Assuming the model still sees the first messages after the thread has grown past the window.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="part">
+        <h2><span class="num">04</span> Related concepts</h2>
+        <ul class="related">
+          <li><a href="/concepts/tokens">Tokens</a></li>
+          <li><a href="/concepts/prompting">Prompting</a></li>
+        </ul>
+        <ul class="soon-list">
+          <li>Temperature <span>Coming soon</span></li>
+          <li>Embeddings <span>Coming soon</span></li>
+          <li>RAG <span>Coming soon</span></li>
+          <li>Evaluation <span>Coming soon</span></li>
+          <li>Agents <span>Coming soon</span></li>
+        </ul>
+      </section>
+    </div>
+
+    <div id="panel-practice" role="tabpanel" data-panel="practice" hidden>
+      <p class="soon-note">Coming soon. Lay out one real request and mark what you would drop first.</p>
+    </div>
+
+    <div id="panel-deep" role="tabpanel" data-panel="deep" hidden>
+      <p class="soon-note">Coming soon. How products differ when the window is full: some refuse, some trim, some cut.</p>
+    </div>
+    </div>
+
+    </main>
+
+    <footer class="foot">
+      <a href="/concepts">Concepts</a> · <a href="/concepts/map">Map</a> · <a href="/">Lab</a>
+    </footer>
+  </div>
+  <script src="/concepts/concepts.js"></script>
+</body>
+</html>

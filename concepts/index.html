@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c0b0a" />
+  <title>Concepts — Blacklion Foundry</title>
+  <meta name="description" content="The practical map and cards for builders who already use AI." />
+  <link rel="stylesheet" href="/concepts/concepts.css" />
+</head>
+<body class="concepts">
+  <a class="skip" href="#content">Skip to content</a>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/concepts">Foundry <span>Concepts</span></a>
+      <nav class="nav" aria-label="Concepts">
+        <a href="/concepts/map">Map</a>
+        <a href="/concepts/ask">Ask</a>
+        <a href="/concepts/apply">Apply</a>
+        <a href="/">Lab</a>
+      </nav>
+    </header>
+
+    <main id="content" tabindex="-1">
+      <p class="kicker">Concepts</p>
+      <h1>The practical map and cards for builders who already use AI.</h1>
+      <p class="lede">Three cards are written. The map, Ask, and apply packs are started so the shape is visible.</p>
+
+      <section class="section next-module" aria-labelledby="next-title" data-widget="next">
+        <div class="next-head">
+          <h2 id="next-title">Next for you</h2>
+          <a class="next-map" href="/concepts/map">Full map</a>
+        </div>
+        <div data-next-body>
+          <p class="fine">Start with these two.</p>
+          <div class="next-list">
+            <a class="next-card" href="/concepts/tokens"><span>Foundations</span><strong>Tokens</strong></a>
+            <a class="next-card" href="/concepts/context-window"><span>Foundations</span><strong>Context Window</strong></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="cards-title">
+        <h2 id="cards-title">Cards</h2>
+        <div class="grid-3">
+          <a class="feature" href="/concepts/tokens">
+            <span>Foundations</span>
+            <strong>Tokens</strong>
+            <p>A token is a piece of text the model reads or writes. Limits and bills count tokens.</p>
+          </a>
+          <a class="feature" href="/concepts/context-window">
+            <span>Foundations</span>
+            <strong>Context Window</strong>
+            <p>One request holds a fixed amount: instructions, history, documents, and the answer.</p>
+          </a>
+          <a class="feature" href="/concepts/prompting">
+            <span>Foundations</span>
+            <strong>Prompting</strong>
+            <p>The same task changes when you name the reader, the shape, and what to leave out.</p>
+          </a>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="map-title">
+        <h2 id="map-title">Map</h2>
+        <p class="fine">Four tracks. Built cards are links. The other names are not cards yet.</p>
+        <div class="tracks">
+          <section class="track-col">
+            <h2>Foundations</h2>
+            <a class="node" href="/concepts/tokens">Tokens</a>
+            <a class="node" href="/concepts/context-window">Context Window</a>
+            <a class="node" href="/concepts/prompting">Prompting</a>
+            <p class="node is-soon">Temperature <small>Coming soon</small></p>
+          </section>
+          <section class="track-col">
+            <h2>Retrieval &amp; Grounding</h2>
+            <p class="node is-soon">Embeddings <small>Coming soon</small></p>
+            <p class="node is-soon">RAG <small>Coming soon</small></p>
+          </section>
+          <section class="track-col">
+            <h2>Agents</h2>
+            <p class="node is-soon">Agents <small>Coming soon</small></p>
+          </section>
+          <section class="track-col">
+            <h2>Ship &amp; Maintain</h2>
+            <p class="node is-soon">Evaluation <small>Coming soon</small></p>
+          </section>
+        </div>
+        <a class="map-link" href="/concepts/map">Open the map</a>
+      </section>
+
+      <section class="section" aria-labelledby="ask-title">
+        <h2 id="ask-title">Ask</h2>
+        <form action="/concepts/ask" method="get">
+          <label class="field" for="home-q">Match a card</label>
+          <div class="ask-row">
+            <input id="home-q" type="search" name="q" placeholder="Try: token cost, context window, prompt" />
+            <button type="submit">Match cards</button>
+          </div>
+        </form>
+        <p class="fine">Keyword match against the three cards. No model is called. A smarter Ask is coming.</p>
+      </section>
+
+      <section class="section" aria-labelledby="apply-title">
+        <h2 id="apply-title">Apply packs</h2>
+        <p>An apply pack will be a short set beside a card: one worked example, one checklist, and one change in a prompt or repo you already have. None are open yet.</p>
+        <p class="cta-row"><a class="button" href="/concepts/apply">Waitlist opening soon</a></p>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <a href="/">Lab</a>
+    </footer>
+  </div>
+  <script src="/concepts/concepts.js"></script>
+</body>
+</html>
