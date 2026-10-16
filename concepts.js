@@ -1,4 +1,4 @@
-/* Shared behavior for /concepts. No network calls. */
+/* Shared behavior. No network calls. */
 (function () {
   "use strict";
 
@@ -8,21 +8,21 @@
   var CARDS = [
     {
       title: "Tokens",
-      href: "/concepts/tokens",
+      href: "/tokens",
       track: "Foundations",
       blurb: "A token is a piece of text the model reads or writes. Bills and limits count tokens.",
       keys: ["token", "tokens", "tokenizer", "tokenize", "tokenization", "billing", "bill", "cost", "price", "chunk", "chunks", "split", "character", "characters", "word", "words", "tiktoken", "bpe", "subword", "approximate", "budget", "spend", "piece"]
     },
     {
       title: "Context Window",
-      href: "/concepts/context-window",
+      href: "/context-window",
       track: "Foundations",
       blurb: "The fixed text one request can hold: instructions, history, documents, and the answer.",
       keys: ["context", "window", "windows", "limit", "limits", "history", "chat", "thread", "document", "documents", "overflow", "cut", "cuts", "truncated", "truncation", "forgotten", "forget", "older", "system", "memory"]
     },
     {
       title: "Prompting",
-      href: "/concepts/prompting",
+      href: "/prompting",
       track: "Foundations",
       blurb: "How you state the task this turn: reader, format, and what to leave out.",
       keys: ["prompt", "prompts", "prompting", "instruction", "instructions", "weak", "strong", "format", "constraint", "constraints", "rewrite", "reader", "vague", "specific", "summarize", "summary"]
@@ -298,9 +298,9 @@
   var PROGRESS_KEY = "bf-concepts-opened";
 
   var CONCEPTS = [
-    { id: "tokens", title: "Tokens", href: "/concepts/tokens" },
-    { id: "context-window", title: "Context Window", href: "/concepts/context-window" },
-    { id: "prompting", title: "Prompting", href: "/concepts/prompting" }
+    { id: "tokens", title: "Tokens", href: "/tokens" },
+    { id: "context-window", title: "Context Window", href: "/context-window" },
+    { id: "prompting", title: "Prompting", href: "/prompting" }
   ];
 
   var EDGES = [

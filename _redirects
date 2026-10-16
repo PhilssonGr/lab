@@ -1,0 +1,6 @@
+# Old /concepts URLs now live at the site root.
+/concepts/index.html  /        301
+/concepts/index       /        301
+/concepts/            /        301
+/concepts             /        301
+/concepts/*           /:splat  301
