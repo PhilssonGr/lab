@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c0b0a" />
+  <title>Map — Concepts</title>
+  <meta name="description" content="An interactive Foundations graph. Tokens, Context Window, and Prompting are cards. Other names are not links." />
+  <link rel="stylesheet" href="/concepts.css" />
+</head>
+<body class="concepts">
+  <a class="skip" href="#content">Skip to content</a>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/">Foundry <span>Concepts</span></a>
+      <nav class="nav" aria-label="Concepts">
+        <a href="/map" aria-current="page">Map</a>
+        <a href="/ask">Ask</a>
+        <a href="/apply">Apply</a>
+      </nav>
+    </header>
+
+    <main id="content" tabindex="-1">
+      <p class="kicker">Map</p>
+      <h1>Three linked cards.</h1>
+      <p class="lede">Tokens, Context Window, and Prompting have cards. Lines show how they relate. Faint names are not cards. This browser remembers which cards you have opened.</p>
+
+      <div class="section graph-bay" data-widget="map">
+        <div class="graph-toolbar">
+          <p class="graph-track" id="foundations-label">Foundations</p>
+          <p class="graph-count" data-progress-count aria-live="polite">0 of 3 opened</p>
+          <button type="button" class="ghost tiny" data-reset-progress disabled>Reset progress</button>
+        </div>
+        <div class="map-canvas" data-map-canvas role="group" aria-labelledby="foundations-label">
+          <svg class="map-edges" data-map-edges aria-hidden="true"></svg>
+          <a class="map-node" data-node="tokens" href="/tokens">
+            <strong>Tokens</strong>
+            <span class="map-node-state">Not opened</span>
+          </a>
+          <a class="map-node" data-node="context-window" href="/context-window">
+            <strong>Context Window</strong>
+            <span class="map-node-state">Not opened</span>
+          </a>
+          <a class="map-node" data-node="prompting" href="/prompting">
+            <strong>Prompting</strong>
+            <span class="map-node-state">Not opened</span>
+          </a>
+        </div>
+        <ul class="rel-list" aria-label="Relationships">
+          <li><b>Tokens · Context Window</b> Limits count tokens</li>
+          <li><b>Tokens · Prompting</b> A prompt is made of tokens</li>
+          <li><b>Context Window · Prompting</b> The prompt sits in the window</li>
+        </ul>
+      </div>
+      <noscript>
+        <p class="fine">JavaScript draws the lines and saves opened cards in this browser. The three cards stay linked either way.</p>
+      </noscript>
+
+      <section class="placeholder-yard" aria-labelledby="soon-title">
+        <h2 id="soon-title">Not cards yet</h2>
+        <p class="fine">These names mark a place on a track. They are not links.</p>
+        <div class="ph-grid">
+          <div class="ph-col">
+            <h3>Foundations</h3>
+            <p class="ph-node">Temperature</p>
+          </div>
+          <div class="ph-col">
+            <h3>Retrieval &amp; Grounding</h3>
+            <p class="ph-node">Embeddings</p>
+            <p class="ph-node">RAG</p>
+          </div>
+          <div class="ph-col">
+            <h3>Agents</h3>
+            <p class="ph-node">Agents</p>
+          </div>
+          <div class="ph-col">
+            <h3>Ship &amp; Maintain</h3>
+            <p class="ph-node">Evaluation</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <a href="/">Home</a>
+    </footer>
+  </div>
+  <script src="/concepts.js"></script>
+</body>
+</html>

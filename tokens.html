@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c0b0a" />
+  <title>Tokens — Concepts</title>
+  <meta name="description" content="A token is a piece of text a model reads or writes. This card shows an approximate split." />
+  <link rel="stylesheet" href="/concepts.css" />
+</head>
+<body class="concepts" data-concept="tokens">
+  <a class="skip" href="#content">Skip to content</a>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/">Foundry <span>Concepts</span></a>
+      <nav class="nav" aria-label="Concepts">
+        <a href="/map">Map</a>
+        <a href="/ask">Ask</a>
+        <a href="/apply">Apply</a>
+      </nav>
+    </header>
+
+    <main id="content" tabindex="-1">
+    <p class="crumb"><a href="/map">Map</a> · Foundations · Tokens</p>
+    <div class="head">
+      <h1>Tokens</h1>
+      <p class="track">Track · Foundations</p>
+    </div>
+
+    <div class="tabs" data-tabs role="tablist" aria-label="Depth">
+      <button type="button" role="tab" data-tab="glance" aria-selected="true" aria-controls="panel-glance">Glance</button>
+      <button type="button" role="tab" data-tab="practice" aria-selected="false" tabindex="-1" aria-controls="panel-practice">Practice</button>
+      <button type="button" role="tab" data-tab="deep" aria-selected="false" tabindex="-1" aria-controls="panel-deep">Deep</button>
+    </div>
+
+    <div id="panel-glance" role="tabpanel" data-panel="glance">
+      <section class="part">
+        <h2><span class="num">01</span> What it is</h2>
+        <p>A token is a piece of text the model reads or writes. A token may be a whole word, part of a word, a number, or punctuation. Models measure the request and the reply in tokens.</p>
+        <div class="widget panel" data-widget="tokens">
+          <label class="field" for="token-input">Text</label>
+          <textarea id="token-input">Ship the notes today. Tokenization is uneven — a budget, not a vibe.</textarea>
+          <p class="count" aria-live="polite"><strong data-token-count>0</strong> approximate tokens</p>
+          <div class="chips" data-token-chips></div>
+          <p class="fine" data-token-note></p>
+          <p class="fine">Approximate. Words and punctuation are split apart. A word or number longer than four characters is cut into slices of four. Spaces and line breaks are their own chips. An API tokenizer will not match this count.</p>
+        </div>
+      </section>
+
+      <section class="part">
+        <h2><span class="num">02</span> Why it matters</h2>
+        <ul class="why">
+          <li><strong>Cost</strong><span>Hosted models bill by token. A longer prompt and a longer reply both add to the bill.</span></li>
+          <li><strong>Quality</strong><span>Tokens spent on leftover instructions are tokens the reply cannot use.</span></li>
+          <li><strong>Risk</strong><span>Anything you paste is sent as tokens, including keys, customer text, and private notes.</span></li>
+        </ul>
+      </section>
+
+      <section class="part">
+        <h2><span class="num">03</span> How to apply it</h2>
+        <div class="split">
+          <article>
+            <h3>Try today</h3>
+            <p>Take a prompt you reuse. Run it through the splitter. Delete one sentence that does not change the task.</p>
+          </article>
+          <article>
+            <h3>Common mistake</h3>
+            <p>Treating a character count or a word count as the token count.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="part">
+        <h2><span class="num">04</span> Related concepts</h2>
+        <ul class="related">
+          <li><a href="/context-window">Context Window</a></li>
+          <li><a href="/prompting">Prompting</a></li>
+        </ul>
+        <ul class="soon-list">
+          <li>Temperature <span>Coming soon</span></li>
+          <li>Embeddings <span>Coming soon</span></li>
+          <li>RAG <span>Coming soon</span></li>
+          <li>Evaluation <span>Coming soon</span></li>
+          <li>Agents <span>Coming soon</span></li>
+        </ul>
+      </section>
+    </div>
+
+    <div id="panel-practice" role="tabpanel" data-panel="practice" hidden>
+      <p class="soon-note">Coming soon. One pass over a prompt you already send, cutting text that does not change the task.</p>
+    </div>
+
+    <div id="panel-deep" role="tabpanel" data-panel="deep" hidden>
+      <p class="soon-note">Coming soon. How a real tokenizer differs from this four-character split.</p>
+    </div>
+
+    </main>
+
+    <footer class="foot">
+      <a href="/">Home</a> · <a href="/map">Map</a>
+    </footer>
+  </div>
+  <script src="/concepts.js"></script>
+</body>
+</html>

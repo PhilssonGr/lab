@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c0b0a" />
+  <title>Ask — Concepts</title>
+  <meta name="description" content="Match a question to the concept cards that exist. Keyword match in the browser. No model call." />
+  <link rel="stylesheet" href="/concepts.css" />
+</head>
+<body class="concepts">
+  <a class="skip" href="#content">Skip to content</a>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/">Foundry <span>Concepts</span></a>
+      <nav class="nav" aria-label="Concepts">
+        <a href="/map">Map</a>
+        <a href="/ask" aria-current="page">Ask</a>
+        <a href="/apply">Apply</a>
+      </nav>
+    </header>
+
+    <main id="content" tabindex="-1">
+    <p class="kicker">Ask</p>
+    <h1>Match a card.</h1>
+    <p class="lede">Type in your own words. This page matches keywords against Tokens, Context Window, and Prompting. It does not call a model, and it sends nothing to a server. A smarter Ask is coming.</p>
+
+    <form class="panel" data-widget="ask" action="/ask" method="get">
+      <label class="field" for="ask-q">Question</label>
+      <div class="ask-row">
+        <input id="ask-q" type="search" name="q" placeholder="What gets cut when the window is full?" />
+        <button type="submit">Match cards</button>
+      </div>
+      <div class="results" data-results></div>
+    </form>
+    <noscript>
+      <p>Ask needs JavaScript in the browser to match keywords. It still does not call a server.</p>
+    </noscript>
+    </main>
+
+    <footer class="foot">
+      <a href="/">Home</a> · <a href="/map">Map</a>
+    </footer>
+  </div>
+  <script src="/concepts.js"></script>
+</body>
+</html>
