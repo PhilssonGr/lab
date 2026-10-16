@@ -1,0 +1,484 @@
+/* Curriculum registry. Plain script, no build. Loaded before concepts.js.
+   lastChecked is null when the concept has no card yet. */
+var BF_CONCEPTS = [
+  {
+    id: "tokens",
+    title: "Tokens",
+    track: "Foundations",
+    prerequisites: [],
+    status: "live",
+    summary: "The unit models read, write, and bill in.",
+    lastChecked: "2026-10-16",
+    keys: ["token", "tokens", "tokenizer", "tokenize", "tokenization", "billing", "bill", "cost", "price", "prices", "split", "character", "characters", "word", "words", "tiktoken", "bpe", "subword", "budget", "spend", "cached", "cache", "threshold"]
+  },
+  {
+    id: "context-window",
+    title: "Context Window",
+    track: "Foundations",
+    prerequisites: ["tokens"],
+    status: "live",
+    summary: "The fixed text one request can hold: instructions, history, documents, and the answer.",
+    lastChecked: "2026-10-16",
+    keys: ["context", "window", "windows", "limit", "limits", "history", "chat", "thread", "document", "documents", "overflow", "truncated", "truncation", "forgotten", "forget", "older", "system"]
+  },
+  {
+    id: "prompting",
+    title: "Prompting",
+    track: "Foundations",
+    prerequisites: ["context-window"],
+    status: "live",
+    summary: "How you state the task this turn: the reader, the shape, and what to leave out.",
+    lastChecked: "2026-10-16",
+    keys: ["prompt", "prompts", "prompting", "instruction", "instructions", "weak", "strong", "format", "constraint", "constraints", "rewrite", "reader", "vague", "specific", "summarize", "summary"]
+  },
+  {
+    id: "prompt-caching",
+    title: "Prompt Caching",
+    track: "Foundations",
+    prerequisites: ["tokens", "context-window"],
+    status: "coming-soon",
+    summary: "Reusing an unchanged prefix so a repeated prompt can cost less than sending it from scratch.",
+    lastChecked: null,
+    keys: ["cache", "caching", "cached", "prefix", "prompt"]
+  },
+  {
+    id: "model-selection",
+    title: "Model Selection & Routing",
+    track: "Foundations",
+    prerequisites: ["prompting"],
+    status: "coming-soon",
+    summary: "Picking a model, and sometimes a route between models, for the job in front of you.",
+    lastChecked: null,
+    keys: ["model", "models", "selection", "routing", "router", "route"]
+  },
+  {
+    id: "reasoning-effort",
+    title: "Reasoning/Effort",
+    track: "Foundations",
+    prerequisites: ["model-selection"],
+    status: "coming-soon",
+    summary: "A control some models offer for how much thinking to spend on a request.",
+    lastChecked: null,
+    keys: ["reasoning", "effort", "thinking", "reason"]
+  },
+  {
+    id: "structured-outputs",
+    title: "Structured Outputs",
+    track: "Foundations",
+    prerequisites: ["prompting"],
+    status: "coming-soon",
+    summary: "Asking for a reply that follows a shape, such as fields you name, so code can read it.",
+    lastChecked: null,
+    keys: ["structured", "output", "outputs", "json", "schema", "format"]
+  },
+  {
+    id: "hallucination",
+    title: "Hallucination",
+    track: "Foundations",
+    prerequisites: ["prompting"],
+    status: "coming-soon",
+    summary: "A reply that states something the prompt and the sources do not support.",
+    lastChecked: null,
+    keys: ["hallucination", "hallucinate", "hallucinated", "invented", "unsupported"]
+  },
+  {
+    id: "evaluation-basics",
+    title: "Evaluation basics",
+    track: "Foundations",
+    prerequisites: ["hallucination"],
+    status: "coming-soon",
+    summary: "Checking a model on examples you already know the answer to, before you trust a change.",
+    lastChecked: null,
+    keys: ["evaluation", "eval", "evals", "evaluate", "basics"]
+  },
+  {
+    id: "temperature",
+    title: "Temperature",
+    track: "Foundations",
+    prerequisites: ["model-selection"],
+    status: "coming-soon",
+    summary: "A sampling control that shifts how often less likely next tokens are picked.",
+    lastChecked: null,
+    keys: ["temperature", "temp"]
+  },
+  {
+    id: "sampling",
+    title: "Sampling",
+    track: "Foundations",
+    prerequisites: ["temperature"],
+    status: "coming-soon",
+    summary: "How the next token is chosen from the model's probabilities.",
+    lastChecked: null,
+    keys: ["sampling", "sample", "top-p", "nucleus"]
+  },
+  {
+    id: "embeddings",
+    title: "Embeddings",
+    track: "Foundations",
+    prerequisites: ["tokens"],
+    status: "coming-soon",
+    summary: "Turning text into a list of numbers so similar texts land near each other.",
+    lastChecked: null,
+    keys: ["embedding", "embeddings", "vector", "vectors"]
+  },
+  {
+    id: "tokenization",
+    title: "Tokenization",
+    track: "Foundations",
+    prerequisites: ["tokens"],
+    status: "coming-soon",
+    summary: "The specific rules that split text into tokens. Those rules differ by model.",
+    lastChecked: null,
+    keys: ["tokenization", "tokenizer", "tokenize", "tokenizers"]
+  },
+  {
+    id: "multimodal-inputs",
+    title: "Multimodal inputs",
+    track: "Foundations",
+    prerequisites: ["tokens", "context-window"],
+    status: "coming-soon",
+    summary: "Images, audio, and other non-text inputs a model can take alongside text.",
+    lastChecked: null,
+    keys: ["multimodal", "image", "images", "audio", "vision"]
+  },
+  {
+    id: "model-versions",
+    title: "Model versions",
+    track: "Foundations",
+    prerequisites: ["model-selection", "tokenization"],
+    status: "coming-soon",
+    summary: "A named model release. A newer version can change behavior and tokenization.",
+    lastChecked: null,
+    keys: ["version", "versions", "release", "model"]
+  },
+  {
+    id: "rag",
+    title: "RAG",
+    track: "Retrieval & Grounding",
+    prerequisites: ["chunking", "embeddings-retrieval"],
+    status: "coming-soon",
+    summary: "Retrieve relevant text, then ask the model to answer from that text.",
+    lastChecked: null,
+    keys: ["rag", "retrieval", "retrieve", "augmented"]
+  },
+  {
+    id: "chunking",
+    title: "Chunking",
+    track: "Retrieval & Grounding",
+    prerequisites: ["tokens"],
+    status: "coming-soon",
+    summary: "Splitting documents into pieces that retrieval can store and return.",
+    lastChecked: null,
+    keys: ["chunk", "chunks", "chunking"]
+  },
+  {
+    id: "embeddings-retrieval",
+    title: "Embeddings for retrieval",
+    track: "Retrieval & Grounding",
+    prerequisites: ["embeddings"],
+    status: "coming-soon",
+    summary: "Using embeddings to find stored chunks that are close to a query.",
+    lastChecked: null,
+    keys: ["embedding", "embeddings", "retrieval", "similarity", "nearest"]
+  },
+  {
+    id: "hybrid-search",
+    title: "Hybrid search",
+    track: "Retrieval & Grounding",
+    prerequisites: ["rag"],
+    status: "coming-soon",
+    summary: "Combining word matching and embedding search so exact terms and paraphrases can both hit.",
+    lastChecked: null,
+    keys: ["hybrid", "search", "keyword", "bm25"]
+  },
+  {
+    id: "query-rewriting",
+    title: "Query rewriting",
+    track: "Retrieval & Grounding",
+    prerequisites: ["rag", "prompting"],
+    status: "coming-soon",
+    summary: "Turning a follow-up question into a search query that stands on its own.",
+    lastChecked: null,
+    keys: ["query", "rewriting", "rewrite", "search"]
+  },
+  {
+    id: "reranking",
+    title: "Reranking",
+    track: "Retrieval & Grounding",
+    prerequisites: ["hybrid-search"],
+    status: "coming-soon",
+    summary: "A second pass that reorders retrieved chunks before they go into the prompt.",
+    lastChecked: null,
+    keys: ["rerank", "reranking", "rank"]
+  },
+  {
+    id: "long-context-vs-rag",
+    title: "Long context vs RAG",
+    track: "Retrieval & Grounding",
+    prerequisites: ["context-window", "rag"],
+    status: "coming-soon",
+    summary: "Choosing between putting the source in the window and retrieving pieces of it.",
+    lastChecked: null,
+    keys: ["long", "context", "rag", "retrieval"]
+  },
+  {
+    id: "document-parsing",
+    title: "Document parsing",
+    track: "Retrieval & Grounding",
+    prerequisites: ["chunking"],
+    status: "coming-soon",
+    summary: "Turning a file, such as a PDF or a page, into text and structure you can chunk.",
+    lastChecked: null,
+    keys: ["parse", "parsing", "pdf", "document", "documents"]
+  },
+  {
+    id: "vector-databases",
+    title: "Vector databases",
+    track: "Retrieval & Grounding",
+    prerequisites: ["embeddings-retrieval"],
+    status: "coming-soon",
+    summary: "A store built to keep embeddings and return the nearest ones.",
+    lastChecked: null,
+    keys: ["vector", "vectors", "database", "databases", "index"]
+  },
+  {
+    id: "citation-grounding",
+    title: "Citation & grounding check",
+    track: "Retrieval & Grounding",
+    prerequisites: ["rag", "hallucination"],
+    status: "coming-soon",
+    summary: "Checking that a claim in the reply is tied to a source you actually retrieved.",
+    lastChecked: null,
+    keys: ["citation", "citations", "cite", "grounding", "grounded", "source", "sources"]
+  },
+  {
+    id: "freshness-access",
+    title: "Freshness & access control",
+    track: "Retrieval & Grounding",
+    prerequisites: ["rag"],
+    status: "coming-soon",
+    summary: "Whether a source is current, and whether this user is allowed to see it.",
+    lastChecked: null,
+    keys: ["freshness", "fresh", "stale", "access", "permission", "acl"]
+  },
+  {
+    id: "agent-loop",
+    title: "Agent loop",
+    track: "Agents",
+    prerequisites: ["tool-calling"],
+    status: "coming-soon",
+    summary: "A cycle of model step, tool result, and another model step, until a stop.",
+    lastChecked: null,
+    keys: ["agent", "agents", "loop", "loops"]
+  },
+  {
+    id: "tool-calling",
+    title: "Tool calling",
+    track: "Agents",
+    prerequisites: ["prompting", "structured-outputs"],
+    status: "coming-soon",
+    summary: "The model asks your code to run a named function, then reads the result.",
+    lastChecked: null,
+    keys: ["tool", "tools", "calling", "function", "functions"]
+  },
+  {
+    id: "tool-design",
+    title: "Tool design/MCP",
+    track: "Agents",
+    prerequisites: ["tool-calling"],
+    status: "coming-soon",
+    summary: "How a tool is named, described, and exposed, including over MCP.",
+    lastChecked: null,
+    keys: ["tool", "tools", "mcp", "design", "schema"]
+  },
+  {
+    id: "context-engineering",
+    title: "Context engineering",
+    track: "Agents",
+    prerequisites: ["context-window", "prompting"],
+    status: "coming-soon",
+    summary: "Deciding what goes into the window for this step, and what stays out.",
+    lastChecked: null,
+    keys: ["context", "engineering", "window"]
+  },
+  {
+    id: "memory",
+    title: "Memory",
+    track: "Agents",
+    prerequisites: ["context-engineering"],
+    status: "coming-soon",
+    summary: "State kept across turns or sessions so the loop does not start from zero.",
+    lastChecked: null,
+    keys: ["memory", "memories", "remember", "session"]
+  },
+  {
+    id: "planning",
+    title: "Planning",
+    track: "Agents",
+    prerequisites: ["agent-loop"],
+    status: "coming-soon",
+    summary: "Breaking a job into steps before or during the loop.",
+    lastChecked: null,
+    keys: ["plan", "planning", "steps"]
+  },
+  {
+    id: "prompt-injection",
+    title: "Prompt injection",
+    track: "Agents",
+    prerequisites: ["prompting"],
+    status: "coming-soon",
+    summary: "Untrusted text that tries to override the instruction or the tool rules.",
+    lastChecked: null,
+    keys: ["injection", "inject", "untrusted", "override"]
+  },
+  {
+    id: "permissions-hitl",
+    title: "Permissions & human-in-the-loop",
+    track: "Agents",
+    prerequisites: ["tool-calling"],
+    status: "coming-soon",
+    summary: "What the agent may do alone, and what waits for a person.",
+    lastChecked: null,
+    keys: ["permission", "permissions", "human", "hitl", "approval", "approve"]
+  },
+  {
+    id: "guardrails",
+    title: "Guardrails",
+    track: "Agents",
+    prerequisites: ["permissions-hitl", "prompt-injection"],
+    status: "coming-soon",
+    summary: "Checks that block or reshape an action or a reply before it lands.",
+    lastChecked: null,
+    keys: ["guardrail", "guardrails", "policy"]
+  },
+  {
+    id: "failure-modes",
+    title: "Failure modes",
+    track: "Agents",
+    prerequisites: ["agent-loop"],
+    status: "coming-soon",
+    summary: "How an agent loop stalls, loops, or acts on a bad tool result.",
+    lastChecked: null,
+    keys: ["failure", "failures", "stall", "loop"]
+  },
+  {
+    id: "agent-evaluation",
+    title: "Agent evaluation",
+    track: "Agents",
+    prerequisites: ["agent-loop", "evaluation-basics"],
+    status: "coming-soon",
+    summary: "Scoring an agent on tasks, including whether it used tools well.",
+    lastChecked: null,
+    keys: ["agent", "evaluation", "eval", "evals"]
+  },
+  {
+    id: "multi-agent",
+    title: "Multi-agent",
+    track: "Agents",
+    prerequisites: ["agent-loop", "planning"],
+    status: "coming-soon",
+    summary: "More than one agent, with a handoff or a shared task.",
+    lastChecked: null,
+    keys: ["multi", "multi-agent", "agent", "agents", "handoff"]
+  },
+  {
+    id: "production-evaluation",
+    title: "Production evaluation",
+    track: "Ship & Maintain",
+    prerequisites: ["evaluation-basics"],
+    status: "coming-soon",
+    summary: "A repeatable eval set you run on changes that will face real users.",
+    lastChecked: null,
+    keys: ["production", "evaluation", "eval", "evals", "evaluate"]
+  },
+  {
+    id: "observability",
+    title: "Observability",
+    track: "Ship & Maintain",
+    prerequisites: ["production-evaluation"],
+    status: "coming-soon",
+    summary: "Logs and traces of prompts, tool calls, and replies so a failure can be inspected.",
+    lastChecked: null,
+    keys: ["observability", "logs", "logging", "trace", "traces"]
+  },
+  {
+    id: "cost-forecasting",
+    title: "Cost forecasting",
+    track: "Ship & Maintain",
+    prerequisites: ["tokens"],
+    status: "coming-soon",
+    summary: "Estimating spend from token volume, rates, and how often a workflow runs.",
+    lastChecked: null,
+    keys: ["cost", "forecast", "forecasting", "spend", "budget", "price"]
+  },
+  {
+    id: "latency",
+    title: "Latency",
+    track: "Ship & Maintain",
+    prerequisites: ["model-selection"],
+    status: "coming-soon",
+    summary: "How long a request takes, including retrieval, tools, and the model.",
+    lastChecked: null,
+    keys: ["latency", "slow", "speed", "timeout"]
+  },
+  {
+    id: "fallbacks",
+    title: "Fallbacks & rate limits",
+    track: "Ship & Maintain",
+    prerequisites: ["latency", "model-selection"],
+    status: "coming-soon",
+    summary: "What the product does when a model errors, slows down, or hits a rate limit.",
+    lastChecked: null,
+    keys: ["fallback", "fallbacks", "rate", "limit", "limits", "retry"]
+  },
+  {
+    id: "privacy-data",
+    title: "Privacy & data handling",
+    track: "Ship & Maintain",
+    prerequisites: ["prompting"],
+    status: "coming-soon",
+    summary: "What you send, what is stored, and what should never enter a prompt.",
+    lastChecked: null,
+    keys: ["privacy", "private", "data", "pii", "retention"]
+  },
+  {
+    id: "safety",
+    title: "Safety",
+    track: "Ship & Maintain",
+    prerequisites: ["privacy-data"],
+    status: "coming-soon",
+    summary: "Limits on harmful or disallowed use, in the product and in the model.",
+    lastChecked: null,
+    keys: ["safety", "safe", "harm", "policy"]
+  },
+  {
+    id: "monitoring-drift",
+    title: "Monitoring & drift",
+    track: "Ship & Maintain",
+    prerequisites: ["observability"],
+    status: "coming-soon",
+    summary: "Watching quality and behavior after launch, when data or models change.",
+    lastChecked: null,
+    keys: ["monitoring", "monitor", "drift"]
+  },
+  {
+    id: "fine-tuning",
+    title: "Fine-tuning vs prompting vs RAG",
+    track: "Ship & Maintain",
+    prerequisites: ["prompting", "rag"],
+    status: "coming-soon",
+    summary: "Choosing among a prompt change, retrieval, and a trained update.",
+    lastChecked: null,
+    keys: ["fine-tuning", "finetune", "finetuning", "prompting", "rag"]
+  },
+  {
+    id: "licensing",
+    title: "Licensing",
+    track: "Ship & Maintain",
+    prerequisites: ["model-versions"],
+    status: "coming-soon",
+    summary: "What the model and the data allow you to ship.",
+    lastChecked: null,
+    keys: ["license", "licensing", "licence"]
+  }
+];
