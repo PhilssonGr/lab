@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img">
+  <title>BuildSpark AI</title>
+  <rect width="32" height="32" fill="#1a1a1a"/>
+  <g transform="translate(16.0,16.0) scale(1,-1)">
+    <path fill="#F5841F" d="M0.00 13.12C0.00 5.75 4.42 0.00 12.11 0.00C4.42 0.00 0.00 -5.75 0.00 -13.12C0.00 -5.75 -4.42 0.00 -12.11 0.00C-4.42 0.00 0.00 5.75 0.00 13.12Z"/>
+  </g>
+</svg>

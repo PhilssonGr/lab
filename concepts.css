@@ -110,28 +110,14 @@ body.concepts::after {
 .brand {
   display: inline-flex;
   align-items: center;
-  color: var(--text);
+  line-height: 0;
   text-decoration: none;
-  font-size: 0.75rem;
-  font-weight: 650;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
-.brand::before {
-  content: "";
-  width: 0.42rem;
-  height: 0.42rem;
-  margin-right: 0.55rem;
-  background: var(--fill);
-  transform: rotate(45deg);
-  box-shadow: 0 0 0 3px rgba(255, 106, 26, 0.12);
-}
-
-.brand span {
-  color: var(--accent);
-  font-weight: 560;
-  margin-left: 0.45rem;
+.brand img {
+  display: block;
+  height: 2.05rem;
+  width: auto;
 }
 
 .nav {
