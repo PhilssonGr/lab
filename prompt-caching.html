@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/assets/brand/favicon-32.png" type="image/png" sizes="32x32" />
+  <link rel="icon" href="/assets/brand/favicon-16.png" type="image/png" sizes="16x16" />
+  <link rel="shortcut icon" href="/assets/brand/favicon.ico" />
+  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" sizes="180x180" />
+  <link rel="manifest" href="/assets/brand/site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c0b0a" />
+  <title>Prompt Caching · BuildSpark AI</title>
+  <meta name="description" content="Prompt caching reuses an unchanged prefix of a prompt so a later request can skip processing that part again. A free BuildSpark AI concept card." />
+  <link rel="canonical" href="https://bf-lab.netlify.app/prompt-caching" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="BuildSpark AI" />
+  <meta property="og:title" content="Prompt Caching · BuildSpark AI" />
+  <meta property="og:description" content="Prompt caching reuses an unchanged prefix of a prompt so a later request can skip processing that part again. A free BuildSpark AI concept card." />
+  <meta property="og:url" content="https://bf-lab.netlify.app/prompt-caching" />
+  <meta property="og:image" content="https://bf-lab.netlify.app/assets/brand/icon-512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Prompt Caching · BuildSpark AI" />
+  <meta name="twitter:description" content="Prompt caching reuses an unchanged prefix of a prompt so a later request can skip processing that part again. A free BuildSpark AI concept card." />
+  <meta name="twitter:image" content="https://bf-lab.netlify.app/assets/brand/icon-512.png" />
+  <link rel="stylesheet" href="/concepts.css" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LearningResource",
+      "@id": "https://bf-lab.netlify.app/prompt-caching#card",
+      "name": "Prompt Caching",
+      "description": "Prompt caching reuses an unchanged prefix of a prompt so a later request can skip processing that part again.",
+      "url": "https://bf-lab.netlify.app/prompt-caching",
+      "learningResourceType": "Concept card",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "provider": {
+        "@type": "Organization",
+        "name": "BuildSpark AI",
+        "url": "https://bf-lab.netlify.app/"
+      },
+      "dateModified": "2026-10-17"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://bf-lab.netlify.app/prompt-caching#faq",
+      "url": "https://bf-lab.netlify.app/prompt-caching",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is prompt caching?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Prompt caching reuses an unchanged prefix of a prompt so a later request can skip processing that part again."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What has to stay the same for a prefix to be reused?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The prefix itself. A change to that prefix, the model, or the tool list can mean it is not reused."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does a cache hit answer the new question?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The new part of the request is still processed. Caching can change the cost of the reused prefix."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body class="concepts" data-concept="prompt-caching">
+  <a class="skip" href="#content">Skip to content</a>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/"><img src="/assets/brand/logo.svg" alt="BuildSpark AI" width="519" height="100" /></a>
+      <nav class="nav" aria-label="Concepts">
+        <a href="/map">Map</a>
+        <a href="/ask">Ask</a>
+        <a href="/apply">Apply</a>
+        <a href="/pricing">Pricing</a>
+      </nav>
+    </header>
+
+    <main id="content" tabindex="-1">
+    <p class="crumb"><a href="/map">Map</a> · <a href="/tracks/foundations">Foundations</a> · <span data-crumb-index>04</span> · Prompt Caching</p>
+
+    <div data-tabs>
+      <div class="card-top">
+        <div>
+          <p class="kicker">Concept card · Foundations</p>
+          <h1>Prompt Caching</h1>
+          <p class="definition" data-definition>Prompt caching reuses an unchanged prefix of a prompt so a later request can skip processing that part again.</p>
+          <p class="lede" data-summary>Reusing an unchanged prefix so a repeated prompt can cost less than sending it from scratch.</p>
+        </div>
+        <div class="card-meta">
+          <p>
+            <span class="pill accent" data-last-checked>Last checked 2026-10-17</span>
+            <span class="pill" data-access>Free card</span>
+            <span class="pill">4 min</span>
+          </p>
+          <div class="tabs" role="tablist" aria-label="Depth">
+            <button type="button" role="tab" data-tab="glance" aria-selected="true" aria-controls="panel-glance">Glance</button>
+            <button type="button" role="tab" data-tab="practice" aria-selected="false" tabindex="-1" aria-controls="panel-practice">Practice</button>
+            <button type="button" role="tab" data-tab="deep" aria-selected="false" tabindex="-1" aria-controls="panel-deep">Deep</button>
+          </div>
+          <p class="ask-about"><a href="/ask?q=prompt+caching">Ask about Prompt Caching</a></p>
+        </div>
+      </div>
+
+      <div id="panel-glance" role="tabpanel" data-panel="glance">
+        <div class="changed">
+          <strong>What changed</strong>
+          <p>Oct 17: First card. The picture compares an unchanged prefix with a prefix that changed. Sources are the OpenAI, Anthropic, and Gemini caching guides.</p>
+        </div>
+
+        <div class="card-grid">
+          <div class="card-main">
+            <section class="part">
+              <h2><span class="num">1</span> What it is</h2>
+              <p>A prompt often starts with the same instructions or the same document, then ends with a new question. Prompt caching keeps that shared beginning, the prefix, so a later request can reuse it instead of processing those tokens from scratch.</p>
+              <div class="widget panel" data-widget="cache" data-state="same">
+                <p class="fine">A picture of one prompt. The prefix is the part that stays the same. The question is the part that changes. A real cache also depends on the model and on the provider's size and time rules.</p>
+                <div class="toggle" role="group" aria-label="Prefix">
+                  <button type="button" class="ghost" data-cache="same" aria-pressed="true">Same prefix</button>
+                  <button type="button" class="ghost" data-cache="changed" aria-pressed="false">Prefix changed</button>
+                </div>
+                <div class="cache-stack">
+                  <div class="cache-row">
+                    <span class="cache-label">Prefix</span>
+                    <span class="cache-block prefix" data-cache-prefix>Instructions and the document</span>
+                    <span class="cache-tag prefix-tag" data-cache-prefix-tag>Can be reused</span>
+                  </div>
+                  <div class="cache-row">
+                    <span class="cache-label">This turn</span>
+                    <span class="cache-block turn">The new question</span>
+                    <span class="cache-tag">Sent fresh</span>
+                  </div>
+                </div>
+                <p class="fine" data-cache-note aria-live="polite">The prefix matches the previous request, so a provider can reuse it. The new question is still sent fresh.</p>
+              </div>
+            </section>
+
+            <section class="part">
+              <h2><span class="num">2</span> Why it matters</h2>
+              <div class="why-grid">
+                <article>
+                  <h3>Cost</h3>
+                  <p>A reused prefix can be billed at a lower input rate than processing that text again. A cache hit is not guaranteed, and each provider sets its own size rule and time limit.</p>
+                </article>
+                <article>
+                  <h3>Quality</h3>
+                  <p>The new question is still processed. Caching does not answer it for you.</p>
+                </article>
+                <article>
+                  <h3>Risk</h3>
+                  <p>The prefix is still sent to the provider. A change to the prefix, the model, or the tool list can mean the earlier prefix is not reused.</p>
+                </article>
+              </div>
+            </section>
+
+            <div class="apply-grid">
+              <section class="apply-card">
+                <h2><span class="num">3</span> How to apply · try today</h2>
+                <p>Take one prompt you send often. Put the stable instructions and the stable document first, and the part that changes last. Send it twice and look for a cached-input count in the usage report.</p>
+              </section>
+              <section class="mistake">
+                <h2>Common mistake</h2>
+                <p>Editing the start of the prompt, or switching the model or the tools, and expecting the previous prefix to be reused.</p>
+              </section>
+            </div>
+
+            <section class="check" data-quiz data-note-right="That's the one. The unchanged prefix can be reused. The new question is not part of that reuse." data-note-wrong="Not this one. Only the unchanged prefix can be reused.">
+              <h2>Self-check</h2>
+              <p class="check-q">The instructions and the document stay the same. Only the question changes. What can be reused?</p>
+              <div class="check-options" role="group" aria-label="Answer">
+                <button type="button" class="check-opt" data-choice="a" aria-pressed="false">A · The whole request, including the new question</button>
+                <button type="button" class="check-opt" data-choice="b" data-correct="true" aria-pressed="false">B · The unchanged prefix</button>
+                <button type="button" class="check-opt" data-choice="c" aria-pressed="false">C · Nothing, because any change clears the request</button>
+              </div>
+              <p class="fine" data-quiz-note></p>
+            </section>
+          </div>
+
+          <aside class="card-side">
+            <section class="side-card">
+              <h2>Prerequisites</h2>
+              <div data-prereqs>
+                <ul class="side-links">
+                  <li><a href="/tokens">Tokens</a></li>
+                  <li><a href="/context-window">Context Window</a></li>
+                </ul>
+              </div>
+            </section>
+            <section class="side-card">
+              <h2>Related concepts</h2>
+              <div data-related>
+                <p class="fine">Nothing lists this card as a prerequisite yet.</p>
+              </div>
+            </section>
+            <section class="side-card">
+              <h2>Sources</h2>
+              <ul class="side-links sources">
+                <li><a href="https://developers.openai.com/api/docs/guides/prompt-caching">OpenAI, Prompt caching</a></li>
+                <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching">Anthropic, Prompt caching</a></li>
+                <li><a href="https://ai.google.dev/gemini-api/docs/caching">Gemini API, Context caching</a></li>
+              </ul>
+              <p class="fine">Vendor API documentation.</p>
+            </section>
+            <section class="side-card side-apply">
+              <h2>Apply pack</h2>
+              <p>Not open yet. Practice for this track will be the Foundations pack.</p>
+              <a href="/packs/foundations">Foundations pack</a>
+            </section>
+          </aside>
+        </div>
+      </div>
+
+      <div id="panel-practice" role="tabpanel" data-panel="practice" hidden>
+        <p class="soon-note">Coming soon. One prompt you already send, with the stable part moved to the front.</p>
+      </div>
+
+      <div id="panel-deep" role="tabpanel" data-panel="deep" hidden>
+        <p class="soon-note">Coming soon. How OpenAI, Anthropic, and Gemini each decide that a prefix matches.</p>
+      </div>
+    </div>
+
+    <section class="faq" aria-labelledby="prompt-caching-faq">
+      <h2 id="prompt-caching-faq">Questions</h2>
+      <dl>
+        <dt>What is prompt caching?</dt>
+        <dd>Prompt caching reuses an unchanged prefix of a prompt so a later request can skip processing that part again.</dd>
+        <dt>What has to stay the same for a prefix to be reused?</dt>
+        <dd>The prefix itself. A change to that prefix, the model, or the tool list can mean it is not reused.</dd>
+        <dt>Does a cache hit answer the new question?</dt>
+        <dd>No. The new part of the request is still processed. Caching can change the cost of the reused prefix.</dd>
+      </dl>
+    </section>
+    </main>
+
+    <footer class="foot">
+      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>
+    </footer>
+  </div>
+  <script src="/site.js"></script>
+  <script src="/concepts-data.js"></script>
+  <script src="/concepts.js"></script>
+</body>
+</html>
