@@ -5,6 +5,7 @@
   var CAP = 100;
   var CHIP_LIMIT = 400;
   var PROGRESS_KEY = "bf-concepts-opened";
+  var TRIED_KEY = "bf-concepts-tried";
   var SVG_NS = "http://www.w3.org/2000/svg";
 
   function onReady(fn) {
@@ -213,19 +214,53 @@
     return score;
   }
 
+  function escapeReg(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  function textHits(words, text, exact, partial) {
+    if (!text) return 0;
+    var hay = String(text).toLowerCase();
+    var score = 0;
+    words.forEach(function (word) {
+      var re = new RegExp("(^|[^a-z0-9])" + escapeReg(word) + "([^a-z0-9]|$)");
+      if (re.test(hay)) score += exact;
+      else if (hay.indexOf(word) !== -1) score += partial;
+    });
+    return score;
+  }
+
+  function cardText(id) {
+    if (typeof BF_CARD_TEXT === "undefined" || !BF_CARD_TEXT) return "";
+    return BF_CARD_TEXT[id] || "";
+  }
+
+  function scoreConcept(concept, words) {
+    var score = textHits(words, concept.title, 8, 5);
+    score += textHits(words, concept.summary, 5, 2);
+    score += hits(words, concept.keys || []);
+    if (concept.status === "live") score += textHits(words, cardText(concept.id), 3, 1);
+    return score;
+  }
+
   function matchCards(query) {
     var words = wordsOf(query);
     if (!words.length) return { cards: [], soon: [], empty: true };
-    var cards = askCards().map(function (card) {
-      var score = hits(words, card.keys);
-      var title = card.title.toLowerCase();
-      words.forEach(function (word) {
-        if (title.indexOf(word) !== -1) score += 5;
-      });
-      return { card: card, score: score };
-    }).filter(function (row) { return row.score > 0; });
-    cards.sort(function (a, b) { return b.score - a.score; });
-    var soon = askSoon().filter(function (item) { return hits(words, item.keys) > 0; });
+    var cards = [];
+    var soon = [];
+    registry().forEach(function (concept, index) {
+      var score = scoreConcept(concept, words);
+      if (score <= 0) return;
+      var row = { concept: concept, score: score, index: index };
+      if (concept.status === "live") cards.push(row);
+      else soon.push(row);
+    });
+    function byScore(a, b) {
+      if (b.score !== a.score) return b.score - a.score;
+      return a.index - b.index;
+    }
+    cards.sort(byScore);
+    soon.sort(byScore);
     return { cards: cards, soon: soon, empty: false };
   }
 
@@ -246,18 +281,24 @@
         return;
       }
       found.cards.forEach(function (row) {
+        var concept = row.concept;
         var link = el("a", "result");
-        link.href = row.card.href;
-        link.appendChild(el("em", null, row.card.track));
-        link.appendChild(el("strong", null, row.card.title));
-        var blurb = el("p", "fine", row.card.blurb);
+        link.href = hrefOf(concept);
+        link.appendChild(el("em", null, concept.track + " · Live"));
+        link.appendChild(el("strong", null, concept.title));
+        var blurb = el("p", "fine", concept.summary);
         blurb.style.margin = "0.35rem 0 0";
         link.appendChild(blurb);
         results.appendChild(link);
       });
-      found.soon.forEach(function (item) {
-        var note = el("p", "soon-note");
-        note.textContent = item.title + " is on the " + item.track + " track. There is no card yet.";
+      found.soon.forEach(function (row) {
+        var concept = row.concept;
+        var note = el("div", "result is-soon");
+        note.appendChild(el("em", null, concept.track + " · Coming soon"));
+        note.appendChild(el("strong", null, concept.title));
+        var blurb = el("p", "fine", concept.summary);
+        blurb.style.margin = "0.35rem 0 0";
+        note.appendChild(blurb);
         results.appendChild(note);
       });
     }
@@ -389,6 +430,53 @@
     } catch (err) {}
   }
 
+  function emptyTried() {
+    var data = {};
+    liveConcepts().forEach(function (concept) { data[concept.id] = false; });
+    return data;
+  }
+
+  function readTried() {
+    var data = emptyTried();
+    try {
+      var raw = localStorage.getItem(TRIED_KEY);
+      if (!raw) return data;
+      var parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return data;
+      liveConcepts().forEach(function (concept) {
+        data[concept.id] = parsed[concept.id] === true;
+      });
+    } catch (err) {
+      return emptyTried();
+    }
+    return data;
+  }
+
+  function writeTried(data) {
+    var out = emptyTried();
+    liveConcepts().forEach(function (concept) {
+      out[concept.id] = data[concept.id] === true;
+    });
+    try {
+      localStorage.setItem(TRIED_KEY, JSON.stringify(out));
+    } catch (err) {}
+    return out;
+  }
+
+  function clearTried() {
+    try {
+      localStorage.removeItem(TRIED_KEY);
+    } catch (err) {}
+  }
+
+  function anyTried(data) {
+    return liveConcepts().some(function (concept) { return data[concept.id]; });
+  }
+
+  function triedCount(data) {
+    return liveConcepts().filter(function (concept) { return data[concept.id]; }).length;
+  }
+
   function anyOpened(data) {
     return liveConcepts().some(function (concept) { return data[concept.id]; });
   }
@@ -412,7 +500,8 @@
     return "locked";
   }
 
-  function stateLabel(concept, kind) {
+  function stateLabel(concept, kind, tried) {
+    if (tried) return "Tried";
     if (kind === "visited") return "Visited";
     if (kind === "next") return "Next";
     if (concept.status === "live") return "Not opened";
@@ -629,6 +718,22 @@
     });
   }
 
+  function conceptNode(concept) {
+    var node;
+    if (concept.status === "live") {
+      node = el("a", "cnode is-live");
+      node.href = hrefOf(concept);
+    } else {
+      node = el("div", "cnode is-soon");
+      node.title = "Coming soon. This is not a link.";
+    }
+    node.setAttribute("data-node", concept.id);
+    node.appendChild(el("strong", null, concept.title));
+    node.appendChild(el("span", "cnode-summary", concept.summary || ""));
+    node.appendChild(el("span", "cnode-state", ""));
+    return node;
+  }
+
   function renderCurriculum(board) {
     board.replaceChildren();
     var svg = document.createElementNS(SVG_NS, "svg");
@@ -640,49 +745,72 @@
     var cols = el("div", "cmap-cols");
     trackNames().forEach(function (track, index) {
       var col = el("section", "cmap-col");
+      col.setAttribute("data-track", track);
       var num = String(index + 1);
       if (num.length < 2) num = "0" + num;
       col.appendChild(el("h2", "cmap-label", num + " · " + track));
-      inTrack(track).forEach(function (concept) {
-        var node;
-        if (concept.status === "live") {
-          node = el("a", "cnode");
-          node.href = hrefOf(concept);
-        } else {
-          node = el("div", "cnode is-soon");
-          node.title = "Coming soon. This is not a link.";
-        }
-        node.setAttribute("data-node", concept.id);
-        node.appendChild(el("strong", null, concept.title));
-        node.appendChild(el("span", "cnode-state", ""));
-        col.appendChild(node);
-      });
+      var progress = el("p", "cmap-progress", "");
+      progress.setAttribute("data-track-progress", track);
+      col.appendChild(progress);
+      var list = inTrack(track);
+      var live = list.filter(function (concept) { return concept.status === "live"; });
+      var soon = list.filter(function (concept) { return concept.status !== "live"; });
+      function addGroup(name, key, items) {
+        if (!items.length) return;
+        var heading = el("p", "cmap-group", name);
+        heading.setAttribute("data-group", key);
+        col.appendChild(heading);
+        items.forEach(function (concept) { col.appendChild(conceptNode(concept)); });
+      }
+      addGroup("Live", "live", live);
+      addGroup("Coming soon", "soon", soon);
       cols.appendChild(col);
     });
     board.appendChild(cols);
   }
 
-  function applyCurriculumState(board, data) {
+  function applyCurriculumState(board, data, tried) {
     board.querySelectorAll("[data-node]").forEach(function (node) {
       var concept = byId(node.getAttribute("data-node"));
       if (!concept) return;
       var kind = classify(concept, data);
+      var didTry = !!(tried && tried[concept.id]);
+      node.classList.toggle("is-live", concept.status === "live");
       node.classList.toggle("is-opened", kind === "visited");
+      node.classList.toggle("is-tried", didTry);
       node.classList.toggle("is-next", kind === "next");
       node.classList.toggle("is-locked", kind === "locked");
+      node.classList.toggle("is-soon", concept.status !== "live");
       var state = node.querySelector(".cnode-state");
-      if (state) state.textContent = stateLabel(concept, kind);
+      if (state) state.textContent = stateLabel(concept, kind, didTry);
     });
+  }
+
+  function trackProgressText(track, data, tried) {
+    var list = inTrack(track);
+    var opened = list.filter(function (concept) { return data[concept.id] === true; }).length;
+    var liveN = list.filter(function (concept) { return concept.status === "live"; }).length;
+    var triedN = list.filter(function (concept) { return tried[concept.id] === true; }).length;
+    return opened + " of " + list.length + " opened · " + liveN + " live · " + triedN + " tried";
   }
 
   function renderRelList(list) {
     list.replaceChildren();
     registry().forEach(function (concept) {
-      (concept.prerequisites || []).forEach(function (pid) {
-        var pre = byId(pid);
-        if (!pre) return;
-        list.appendChild(el("li", null, concept.title + " requires " + pre.title + "."));
+      var pres = (concept.prerequisites || []).map(byId).filter(Boolean);
+      if (!pres.length) return;
+      var item = el("li");
+      item.appendChild(el("strong", null, concept.title));
+      item.appendChild(document.createTextNode(" requires "));
+      pres.forEach(function (pre, index) {
+        if (index) item.appendChild(document.createTextNode(index === pres.length - 1 ? " and " : ", "));
+        var name = el("span", "rel-pre", pre.title);
+        item.appendChild(name);
       });
+      item.appendChild(document.createTextNode("."));
+      var note = concept.status === "live" ? "Live" : "Coming soon";
+      item.appendChild(el("span", "rel-status", note));
+      list.appendChild(item);
     });
   }
 
@@ -707,9 +835,128 @@
     var hot = null;
     var frame = 0;
     var ready = false;
+    var filterMode = "all";
+    var filterTrack = "";
+
+    function siteTracks() {
+      return (typeof BF_SITE !== "undefined" && BF_SITE && BF_SITE.tracks) || [];
+    }
+
+    function trackBySlug(slug) {
+      if (!slug) return "";
+      var tracks = siteTracks();
+      for (var i = 0; i < tracks.length; i++) {
+        if (tracks[i].slug === slug || tracks[i].name === slug) return tracks[i].name;
+      }
+      return "";
+    }
+
+    function slugFor(name) {
+      var tracks = siteTracks();
+      for (var i = 0; i < tracks.length; i++) {
+        if (tracks[i].name === name) return tracks[i].slug;
+      }
+      return "";
+    }
+
+    function readFilterFromUrl() {
+      var params = new URLSearchParams(window.location.search);
+      var show = params.get("show");
+      filterMode = show === "live" || show === "next" ? show : "all";
+      filterTrack = trackBySlug(params.get("track") || "");
+    }
+
+    function writeFilterUrl() {
+      var url = new URL(window.location.href);
+      if (filterMode === "all") url.searchParams.delete("show");
+      else url.searchParams.set("show", filterMode);
+      if (!filterTrack) url.searchParams.delete("track");
+      else url.searchParams.set("track", slugFor(filterTrack) || filterTrack);
+      var next = url.pathname + url.search;
+      if (next !== window.location.pathname + window.location.search) {
+        window.history.replaceState(null, "", next);
+      }
+    }
+
+    function syncFilterButtons() {
+      var bar = root.querySelector("[data-map-filters]");
+      if (!bar) return;
+      bar.querySelectorAll("[data-show]").forEach(function (btn) {
+        btn.setAttribute("aria-pressed", btn.getAttribute("data-show") === filterMode ? "true" : "false");
+      });
+      bar.querySelectorAll("[data-track-filter]").forEach(function (btn) {
+        btn.setAttribute("aria-pressed", btn.getAttribute("data-track-filter") === filterTrack ? "true" : "false");
+      });
+    }
+
+    function applyFilter(data) {
+      board.classList.toggle("is-one-track", !!filterTrack);
+      board.querySelectorAll("[data-node]").forEach(function (node) {
+        var concept = byId(node.getAttribute("data-node"));
+        if (!concept) return;
+        var kind = classify(concept, data);
+        var show = true;
+        if (filterTrack && concept.track !== filterTrack) show = false;
+        if (filterMode === "live" && concept.status !== "live") show = false;
+        if (filterMode === "next" && kind !== "next") show = false;
+        node.hidden = !show;
+      });
+      board.querySelectorAll(".cmap-col").forEach(function (col) {
+        var track = col.getAttribute("data-track");
+        var any = false;
+        col.querySelectorAll("[data-node]").forEach(function (node) {
+          if (!node.hidden) any = true;
+        });
+        col.hidden = (!!filterTrack && track !== filterTrack) || !any;
+      });
+      board.querySelectorAll("[data-group]").forEach(function (heading) {
+        var any = false;
+        var n = heading.nextElementSibling;
+        while (n && !n.hasAttribute("data-group")) {
+          if (n.hasAttribute("data-node") && !n.hidden) any = true;
+          n = n.nextElementSibling;
+        }
+        heading.hidden = !!(heading.parentNode && heading.parentNode.hidden) || !any;
+      });
+      var empty = root.querySelector("[data-map-empty]");
+      if (empty) empty.hidden = !!board.querySelector("[data-node]:not([hidden])");
+      syncFilterButtons();
+    }
+
+    function buildFilters() {
+      var bar = root.querySelector("[data-map-filters]");
+      if (!bar) return;
+      bar.replaceChildren();
+      function add(label, attr, value) {
+        var btn = el("button", "ghost tiny", label);
+        btn.type = "button";
+        btn.setAttribute(attr, value);
+        btn.setAttribute("aria-pressed", "false");
+        bar.appendChild(btn);
+      }
+      add("All", "data-show", "all");
+      add("Live only", "data-show", "live");
+      add("My next", "data-show", "next");
+      trackNames().forEach(function (track) { add(track, "data-track-filter", track); });
+      bar.addEventListener("click", function (event) {
+        var target = event.target;
+        if (target && target.nodeType !== 1) target = target.parentElement;
+        var btn = target && target.closest ? target.closest("button") : null;
+        if (!btn || !bar.contains(btn)) return;
+        if (btn.hasAttribute("data-show")) filterMode = btn.getAttribute("data-show");
+        else if (btn.hasAttribute("data-track-filter")) {
+          var name = btn.getAttribute("data-track-filter");
+          filterTrack = filterTrack === name ? "" : name;
+        }
+        writeFilterUrl();
+        paint();
+        schedule();
+      });
+    }
 
     function paint(prefix) {
       var data = readProgress();
+      var tried = readTried();
       var opened = openedCount(data);
       var liveN = liveConcepts().length;
       var nextN = 0;
@@ -720,11 +967,15 @@
         else if (kind === "locked") lockedN++;
       });
       if (count) {
-        var text = "Visited " + opened + " of " + liveN + " · Next " + nextN + " · Locked " + lockedN;
+        var text = "Visited " + opened + " of " + liveN + " · Tried " + triedCount(tried) + " of " + liveN + " · Next " + nextN + " · Locked " + lockedN;
         count.textContent = prefix ? prefix + " " + text : text;
       }
-      if (reset) reset.disabled = !anyOpened(data);
-      applyCurriculumState(board, data);
+      if (reset) reset.disabled = !anyOpened(data) && !anyTried(tried);
+      applyCurriculumState(board, data, tried);
+      board.querySelectorAll("[data-track-progress]").forEach(function (node) {
+        node.textContent = trackProgressText(node.getAttribute("data-track-progress"), data, tried);
+      });
+      applyFilter(data);
       return data;
     }
 
@@ -753,7 +1004,9 @@
       var origin = board.getBoundingClientRect();
       var boxes = {};
       board.querySelectorAll("[data-node]").forEach(function (node) {
+        if (node.hidden) return;
         var rect = node.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
         boxes[node.getAttribute("data-node")] = {
           x: rect.left - origin.left,
           y: rect.top - origin.top,
@@ -767,7 +1020,7 @@
       svg.setAttribute("height", String(height));
       svg.replaceChildren();
       var defs = document.createElementNS(SVG_NS, "defs");
-      marker(defs, "arrow", "#8a7350");
+      marker(defs, "arrow", "#d7b07a");
       marker(defs, "arrow-lit", "#ff8a45");
       svg.appendChild(defs);
 
@@ -829,6 +1082,11 @@
               " " + mid.toFixed(1) + " " + p2.y.toFixed(1) +
               " " + p2.x.toFixed(1) + " " + p2.y.toFixed(1);
           }
+          var preTitle = byId(pid) ? byId(pid).title : pid;
+          var halo = document.createElementNS(SVG_NS, "path");
+          halo.setAttribute("class", "cedge-halo");
+          halo.setAttribute("d", d);
+          svg.appendChild(halo);
           var path = document.createElementNS(SVG_NS, "path");
           var classes = "cedge" + (lit ? " is-lit" : "");
           if (hot && (hot === pid || hot === concept.id)) classes += " is-hot";
@@ -837,6 +1095,9 @@
           path.setAttribute("data-b", concept.id);
           path.setAttribute("d", d);
           path.setAttribute("marker-end", lit ? "url(#arrow-lit)" : "url(#arrow)");
+          var tip = document.createElementNS(SVG_NS, "title");
+          tip.textContent = concept.title + " requires " + preTitle;
+          path.appendChild(tip);
           svg.appendChild(path);
         });
       });
@@ -851,8 +1112,25 @@
       });
     }
 
+    function describe(id) {
+      var readout = root.querySelector("[data-edge-readout]");
+      if (!readout) return;
+      if (!id) {
+        readout.textContent = "Lines run from a prerequisite to the concept that requires it.";
+        return;
+      }
+      var concept = byId(id);
+      if (!concept) return;
+      var pres = (concept.prerequisites || []).map(byId).filter(Boolean);
+      if (!pres.length) readout.textContent = concept.title + " has no prerequisites.";
+      else {
+        readout.textContent = concept.title + " requires " + pres.map(function (pre) { return pre.title; }).join(" and ") + ".";
+      }
+    }
+
     function highlight(id) {
       hot = id;
+      describe(id);
       var svg = board.querySelector("[data-map-edges]");
       if (!svg) return;
       svg.querySelectorAll("path").forEach(function (path) {
@@ -872,13 +1150,14 @@
     if (reset) {
       reset.addEventListener("click", function () {
         clearProgress();
+        clearTried();
         paint("Progress reset.");
         schedule();
       });
     }
 
     window.addEventListener("storage", function (event) {
-      if (event.key !== PROGRESS_KEY) return;
+      if (event.key !== PROGRESS_KEY && event.key !== TRIED_KEY) return;
       paint();
       schedule();
     });
@@ -900,6 +1179,8 @@
       });
     }
 
+    readFilterFromUrl();
+    buildFilters();
     paint();
     schedule();
     window.addEventListener("load", function () { draw(); });
@@ -911,11 +1192,143 @@
     });
   }
 
+  var INTENTS = [
+    { id: "cost", label: "Cut cost", prefer: ["tokens", "prompt-caching", "cost-forecasting"], track: "Foundations" },
+    { id: "quality", label: "Improve answer quality", prefer: ["hallucination", "prompting", "evaluation-basics"], track: "Foundations" },
+    { id: "docs", label: "Ground answers in my docs", prefer: ["rag", "citation-grounding", "chunking", "embeddings-retrieval"], track: "Retrieval & Grounding" },
+    { id: "agent", label: "Build an agent", prefer: ["tool-calling", "agent-loop", "agent-evaluation"], track: "Agents" },
+    { id: "ship", label: "Ship to production", prefer: ["production-evaluation", "observability", "fallbacks"], track: "Ship & Maintain" }
+  ];
+
+  function trackSlug(name) {
+    var tracks = (typeof BF_SITE !== "undefined" && BF_SITE && BF_SITE.tracks) || [];
+    for (var i = 0; i < tracks.length; i++) {
+      if (tracks[i].name === name) return tracks[i].slug;
+    }
+    return "";
+  }
+
+  function routeIntent(intent) {
+    var i;
+    for (i = 0; i < intent.prefer.length; i++) {
+      var concept = byId(intent.prefer[i]);
+      if (concept && concept.status === "live") return { href: hrefOf(concept), label: concept.title };
+    }
+    var slug = trackSlug(intent.track);
+    return { href: slug ? "/tracks/" + slug : "/map", label: intent.track };
+  }
+
+  function initIntent(root) {
+    INTENTS.forEach(function (intent) {
+      var link = root.querySelector('[data-intent="' + intent.id + '"]');
+      if (!link) return;
+      var dest = routeIntent(intent);
+      link.href = dest.href;
+      var slot = link.querySelector("[data-intent-dest]");
+      if (slot) slot.textContent = dest.label;
+    });
+  }
+
+  function initStart() {
+    var concept = byId("tokens");
+    if (!concept) return;
+    var link = document.querySelector("[data-start-link]");
+    var reason = document.querySelector("[data-start-reason]");
+    if (link && concept.status === "live") link.href = hrefOf(concept);
+    if (reason && concept.summary) reason.textContent = concept.summary;
+  }
+
+  function updateConcepts(entry) {
+    return (entry.concepts || []).map(byId).filter(Boolean);
+  }
+
+  function renderUpdateList(list) {
+    if (typeof BF_UPDATES === "undefined" || !BF_UPDATES || !BF_UPDATES.length) return;
+    list.replaceChildren();
+    BF_UPDATES.forEach(function (entry) {
+      var item = el("li");
+      var time = el("time", null, entry.date);
+      time.setAttribute("datetime", entry.date);
+      item.appendChild(time);
+      var body = el("div");
+      body.appendChild(el("strong", null, entry.title));
+      body.appendChild(el("p", "fine", entry.line));
+      var concepts = updateConcepts(entry);
+      if (concepts.length) {
+        var row = el("p", "fine update-concepts");
+        concepts.forEach(function (concept, index) {
+          if (index) row.appendChild(document.createTextNode(", "));
+          if (concept.status === "live") {
+            var link = el("a", null, concept.title);
+            link.href = hrefOf(concept);
+            row.appendChild(link);
+          } else {
+            row.appendChild(document.createTextNode(concept.title));
+          }
+        });
+        body.appendChild(row);
+      }
+      item.appendChild(body);
+      list.appendChild(item);
+    });
+  }
+
+  function initUpdates(root) {
+    var list = root.querySelector("[data-updates]");
+    if (list) renderUpdateList(list);
+  }
+
+  function elevateFreshness() {
+    var checked = document.querySelector("[data-last-checked]");
+    if (checked) checked.classList.add("is-prominent");
+    var changed = document.querySelector(".changed");
+    var top = document.querySelector(".card-top");
+    if (!changed || !top) return;
+    top.insertAdjacentElement("afterend", changed);
+    changed.classList.add("is-prominent");
+  }
+
+  function initTried() {
+    var id = document.body.getAttribute("data-concept");
+    if (!id) return;
+    var concept = byId(id);
+    if (!concept || concept.status !== "live") return;
+    var apply = document.querySelector(".apply-card");
+    if (!apply) return;
+    var button = apply.querySelector("[data-mark-tried]");
+    if (!button) {
+      button = el("button", "ghost try-toggle");
+      button.type = "button";
+      button.setAttribute("data-mark-tried", "");
+      apply.appendChild(button);
+    }
+    function paint() {
+      var on = readTried()[id] === true;
+      button.setAttribute("aria-pressed", on ? "true" : "false");
+      button.textContent = on ? "Tried" : "Mark as tried";
+    }
+    button.addEventListener("click", function () {
+      var data = readTried();
+      data[id] = data[id] !== true;
+      writeTried(data);
+      paint();
+    });
+    window.addEventListener("storage", function (event) {
+      if (event.key === TRIED_KEY) paint();
+    });
+    paint();
+  }
+
   onReady(function () {
     markVisit();
     initCard();
+    elevateFreshness();
+    initTried();
+    initStart();
     renderLiveCards(document);
     renderTrackBoard(document);
+    document.querySelectorAll("[data-widget='updates']").forEach(initUpdates);
+    document.querySelectorAll("[data-widget='intent']").forEach(initIntent);
     document.querySelectorAll("[data-tabs]").forEach(initTabs);
     document.querySelectorAll("[data-quiz]").forEach(initQuiz);
     document.querySelectorAll("[data-widget='tokens']").forEach(initTokens);

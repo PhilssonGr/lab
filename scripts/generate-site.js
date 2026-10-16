@@ -19,9 +19,11 @@ function load(file) {
 
 var site = load("site.js").BF_SITE;
 var concepts = load("concepts-data.js").BF_CONCEPTS;
+var updates = load("updates-data.js").BF_UPDATES;
 
 if (!site || !site.origin || !site.tracks) throw new Error("site.js did not set BF_SITE");
 if (!concepts || concepts.length !== 48) throw new Error("Expected 48 concepts, got " + (concepts ? concepts.length : 0));
+validateUpdates(updates, concepts);
 
 var ACCESS = { free: "Free card", pack: "Pack", "all-access": "All-access" };
 concepts.forEach(function (concept) {
@@ -91,7 +93,7 @@ function nav(current) {
 function footer() {
   return [
     '    <footer class="foot">',
-    '      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>',
+    '      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/changelog">Changelog</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>',
     "    </footer>"
   ].join("\n");
 }
@@ -584,12 +586,15 @@ llms.push("## Site");
 llms.push("");
 llms.push("- [Home](" + abs("/") + "): Practical map and cards for builders who already use AI.");
 llms.push("- [Map](" + abs("/map") + "): The curriculum and its prerequisite links.");
-llms.push("- [Ask](" + abs("/ask") + "): Keyword match against the concept registry. No model call.");
+llms.push("- [Ask](" + abs("/ask") + "): Keyword match against concept titles, summaries, and live card text. No model call.");
 llms.push("- [Pricing](" + abs("/pricing") + "): Free cards, €39 track packs, all-access, and teams. No checkout.");
 llms.push("- [About](" + abs("/about") + "): What BuildSpark AI is, who it is for, and how cards are sourced.");
+llms.push("- [Changelog](" + abs("/changelog") + "): Updates that have shipped on the site.");
 llms.push("");
 fs.writeFileSync(path.join(root, "llms.txt"), llms.join("\n"));
 urls.push({ loc: abs("/llms.txt") });
+writeChangelog(urls);
+writeCardText(live);
 
 var robots = [];
 robots.push("# " + site.name);
@@ -654,4 +659,102 @@ site.tracks.forEach(function (track) {
   });
 });
 
+if (titles["Changelog · BuildSpark AI"]) throw new Error("Duplicate title Changelog · BuildSpark AI");
+titles["Changelog · BuildSpark AI"] = true;
+
 console.log("Wrote " + urls.length + " sitemap URLs, " + live.length + " markdown cards, " + site.tracks.length + " tracks.");
+
+function validateUpdates(list, registry) {
+  if (!Array.isArray(list) || !list.length) throw new Error("updates-data.js did not set BF_UPDATES");
+  var known = Object.create(null);
+  registry.forEach(function (concept) { known[concept.id] = true; });
+  list.forEach(function (entry, index) {
+    var label = "update " + (index + 1);
+    if (!entry || !/^\d{4}-\d{2}-\d{2}$/.test(entry.date || "")) throw new Error(label + " has no YYYY-MM-DD date");
+    if (!entry.title || !String(entry.title).trim()) throw new Error(label + " has no title");
+    if (!entry.line || !String(entry.line).trim()) throw new Error(label + " has no line");
+    if (!Array.isArray(entry.concepts)) throw new Error(label + " concepts is not a list");
+    entry.concepts.forEach(function (id) {
+      if (!known[id]) throw new Error(label + " cites unknown concept " + id);
+    });
+  });
+}
+
+function conceptById(id) {
+  for (var i = 0; i < concepts.length; i++) {
+    if (concepts[i].id === id) return concepts[i];
+  }
+  return null;
+}
+
+function changelogBody() {
+  var items = updates.map(function (entry) {
+    var names = entry.concepts.map(function (id) {
+      var concept = conceptById(id);
+      if (concept.status === "live") return '<a href="/' + concept.id + '">' + esc(concept.title) + "</a>";
+      return esc(concept.title);
+    });
+    var lines = [
+      "      <li>",
+      '        <p class="kicker">' + esc(entry.date) + "</p>",
+      '        <h2 class="log-title">' + esc(entry.title) + "</h2>",
+      "        <p>" + esc(entry.line) + "</p>"
+    ];
+    if (names.length) lines.push('        <p class="fine">' + names.join(", ") + "</p>");
+    lines.push("      </li>");
+    return lines.join("\n");
+  }).join("\n");
+  return [
+    '      <p class="kicker">Changelog</p>',
+    "      <h1>What has shipped</h1>",
+    '      <p class="lede">Updates to the live site. Each line is a change that already shipped.</p>',
+    '      <ol class="changelog">',
+    items,
+    "      </ol>"
+  ].join("\n");
+}
+
+function writeChangelog(urls) {
+  var page = {
+    path: "/changelog",
+    title: "Changelog · BuildSpark AI",
+    description: "Updates that have shipped on BuildSpark AI: the concepts site at the root, card template v2, and the Tokens and Context Window cost notes."
+  };
+  var html = pageShell(page, changelogBody());
+  if (!html.includes(LOGO)) throw new Error("changelog.html is missing the logo");
+  if (!html.includes('href="/assets/brand/favicon.svg"')) throw new Error("changelog.html is missing favicons");
+  fs.writeFileSync(path.join(root, "changelog.html"), html);
+  var lastmod = updates.map(function (entry) { return entry.date; }).sort().pop();
+  urls.push({ loc: abs(page.path), lastmod: lastmod });
+}
+
+function cardSearchText(html) {
+  var mainMatch = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i);
+  if (!mainMatch) return "";
+  var main = mainMatch[1];
+  main = main.replace(/<p class="crumb">[\s\S]*?<\/p>/i, " ");
+  main = main.replace(/<aside\b[\s\S]*?<\/aside>/gi, " ");
+  main = main.replace(/<div class="tabs"[\s\S]*?<\/div>/i, " ");
+  main = main.replace(/<p class="ask-about">[\s\S]*?<\/p>/i, " ");
+  main = main.replace(/<script\b[\s\S]*?<\/script>/gi, " ");
+  return stripTags(main);
+}
+
+function writeCardText(liveConcepts) {
+  var text = {};
+  liveConcepts.forEach(function (concept) {
+    var file = path.join(root, concept.id + ".html");
+    if (!fs.existsSync(file)) throw new Error("live concept " + concept.id + " has no HTML file for Ask");
+    var body = cardSearchText(fs.readFileSync(file, "utf8"));
+    if (!body) throw new Error("live concept " + concept.id + " produced no card text");
+    text[concept.id] = body;
+  });
+  var json = JSON.stringify(text, null, 2).replace(/</g, "\\u003c");
+  var out = [
+    "/* Plain text of live cards for Ask. Written by scripts/generate-site.js.",
+    "   Regenerated from each live concept's HTML. */",
+    "var BF_CARD_TEXT = " + json + ";",
+    ""
+  ].join("\n");
+  fs.writeFileSync(path.join(root, "card-text.js"), out);
+}

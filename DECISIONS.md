@@ -10,3 +10,5 @@
 - Only Tokens, Context Window, and Prompting are live cards. Other curriculum names are not links.
 - Opened cards stay in this browser under `bf-concepts-opened`.
 - Sources stay empty until a card cites a real provider doc.
+- What's new and `/changelog` read `updates-data.js`.
+- Tried cards stay in this browser under `bf-concepts-tried`. Opened cards stay under `bf-concepts-opened`.
