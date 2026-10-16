@@ -29,7 +29,7 @@
     <main id="content" tabindex="-1">
       <p class="kicker">Concepts</p>
       <h1>The practical map and cards for builders who already use AI.</h1>
-      <p class="lede">Three cards are written. The map, Ask, and apply packs are started so the shape is visible.</p>
+      <p class="lede">Three cards are live. The map lists the rest of the curriculum. Coming soon names are not links.</p>
 
       <section class="section next-module" aria-labelledby="next-title" data-widget="next">
         <div class="next-head">
@@ -37,17 +37,16 @@
           <a class="next-map" href="/map">Full map</a>
         </div>
         <div data-next-body>
-          <p class="fine">Start with these two.</p>
+          <p class="fine">Start with this card.</p>
           <div class="next-list">
             <a class="next-card" href="/tokens"><span>Foundations</span><strong>Tokens</strong></a>
-            <a class="next-card" href="/context-window"><span>Foundations</span><strong>Context Window</strong></a>
           </div>
         </div>
       </section>
 
       <section class="section" aria-labelledby="cards-title">
         <h2 id="cards-title">Cards</h2>
-        <div class="grid-3">
+        <div class="grid-3" data-live-cards>
           <a class="feature" href="/tokens">
             <span>Foundations</span>
             <strong>Tokens</strong>
@@ -68,8 +67,8 @@
 
       <section class="section" aria-labelledby="map-title">
         <h2 id="map-title">Map</h2>
-        <p class="fine">Four tracks. Built cards are links. The other names are not cards yet.</p>
-        <div class="tracks">
+        <p class="fine">Four tracks. Live cards are links. The other names are not cards yet.</p>
+        <div class="tracks" data-track-board>
           <section class="track-col">
             <h2>Foundations</h2>
             <a class="node" href="/tokens">Tokens</a>
@@ -103,7 +102,7 @@
             <button type="submit">Match cards</button>
           </div>
         </form>
-        <p class="fine">Keyword match against the three cards. No model is called. A smarter Ask is coming.</p>
+        <p class="fine">Keyword match against the registry. Live cards link through. Other names are listed as coming soon. No model is called.</p>
       </section>
 
       <section class="section" aria-labelledby="apply-title">
@@ -114,6 +113,7 @@
     </main>
 
   </div>
+  <script src="/concepts-data.js"></script>
   <script src="/concepts.js"></script>
 </body>
 </html>

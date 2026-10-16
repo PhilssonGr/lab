@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0c0b0a" />
   <title>Prompting · BuildSpark AI</title>
-  <meta name="description" content="Prompting is how you state the task for this turn. Compare a weak prompt and a strong prompt for the same job." />
+  <meta name="description" content="How you state the task this turn: the reader, the shape, and what to leave out." />
   <link rel="stylesheet" href="/concepts.css" />
 </head>
 <body class="concepts" data-concept="prompting">
@@ -27,101 +27,158 @@
     </header>
 
     <main id="content" tabindex="-1">
-    <p class="crumb"><a href="/map">Map</a> · Foundations · Prompting</p>
-    <div class="head">
-      <h1>Prompting</h1>
-      <p class="track">Track · Foundations</p>
-    </div>
+    <p class="crumb"><a href="/map">Map</a> · Foundations · <span data-crumb-index>03</span> · Prompting</p>
 
     <div data-tabs>
-    <div class="tabs" role="tablist" aria-label="Depth">
-      <button type="button" role="tab" data-tab="glance" aria-selected="true" aria-controls="panel-glance">Glance</button>
-      <button type="button" role="tab" data-tab="practice" aria-selected="false" tabindex="-1" aria-controls="panel-practice">Practice</button>
-      <button type="button" role="tab" data-tab="deep" aria-selected="false" tabindex="-1" aria-controls="panel-deep">Deep</button>
-    </div>
-
-    <div id="panel-glance" role="tabpanel" data-panel="glance">
-      <section class="part">
-        <h2><span class="num">01</span> What it is</h2>
-        <p>Prompting is how you state the task for this turn: the instruction, the material, and the constraints. A weak prompt and a strong prompt can ask for the same outcome and still give the model different jobs.</p>
-        <div class="widget panel" data-widget="prompt" data-state="weak">
-          <p class="fine">Same task: summarize meeting notes for someone who was not there. Toggle the prompt. Highlights show what the strong version adds.</p>
-          <div class="toggle" role="group" aria-label="Prompt version">
-            <button type="button" class="ghost" data-set="weak" aria-pressed="true">Weak</button>
-            <button type="button" class="ghost" data-set="strong" aria-pressed="false">Strong</button>
+      <div class="card-top">
+        <div>
+          <p class="kicker">Concept card · Foundations</p>
+          <h1>Prompting</h1>
+          <p class="lede" data-summary>How you state the task this turn: the reader, the shape, and what to leave out.</p>
+        </div>
+        <div class="card-meta">
+          <p>
+            <span class="pill accent" data-last-checked>Last checked 2026-10-16</span>
+            <span class="pill">4 min</span>
+          </p>
+          <div class="tabs" role="tablist" aria-label="Depth">
+            <button type="button" role="tab" data-tab="glance" aria-selected="true" aria-controls="panel-glance">Glance</button>
+            <button type="button" role="tab" data-tab="practice" aria-selected="false" tabindex="-1" aria-controls="panel-practice">Practice</button>
+            <button type="button" role="tab" data-tab="deep" aria-selected="false" tabindex="-1" aria-controls="panel-deep">Deep</button>
           </div>
-          <div class="prompt-block" data-show="weak">summarize this
+          <p class="ask-about"><a href="/ask?q=prompting">Ask about Prompting</a></p>
+        </div>
+      </div>
+
+      <div id="panel-glance" role="tabpanel" data-panel="glance">
+        <div class="changed">
+          <strong>What changed</strong>
+          <p>Oct 16: The card uses the v2 layout. Prerequisites and related concepts come from the registry. The prompting guidance itself is unchanged.</p>
+        </div>
+
+        <div class="card-grid">
+          <div class="card-main">
+            <section class="part">
+              <h2><span class="num">1</span> What it is</h2>
+              <p>Prompting is how you state the task for this turn: the instruction, the material, and the constraints. A weak prompt and a strong prompt can ask for the same outcome and still give the model different jobs.</p>
+              <div class="widget panel" data-widget="prompt" data-state="weak">
+                <p class="fine">Same task: summarize meeting notes for someone who was not there. Toggle the prompt. Highlights show what the strong version adds.</p>
+                <div class="toggle" role="group" aria-label="Prompt version">
+                  <button type="button" class="ghost" data-set="weak" aria-pressed="true">Weak</button>
+                  <button type="button" class="ghost" data-set="strong" aria-pressed="false">Strong</button>
+                </div>
+                <div class="prompt-block" data-show="weak">summarize this
 
 [paste notes here]
 <div class="missing"><span>No reader</span><span>No output shape</span><span>Nothing to leave out</span><span>No rule if unclear</span></div></div>
-          <div class="prompt-block" data-show="strong" hidden>Summarize these meeting notes <mark>for a teammate who was not there</mark>.
+                <div class="prompt-block" data-show="strong" hidden>Summarize these meeting notes <mark>for a teammate who was not there</mark>.
 
 Use <mark>three short sections: Decisions, Owners, and Open questions</mark>.
 
 <mark>Leave out small talk.</mark> <mark>If a decision is not clear in the notes, say it is unclear.</mark> Do not add decisions that are not in the notes.</div>
-          <ul class="diff">
-            <li><b>Reader</b><span class="when-weak">Not named.</span><span class="when-strong">Named: a teammate who was not there.</span></li>
-            <li><b>Output shape</b><span class="when-weak">Not set.</span><span class="when-strong">Three short sections: decisions, owners, open questions.</span></li>
-            <li><b>Leave out</b><span class="when-weak">Not set.</span><span class="when-strong">Small talk stays out.</span></li>
-            <li><b>If unclear</b><span class="when-weak">Not set.</span><span class="when-strong">Say it is unclear. Do not invent a decision.</span></li>
-          </ul>
+                <ul class="diff">
+                  <li><b>Reader</b><span class="when-weak">Not named.</span><span class="when-strong">Named: a teammate who was not there.</span></li>
+                  <li><b>Output shape</b><span class="when-weak">Not set.</span><span class="when-strong">Three short sections: decisions, owners, open questions.</span></li>
+                  <li><b>Leave out</b><span class="when-weak">Not set.</span><span class="when-strong">Small talk stays out.</span></li>
+                  <li><b>If unclear</b><span class="when-weak">Not set.</span><span class="when-strong">Say it is unclear. Do not invent a decision.</span></li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="part">
+              <h2><span class="num">2</span> Why it matters</h2>
+              <div class="why-grid">
+                <article>
+                  <h3>Cost</h3>
+                  <p>A vague prompt often leads to another turn to get something you can use.</p>
+                </article>
+                <article>
+                  <h3>Quality</h3>
+                  <p>Naming the reader, the format, and what to leave out gives the reply a finish line.</p>
+                </article>
+                <article>
+                  <h3>Risk</h3>
+                  <p>An open prompt is easier to steer off the task, including by text inside a document you attached.</p>
+                </article>
+              </div>
+            </section>
+
+            <div class="apply-grid">
+              <section class="apply-card">
+                <h2><span class="num">3</span> How to apply · try today</h2>
+                <p>Rewrite one prompt you use so it names the reader, the output shape, and one thing to leave out.</p>
+              </section>
+              <section class="mistake">
+                <h2>Common mistake</h2>
+                <p>Adding adjectives (“be detailed and insightful”) instead of a concrete constraint.</p>
+              </section>
+            </div>
+
+            <section class="check" data-quiz data-note-right="That's the one. Name the reader, the shape, and one thing to leave out." data-note-wrong="Not this one. Read the common mistake and the strong prompt again.">
+              <h2>Self-check</h2>
+              <p class="check-q">Which change makes the meeting-notes prompt stronger?</p>
+              <div class="check-options" role="group" aria-label="Answer">
+                <button type="button" class="check-opt" data-choice="a" aria-pressed="false">A · Add “be detailed and insightful”</button>
+                <button type="button" class="check-opt" data-choice="b" data-correct="true" aria-pressed="false">B · Name the reader, the output shape, and one thing to leave out</button>
+                <button type="button" class="check-opt" data-choice="c" aria-pressed="false">C · Add a longer greeting</button>
+              </div>
+              <p class="fine" data-quiz-note></p>
+            </section>
+          </div>
+
+          <aside class="card-side">
+            <section class="side-card">
+              <h2>Prerequisites</h2>
+              <div data-prereqs>
+                <ul class="side-links">
+                  <li><a href="/context-window">Context Window</a></li>
+                </ul>
+              </div>
+            </section>
+            <section class="side-card">
+              <h2>Related concepts</h2>
+              <div data-related>
+                <ul class="side-links">
+                  <li><span class="is-muted">Model Selection &amp; Routing</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Structured Outputs</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Hallucination</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Query rewriting</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Tool calling</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Context engineering</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Prompt injection</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Privacy &amp; data handling</span> <span class="side-tag">Soon</span></li>
+                  <li><span class="is-muted">Fine-tuning vs prompting vs RAG</span> <span class="side-tag">Soon</span></li>
+                </ul>
+              </div>
+            </section>
+            <section class="side-card">
+              <h2>Sources</h2>
+              <p class="fine">Sources pending. No provider doc is cited on this card yet.</p>
+            </section>
+            <section class="side-card side-apply">
+              <h2>Apply pack</h2>
+              <p>Not open yet. The prompt rewrite pack turns a loose instruction into one a teammate could reuse.</p>
+              <a href="/apply">Apply packs</a>
+            </section>
+          </aside>
         </div>
-      </section>
+      </div>
 
-      <section class="part">
-        <h2><span class="num">02</span> Why it matters</h2>
-        <ul class="why">
-          <li><strong>Cost</strong><span>A vague prompt often leads to another turn to get something you can use.</span></li>
-          <li><strong>Quality</strong><span>Naming the reader, the format, and what to leave out gives the reply a finish line.</span></li>
-          <li><strong>Risk</strong><span>An open prompt is easier to steer off the task, including by text inside a document you attached.</span></li>
-        </ul>
-      </section>
+      <div id="panel-practice" role="tabpanel" data-panel="practice" hidden>
+        <p class="soon-note">Coming soon. Rewrite one prompt you use and name the reader, the shape, and one omission.</p>
+      </div>
 
-      <section class="part">
-        <h2><span class="num">03</span> How to apply it</h2>
-        <div class="split">
-          <article>
-            <h3>Try today</h3>
-            <p>Rewrite one prompt you use so it names the reader, the output shape, and one thing to leave out.</p>
-          </article>
-          <article>
-            <h3>Common mistake</h3>
-            <p>Adding adjectives (“be detailed and insightful”) instead of a concrete constraint.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="part">
-        <h2><span class="num">04</span> Related concepts</h2>
-        <ul class="related">
-          <li><a href="/tokens">Tokens</a></li>
-          <li><a href="/context-window">Context Window</a></li>
-        </ul>
-        <ul class="soon-list">
-          <li>Temperature <span>Coming soon</span></li>
-          <li>Embeddings <span>Coming soon</span></li>
-          <li>RAG <span>Coming soon</span></li>
-          <li>Evaluation <span>Coming soon</span></li>
-          <li>Agents <span>Coming soon</span></li>
-        </ul>
-      </section>
+      <div id="panel-deep" role="tabpanel" data-panel="deep" hidden>
+        <p class="soon-note">Coming soon. What belongs in the prompt, and what belongs in standing instructions or in the document.</p>
+      </div>
     </div>
-
-    <div id="panel-practice" role="tabpanel" data-panel="practice" hidden>
-      <p class="soon-note">Coming soon. Rewrite one prompt you use and name the reader, the shape, and one omission.</p>
-    </div>
-
-    <div id="panel-deep" role="tabpanel" data-panel="deep" hidden>
-      <p class="soon-note">Coming soon. What belongs in the prompt, and what belongs in standing instructions or in the document.</p>
-    </div>
-    </div>
-
     </main>
 
     <footer class="foot">
       <a href="/">Home</a> · <a href="/map">Map</a>
     </footer>
   </div>
+  <script src="/concepts-data.js"></script>
   <script src="/concepts.js"></script>
 </body>
 </html>

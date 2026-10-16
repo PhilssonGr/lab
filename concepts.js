@@ -4,38 +4,8 @@
 
   var CAP = 100;
   var CHIP_LIMIT = 400;
-
-  var CARDS = [
-    {
-      title: "Tokens",
-      href: "/tokens",
-      track: "Foundations",
-      blurb: "A token is a piece of text the model reads or writes. Bills and limits count tokens.",
-      keys: ["token", "tokens", "tokenizer", "tokenize", "tokenization", "billing", "bill", "cost", "price", "chunk", "chunks", "split", "character", "characters", "word", "words", "tiktoken", "bpe", "subword", "approximate", "budget", "spend", "piece"]
-    },
-    {
-      title: "Context Window",
-      href: "/context-window",
-      track: "Foundations",
-      blurb: "The fixed text one request can hold: instructions, history, documents, and the answer.",
-      keys: ["context", "window", "windows", "limit", "limits", "history", "chat", "thread", "document", "documents", "overflow", "cut", "cuts", "truncated", "truncation", "forgotten", "forget", "older", "system", "memory"]
-    },
-    {
-      title: "Prompting",
-      href: "/prompting",
-      track: "Foundations",
-      blurb: "How you state the task this turn: reader, format, and what to leave out.",
-      keys: ["prompt", "prompts", "prompting", "instruction", "instructions", "weak", "strong", "format", "constraint", "constraints", "rewrite", "reader", "vague", "specific", "summarize", "summary"]
-    }
-  ];
-
-  var SOON = [
-    { name: "Temperature", track: "Foundations", keys: ["temperature", "sampling"] },
-    { name: "Embeddings", track: "Retrieval & Grounding", keys: ["embedding", "embeddings", "vector", "vectors"] },
-    { name: "RAG", track: "Retrieval & Grounding", keys: ["rag", "retrieval", "grounding"] },
-    { name: "Evaluation", track: "Ship & Maintain", keys: ["evaluation", "eval", "evals", "evaluate"] },
-    { name: "Agents", track: "Agents", keys: ["agent", "agents"] }
-  ];
+  var PROGRESS_KEY = "bf-concepts-opened";
+  var SVG_NS = "http://www.w3.org/2000/svg";
 
   function onReady(fn) {
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn);
@@ -67,7 +37,8 @@
     });
   }
 
-  function approximateTokens(text) {
+  function approximateTokens(text, slice) {
+    var size = slice || 4;
     var re = /\s+|[A-Za-z]+(?:'[A-Za-z]+)?|\d+|[^\s]/g;
     var raw = text.match(re) || [];
     var out = [];
@@ -76,12 +47,12 @@
         out.push({ kind: "space", text: spaceLabel(piece) });
         return;
       }
-      if (piece.length <= 4) {
+      if (piece.length <= size) {
         out.push({ kind: "text", text: piece });
         return;
       }
-      for (var i = 0; i < piece.length; i += 4) {
-        out.push({ kind: "text", text: piece.slice(i, i + 4) });
+      for (var i = 0; i < piece.length; i += size) {
+        out.push({ kind: "text", text: piece.slice(i, i + size) });
       }
     });
     return out;
@@ -96,24 +67,39 @@
   function initTokens(root) {
     var input = root.querySelector("textarea");
     var count = root.querySelector("[data-token-count]");
+    var chars = root.querySelector("[data-char-count]");
     var chips = root.querySelector("[data-token-chips]");
     var note = root.querySelector("[data-token-note]");
+    var sliceButtons = root.querySelectorAll("[data-slice]");
     if (!input || !count || !chips) return;
+    var slice = 4;
 
     function draw() {
-      var tokens = approximateTokens(input.value);
+      var tokens = approximateTokens(input.value, slice);
       count.textContent = String(tokens.length);
+      if (chars) chars.textContent = String(input.value.length);
       chips.replaceChildren();
       var shown = tokens.slice(0, CHIP_LIMIT);
-      shown.forEach(function (token) {
-        chips.appendChild(el("span", token.kind === "space" ? "chip space" : "chip", token.text));
+      shown.forEach(function (token, index) {
+        var cls = token.kind === "space" ? "chip space" : "chip tone-" + (index % 4);
+        chips.appendChild(el("span", cls, token.text));
       });
       if (note) {
         if (!tokens.length) note.textContent = "Type something to see chips.";
         else if (tokens.length > CHIP_LIMIT) note.textContent = "Showing the first " + CHIP_LIMIT + " chips. The count above includes the rest.";
-        else note.textContent = "Each chip is one approximate token.";
+        else note.textContent = "Each chip is one approximate token in this illustration.";
       }
     }
+
+    sliceButtons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        slice = Number(btn.getAttribute("data-slice")) || 4;
+        sliceButtons.forEach(function (b) {
+          b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+        });
+        draw();
+      });
+    });
 
     input.addEventListener("input", draw);
     draw();
@@ -230,7 +216,7 @@
   function matchCards(query) {
     var words = wordsOf(query);
     if (!words.length) return { cards: [], soon: [], empty: true };
-    var cards = CARDS.map(function (card) {
+    var cards = askCards().map(function (card) {
       var score = hits(words, card.keys);
       var title = card.title.toLowerCase();
       words.forEach(function (word) {
@@ -239,7 +225,7 @@
       return { card: card, score: score };
     }).filter(function (row) { return row.score > 0; });
     cards.sort(function (a, b) { return b.score - a.score; });
-    var soon = SOON.filter(function (item) { return hits(words, item.keys) > 0; });
+    var soon = askSoon().filter(function (item) { return hits(words, item.keys) > 0; });
     return { cards: cards, soon: soon, empty: false };
   }
 
@@ -252,11 +238,11 @@
       var found = matchCards(query);
       results.replaceChildren();
       if (found.empty) {
-        results.appendChild(el("p", "fine", "Type a question. This matches words such as token, context window, or prompt."));
+        results.appendChild(el("p", "fine", "Type a question. This matches words on the curriculum, such as token, context window, or prompt."));
         return;
       }
       if (!found.cards.length && !found.soon.length) {
-        results.appendChild(el("p", null, "No card matches those words. Only Tokens, Context Window, and Prompting are written."));
+        results.appendChild(el("p", null, "No concept matches those words."));
         return;
       }
       found.cards.forEach(function (row) {
@@ -271,7 +257,7 @@
       });
       found.soon.forEach(function (item) {
         var note = el("p", "soon-note");
-        note.textContent = item.name + " is on the " + item.track + " track. There is no card yet.";
+        note.textContent = item.title + " is on the " + item.track + " track. There is no card yet.";
         results.appendChild(note);
       });
     }
@@ -295,22 +281,79 @@
     });
   }
 
-  var PROGRESS_KEY = "bf-concepts-opened";
+  function registry() {
+    if (typeof BF_CONCEPTS === "undefined" || !BF_CONCEPTS || !BF_CONCEPTS.length) return [];
+    return BF_CONCEPTS;
+  }
 
-  var CONCEPTS = [
-    { id: "tokens", title: "Tokens", href: "/tokens" },
-    { id: "context-window", title: "Context Window", href: "/context-window" },
-    { id: "prompting", title: "Prompting", href: "/prompting" }
-  ];
+  function byId(id) {
+    var all = registry();
+    for (var i = 0; i < all.length; i++) {
+      if (all[i].id === id) return all[i];
+    }
+    return null;
+  }
 
-  var EDGES = [
-    { a: "tokens", b: "context-window", label: "Limits count tokens" },
-    { a: "tokens", b: "prompting", label: "Made of tokens" },
-    { a: "context-window", b: "prompting", label: "Sits in the window" }
-  ];
+  function trackNames() {
+    var names = [];
+    registry().forEach(function (concept) {
+      if (names.indexOf(concept.track) === -1) names.push(concept.track);
+    });
+    return names;
+  }
+
+  function inTrack(track) {
+    return registry().filter(function (concept) { return concept.track === track; });
+  }
+
+  function liveConcepts() {
+    return registry().filter(function (concept) { return concept.status === "live"; });
+  }
+
+  function hrefOf(concept) {
+    return concept.status === "live" ? "/" + concept.id : "";
+  }
+
+  function indexInTrack(concept) {
+    var list = inTrack(concept.track);
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === concept.id) return i + 1;
+    }
+    return 0;
+  }
+
+  function dependents(id) {
+    return registry().filter(function (concept) {
+      return concept.prerequisites && concept.prerequisites.indexOf(id) !== -1;
+    });
+  }
+
+  function keysOf(concept) {
+    return concept.keys || [];
+  }
+
+  function askCards() {
+    return liveConcepts().map(function (concept) {
+      return {
+        title: concept.title,
+        href: hrefOf(concept),
+        track: concept.track,
+        blurb: concept.summary,
+        keys: keysOf(concept)
+      };
+    });
+  }
+
+  function askSoon() {
+    return registry().filter(function (concept) { return concept.status !== "live"; }).map(function (concept) {
+      return { title: concept.title, track: concept.track, keys: keysOf(concept) };
+    });
+  }
 
   function emptyProgress() {
-    return { tokens: false, "context-window": false, prompting: false };
+    var data = {};
+    liveConcepts().forEach(function (concept) { data[concept.id] = false; });
+    return data;
   }
 
   function readProgress() {
@@ -320,7 +363,7 @@
       if (!raw) return data;
       var parsed = JSON.parse(raw);
       if (!parsed || typeof parsed !== "object") return data;
-      CONCEPTS.forEach(function (concept) {
+      liveConcepts().forEach(function (concept) {
         data[concept.id] = parsed[concept.id] === true;
       });
     } catch (err) {
@@ -331,7 +374,7 @@
 
   function writeProgress(data) {
     var out = emptyProgress();
-    CONCEPTS.forEach(function (concept) {
+    liveConcepts().forEach(function (concept) {
       out[concept.id] = data[concept.id] === true;
     });
     try {
@@ -347,58 +390,179 @@
   }
 
   function anyOpened(data) {
-    return CONCEPTS.some(function (concept) { return data[concept.id]; });
+    return liveConcepts().some(function (concept) { return data[concept.id]; });
   }
 
   function openedCount(data) {
-    return CONCEPTS.filter(function (concept) { return data[concept.id]; }).length;
+    return liveConcepts().filter(function (concept) { return data[concept.id]; }).length;
+  }
+
+  function isUnlocked(concept, data) {
+    var pres = concept.prerequisites || [];
+    for (var i = 0; i < pres.length; i++) {
+      var pre = byId(pres[i]);
+      if (!pre || pre.status !== "live" || data[pre.id] !== true) return false;
+    }
+    return true;
+  }
+
+  function classify(concept, data) {
+    if (concept.status === "live" && data[concept.id] === true) return "visited";
+    if (isUnlocked(concept, data)) return "next";
+    return "locked";
+  }
+
+  function stateLabel(concept, kind) {
+    if (kind === "visited") return "Visited";
+    if (kind === "next") return "Next";
+    if (concept.status === "live") return "Not opened";
+    return "Coming soon";
   }
 
   function markVisit() {
     var id = document.body.getAttribute("data-concept");
     if (!id) return;
-    var known = CONCEPTS.some(function (concept) { return concept.id === id; });
-    if (!known) return;
+    var concept = byId(id);
+    if (!concept || concept.status !== "live") return;
     var data = readProgress();
     if (data[id]) return;
     data[id] = true;
     writeProgress(data);
   }
 
-  function applyNodeState(scope, data) {
-    scope.querySelectorAll("[data-node]").forEach(function (node) {
-      var id = node.getAttribute("data-node");
-      var opened = data[id] === true;
-      node.classList.toggle("is-opened", opened);
-      var state = node.querySelector(".map-node-state");
-      if (state) state.textContent = opened ? "Opened" : "Not opened";
+  function conceptAnchor(concept) {
+    if (concept.status === "live") {
+      var link = el("a", null, concept.title);
+      link.href = hrefOf(concept);
+      return link;
+    }
+    return el("span", "is-muted", concept.title);
+  }
+
+  function fillConceptList(box, concepts, data, markNext) {
+    box.replaceChildren();
+    if (!concepts.length) {
+      box.appendChild(el("p", "fine", "None yet."));
+      return;
+    }
+    var list = el("ul", "side-links");
+    concepts.forEach(function (concept) {
+      var item = el("li");
+      item.appendChild(conceptAnchor(concept));
+      if (markNext && data && classify(concept, data) === "next") {
+        item.appendChild(el("span", "side-tag", "next"));
+      } else if (concept.status !== "live") {
+        item.appendChild(el("span", "side-tag", "Soon"));
+      }
+      list.appendChild(item);
+    });
+    box.appendChild(list);
+  }
+
+  function initCard() {
+    var id = document.body.getAttribute("data-concept");
+    if (!id || !registry().length) return;
+    var concept = byId(id);
+    if (!concept) return;
+    var data = readProgress();
+
+    var summary = document.querySelector("[data-summary]");
+    if (summary && concept.summary) summary.textContent = concept.summary;
+
+    var checked = document.querySelector("[data-last-checked]");
+    if (checked) {
+      checked.textContent = concept.lastChecked ? "Last checked " + concept.lastChecked : "Not checked yet";
+    }
+
+    var crumb = document.querySelector("[data-crumb-index]");
+    if (crumb) {
+      var n = indexInTrack(concept);
+      crumb.textContent = (n < 10 ? "0" : "") + n;
+    }
+
+    var prereqBox = document.querySelector("[data-prereqs]");
+    if (prereqBox) {
+      var pres = (concept.prerequisites || []).map(byId).filter(Boolean);
+      if (!pres.length) {
+        prereqBox.replaceChildren();
+        prereqBox.appendChild(el("p", "fine", "None. This is a starting card."));
+      } else {
+        fillConceptList(prereqBox, pres, data, false);
+      }
+    }
+
+    var relatedBox = document.querySelector("[data-related]");
+    if (relatedBox) {
+      var rel = dependents(id);
+      if (!rel.length) {
+        relatedBox.replaceChildren();
+        relatedBox.appendChild(el("p", "fine", "Nothing lists this card as a prerequisite yet."));
+      } else {
+        fillConceptList(relatedBox, rel, data, true);
+      }
+    }
+  }
+
+  function initQuiz(root) {
+    var buttons = root.querySelectorAll("[data-choice]");
+    var note = root.querySelector("[data-quiz-note]");
+    if (!buttons.length) return;
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var correct = btn.getAttribute("data-correct") === "true";
+        buttons.forEach(function (b) {
+          b.classList.remove("is-correct", "is-wrong");
+          b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+        });
+        btn.classList.add(correct ? "is-correct" : "is-wrong");
+        if (!note) return;
+        if (correct) note.textContent = root.getAttribute("data-note-right") || "That's the one.";
+        else note.textContent = root.getAttribute("data-note-wrong") || "Not this one.";
+      });
     });
   }
 
   function renderNext(root, data) {
     var body = root.querySelector("[data-next-body]");
-    if (!body) return;
-    var pending = CONCEPTS.filter(function (concept) { return !data[concept.id]; });
+    if (!body || !registry().length) return;
+    var pending = liveConcepts().filter(function (concept) { return !data[concept.id]; });
+    var unlocked = pending.filter(function (concept) { return isUnlocked(concept, data); });
+    var pool = unlocked.length ? unlocked : pending;
     body.replaceChildren();
-    if (!pending.length) {
-      body.appendChild(el("p", "fine", "All three Foundations cards are opened in this browser."));
+    if (pool.length) {
+      var showing = pool.slice(0, 2);
+      var message;
+      if (showing.length === 1 && openedCount(data) === 0) message = "Start with this card.";
+      else if (showing.length === 1) message = "Next unopened card.";
+      else message = "These two are next.";
+      body.appendChild(el("p", "fine", message));
+      var list = el("div", "next-list");
+      showing.forEach(function (concept) {
+        var link = el("a", "next-card");
+        link.href = hrefOf(concept);
+        link.appendChild(el("span", null, concept.track));
+        link.appendChild(el("strong", null, concept.title));
+        list.appendChild(link);
+      });
+      body.appendChild(list);
       return;
     }
-    var showing = pending.slice(0, 2);
-    var message;
-    if (showing.length === 1) message = "One Foundations card is still unopened.";
-    else if (pending.length > 2) message = "Start with these two.";
-    else message = "These two are still unopened.";
-    body.appendChild(el("p", "fine", message));
-    var list = el("div", "next-list");
-    showing.forEach(function (concept) {
-      var link = el("a", "next-card");
-      link.href = concept.href;
-      link.appendChild(el("span", null, "Foundations"));
-      link.appendChild(el("strong", null, concept.title));
-      list.appendChild(link);
+    var liveN = liveConcepts().length;
+    body.appendChild(el("p", "fine", "All " + liveN + " live cards are opened in this browser."));
+    var upcoming = registry().filter(function (concept) {
+      return concept.status !== "live" && classify(concept, data) === "next";
+    }).slice(0, 2);
+    if (!upcoming.length) return;
+    body.appendChild(el("p", "fine", "Next on the map, still without a card:"));
+    var soonList = el("div", "next-list");
+    upcoming.forEach(function (concept) {
+      var card = el("div", "next-card is-static");
+      card.appendChild(el("span", null, concept.track));
+      card.appendChild(el("strong", null, concept.title));
+      card.appendChild(el("em", null, "Coming soon"));
+      soonList.appendChild(card);
     });
-    body.appendChild(list);
+    body.appendChild(soonList);
   }
 
   function initNext(root) {
@@ -411,199 +575,276 @@
     });
   }
 
-  function borderPoint(from, toward, box, gap) {
-    var cx = box.x + box.w / 2;
-    var cy = box.y + box.h / 2;
-    var dx = toward.x - from.x;
-    var dy = toward.y - from.y;
-    if (!dx && !dy) return { x: cx, y: cy };
-    var hw = box.w / 2 + gap;
-    var hh = box.h / 2 + gap;
-    var scale = 1 / Math.max(Math.abs(dx) / hw, Math.abs(dy) / hh);
-    return { x: cx + dx * scale, y: cy + dy * scale };
+  function renderLiveCards(scope) {
+    var grid = scope.querySelector("[data-live-cards]");
+    if (!grid || !registry().length) return;
+    grid.replaceChildren();
+    liveConcepts().forEach(function (concept) {
+      var link = el("a", "feature");
+      link.href = hrefOf(concept);
+      link.appendChild(el("span", null, concept.track));
+      link.appendChild(el("strong", null, concept.title));
+      link.appendChild(el("p", null, concept.summary));
+      grid.appendChild(link);
+    });
+  }
+
+  function renderTrackBoard(scope) {
+    var board = scope.querySelector("[data-track-board]");
+    if (!board || !registry().length) return;
+    board.replaceChildren();
+    trackNames().forEach(function (track) {
+      var col = el("section", "track-col");
+      col.appendChild(el("h2", null, track));
+      inTrack(track).forEach(function (concept) {
+        if (concept.status === "live") {
+          var link = el("a", "node", concept.title);
+          link.href = hrefOf(concept);
+          col.appendChild(link);
+        } else {
+          var item = el("p", "node is-soon");
+          item.appendChild(document.createTextNode(concept.title + " "));
+          item.appendChild(el("small", null, "Coming soon"));
+          col.appendChild(item);
+        }
+      });
+      board.appendChild(col);
+    });
+  }
+
+  function renderCurriculum(board) {
+    board.replaceChildren();
+    var svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("class", "cmap-edges");
+    svg.setAttribute("data-map-edges", "");
+    svg.setAttribute("aria-hidden", "true");
+    board.appendChild(svg);
+
+    var cols = el("div", "cmap-cols");
+    trackNames().forEach(function (track, index) {
+      var col = el("section", "cmap-col");
+      var num = String(index + 1);
+      if (num.length < 2) num = "0" + num;
+      col.appendChild(el("h2", "cmap-label", num + " · " + track));
+      inTrack(track).forEach(function (concept) {
+        var node;
+        if (concept.status === "live") {
+          node = el("a", "cnode");
+          node.href = hrefOf(concept);
+        } else {
+          node = el("div", "cnode is-soon");
+          node.title = "Coming soon. This is not a link.";
+        }
+        node.setAttribute("data-node", concept.id);
+        node.appendChild(el("strong", null, concept.title));
+        node.appendChild(el("span", "cnode-state", ""));
+        col.appendChild(node);
+      });
+      cols.appendChild(col);
+    });
+    board.appendChild(cols);
+  }
+
+  function applyCurriculumState(board, data) {
+    board.querySelectorAll("[data-node]").forEach(function (node) {
+      var concept = byId(node.getAttribute("data-node"));
+      if (!concept) return;
+      var kind = classify(concept, data);
+      node.classList.toggle("is-opened", kind === "visited");
+      node.classList.toggle("is-next", kind === "next");
+      node.classList.toggle("is-locked", kind === "locked");
+      var state = node.querySelector(".cnode-state");
+      if (state) state.textContent = stateLabel(concept, kind);
+    });
+  }
+
+  function renderRelList(list) {
+    list.replaceChildren();
+    registry().forEach(function (concept) {
+      (concept.prerequisites || []).forEach(function (pid) {
+        var pre = byId(pid);
+        if (!pre) return;
+        list.appendChild(el("li", null, concept.title + " requires " + pre.title + "."));
+      });
+    });
   }
 
   function initMap(root) {
-    var canvas = root.querySelector("[data-map-canvas]");
-    var svg = root.querySelector("[data-map-edges]");
+    var board = root.querySelector("[data-map-board]");
     var count = root.querySelector("[data-progress-count]");
     var reset = root.querySelector("[data-reset-progress]");
-    if (!canvas || !svg) return;
+    var rel = root.querySelector("[data-rel-list]");
+    var title = document.querySelector("[data-map-title]");
+    if (!board || !registry().length) return;
 
-    var ns = "http://www.w3.org/2000/svg";
-    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var narrowQuery = window.matchMedia("(max-width: 720px)");
-    var animated = false;
-    var hot = null;
-    var frame = 0;
-    var wantIntro = false;
-    var ready = false;
-
-    function paintCount(data, prefix) {
-      if (!count) return;
-      var n = openedCount(data);
-      count.textContent = (prefix ? prefix + " " : "") + n + " of 3 opened";
+    if (title) {
+      var words = ["zero", "one", "two", "three", "four", "five", "six"];
+      var nTracks = trackNames().length;
+      var word = words[nTracks] || String(nTracks);
+      title.textContent = registry().length + " concepts, " + word + " tracks";
     }
 
-    function syncProgress() {
+    renderCurriculum(board);
+    if (rel) renderRelList(rel);
+
+    var hot = null;
+    var frame = 0;
+    var ready = false;
+
+    function paint(prefix) {
       var data = readProgress();
-      applyNodeState(root, data);
-      paintCount(data);
+      var opened = openedCount(data);
+      var liveN = liveConcepts().length;
+      var nextN = 0;
+      var lockedN = 0;
+      registry().forEach(function (concept) {
+        var kind = classify(concept, data);
+        if (kind === "next") nextN++;
+        else if (kind === "locked") lockedN++;
+      });
+      if (count) {
+        var text = "Visited " + opened + " of " + liveN + " · Next " + nextN + " · Locked " + lockedN;
+        count.textContent = prefix ? prefix + " " + text : text;
+      }
       if (reset) reset.disabled = !anyOpened(data);
+      applyCurriculumState(board, data);
       return data;
     }
 
-    function draw(allowIntro) {
-      var width = canvas.clientWidth;
-      var height = canvas.clientHeight;
+    function marker(defs, id, color) {
+      var mark = document.createElementNS(SVG_NS, "marker");
+      mark.setAttribute("id", id);
+      mark.setAttribute("viewBox", "0 0 8 8");
+      mark.setAttribute("refX", "7");
+      mark.setAttribute("refY", "4");
+      mark.setAttribute("markerWidth", "6");
+      mark.setAttribute("markerHeight", "6");
+      mark.setAttribute("orient", "auto");
+      var head = document.createElementNS(SVG_NS, "path");
+      head.setAttribute("d", "M0,0 L8,4 L0,8 z");
+      head.setAttribute("fill", color);
+      mark.appendChild(head);
+      defs.appendChild(mark);
+    }
+
+    function draw() {
+      var svg = board.querySelector("[data-map-edges]");
+      if (!svg) return false;
+      var width = board.clientWidth;
+      var height = board.clientHeight;
       if (!width || !height) return false;
-      var origin = canvas.getBoundingClientRect();
+      var origin = board.getBoundingClientRect();
       var boxes = {};
-      var centers = {};
-      canvas.querySelectorAll("[data-node]").forEach(function (node) {
-        var id = node.getAttribute("data-node");
+      board.querySelectorAll("[data-node]").forEach(function (node) {
         var rect = node.getBoundingClientRect();
-        boxes[id] = {
+        boxes[node.getAttribute("data-node")] = {
           x: rect.left - origin.left,
           y: rect.top - origin.top,
           w: rect.width,
           h: rect.height
         };
-        centers[id] = {
-          x: boxes[id].x + boxes[id].w / 2,
-          y: boxes[id].y + boxes[id].h / 2
-        };
       });
-
-      var ids = Object.keys(centers);
 
       svg.setAttribute("viewBox", "0 0 " + width + " " + height);
       svg.setAttribute("width", String(width));
       svg.setAttribute("height", String(height));
       svg.replaceChildren();
+      var defs = document.createElementNS(SVG_NS, "defs");
+      marker(defs, "arrow", "#8a7350");
+      marker(defs, "arrow-lit", "#ff8a45");
+      svg.appendChild(defs);
 
-      function segmentHits(p1, p2, box) {
-        var steps = 8;
-        for (var i = 1; i < steps; i++) {
-          var t = i / steps;
-          var x = p1.x + (p2.x - p1.x) * t;
-          var y = p1.y + (p2.y - p1.y) * t;
-          if (x > box.x + 6 && x < box.x + box.w - 6 && y > box.y + 6 && y < box.y + box.h - 6) return true;
-        }
-        return false;
+      var data = readProgress();
+
+      function verticalBlocked(x, y1, y2, idA, idB) {
+        var top = Math.min(y1, y2) + 2;
+        var bot = Math.max(y1, y2) - 2;
+        var blocked = false;
+        Object.keys(boxes).forEach(function (id) {
+          if (blocked || id === idA || id === idB) return;
+          var box = boxes[id];
+          if (Math.abs(box.x + box.w / 2 - x) > 24) return;
+          if (box.y < bot && box.y + box.h > top) blocked = true;
+        });
+        return blocked;
       }
 
-      EDGES.forEach(function (edge) {
-        if (!boxes[edge.a] || !boxes[edge.b]) return;
-        var p1 = borderPoint(centers[edge.a], centers[edge.b], boxes[edge.a], 12);
-        var p2 = borderPoint(centers[edge.b], centers[edge.a], boxes[edge.b], 12);
-        var blocked = ids.some(function (id) {
-          if (id === edge.a || id === edge.b) return false;
-          return segmentHits(p1, p2, boxes[id]);
-        });
-        var d;
-        if (blocked) {
-          var right = 0;
-          ids.forEach(function (id) { right = Math.max(right, boxes[id].x + boxes[id].w); });
-          var chordX = (p1.x + p2.x) / 2;
-          var gutterX = Math.min(width - 12, right + 20);
-          var qx = (2 * gutterX) - chordX;
-          var qy = (p1.y + p2.y) / 2;
-          d = "M " + p1.x.toFixed(1) + " " + p1.y.toFixed(1) +
-            " Q " + qx.toFixed(1) + " " + qy.toFixed(1) +
-            " " + p2.x.toFixed(1) + " " + p2.y.toFixed(1);
-        } else {
-          d = "M " + p1.x.toFixed(1) + " " + p1.y.toFixed(1) + " L " + p2.x.toFixed(1) + " " + p2.y.toFixed(1);
-        }
-        var path = document.createElementNS(ns, "path");
-        var classes = "edge";
-        if (hot === edge.a || hot === edge.b) classes += " is-hot";
-        path.setAttribute("data-a", edge.a);
-        path.setAttribute("data-b", edge.b);
-        path.setAttribute("d", d);
-        svg.appendChild(path);
-        if (allowIntro && !reduced) {
-          var len = path.getTotalLength();
-          path.style.setProperty("--len", String(len));
-          classes += " is-draw";
-        }
-        path.setAttribute("class", classes);
-
-        var mx = (p1.x + p2.x) / 2;
-        var my = (p1.y + p2.y) / 2;
-        var half = Math.min(132, edge.label.length * 3.45);
-        var labelH = 12;
-        function overlaps(point) {
-          return ids.some(function (id) {
-            var b = boxes[id];
-            return point.x + half > b.x - 6 && point.x - half < b.x + b.w + 6 && point.y + labelH > b.y - 6 && point.y - labelH < b.y + b.h + 6;
-          });
-        }
-        function labelHitsPath(point) {
-          var len = path.getTotalLength();
-          var steps = 32;
-          for (var i = 0; i <= steps; i++) {
-            var at = path.getPointAtLength(len * i / steps);
-            if (Math.abs(at.x - point.x) <= half && Math.abs(at.y - point.y) <= labelH + 4) return true;
+      registry().forEach(function (concept) {
+        (concept.prerequisites || []).forEach(function (pid) {
+          var a = boxes[pid];
+          var b = boxes[concept.id];
+          if (!a || !b) return;
+          var lit = data[pid] === true;
+          var same = Math.abs((a.x + a.w / 2) - (b.x + b.w / 2)) < Math.min(a.w, b.w) * 0.45;
+          var d;
+          if (same) {
+            var x = a.x + a.w / 2;
+            var yStart = a.y + a.h;
+            var yEnd = b.y;
+            if (b.y < a.y) {
+              yStart = a.y;
+              yEnd = b.y + b.h;
+            }
+            if (verticalBlocked(x, yStart, yEnd, pid, concept.id)) {
+              var gx = Math.max(8, Math.min(a.x, b.x) - 8);
+              var yA = a.y + a.h / 2;
+              var yB = b.y + b.h / 2;
+              d = "M " + a.x.toFixed(1) + " " + yA.toFixed(1) +
+                " L " + gx.toFixed(1) + " " + yA.toFixed(1) +
+                " L " + gx.toFixed(1) + " " + yB.toFixed(1) +
+                " L " + b.x.toFixed(1) + " " + yB.toFixed(1);
+            } else if (b.y >= a.y) {
+              d = "M " + x.toFixed(1) + " " + (a.y + a.h).toFixed(1) + " L " + x.toFixed(1) + " " + b.y.toFixed(1);
+            } else {
+              d = "M " + x.toFixed(1) + " " + a.y.toFixed(1) + " L " + x.toFixed(1) + " " + (b.y + b.h).toFixed(1);
+            }
+          } else {
+            var aOnLeft = (a.x + a.w / 2) <= (b.x + b.w / 2);
+            var p1 = aOnLeft
+              ? { x: a.x + a.w, y: a.y + a.h / 2 }
+              : { x: a.x, y: a.y + a.h / 2 };
+            var p2 = aOnLeft
+              ? { x: b.x, y: b.y + b.h / 2 }
+              : { x: b.x + b.w, y: b.y + b.h / 2 };
+            var mid = (p1.x + p2.x) / 2;
+            d = "M " + p1.x.toFixed(1) + " " + p1.y.toFixed(1) +
+              " C " + mid.toFixed(1) + " " + p1.y.toFixed(1) +
+              " " + mid.toFixed(1) + " " + p2.y.toFixed(1) +
+              " " + p2.x.toFixed(1) + " " + p2.y.toFixed(1);
           }
-          return false;
-        }
-        function acceptable(point) {
-          if (point.x < half + 2 || point.x > width - half - 2) return false;
-          if (point.y < labelH + 2 || point.y > height - labelH - 2) return false;
-          if (labelHitsPath(point)) return false;
-          return !overlaps(point);
-        }
-        var edx = p2.x - p1.x;
-        var edy = p2.y - p1.y;
-        var elen = Math.hypot(edx, edy) || 1;
-        var nx = -edy / elen;
-        var ny = edx / elen;
-        var need = half * Math.abs(nx) + (labelH + 8) * Math.abs(ny) + 8;
-        var spot = null;
-        [1, -1].forEach(function (sign) {
-          if (spot) return;
-          var candidate = {
-            x: mx + nx * need * sign,
-            y: my + ny * need * sign
-          };
-          if (acceptable(candidate)) spot = candidate;
+          var path = document.createElementNS(SVG_NS, "path");
+          var classes = "cedge" + (lit ? " is-lit" : "");
+          if (hot && (hot === pid || hot === concept.id)) classes += " is-hot";
+          path.setAttribute("class", classes);
+          path.setAttribute("data-a", pid);
+          path.setAttribute("data-b", concept.id);
+          path.setAttribute("d", d);
+          path.setAttribute("marker-end", lit ? "url(#arrow-lit)" : "url(#arrow)");
+          svg.appendChild(path);
         });
-        if (!spot) return;
-        var text = document.createElementNS(ns, "text");
-        text.setAttribute("class", "edge-label");
-        text.setAttribute("x", spot.x.toFixed(1));
-        text.setAttribute("y", spot.y.toFixed(1));
-        text.setAttribute("text-anchor", "middle");
-        text.setAttribute("dominant-baseline", "middle");
-        text.textContent = edge.label;
-        svg.appendChild(text);
       });
-
-      if (allowIntro) animated = true;
       return true;
     }
 
-    function schedule(intro) {
-      if (intro) wantIntro = true;
+    function schedule() {
       if (frame) cancelAnimationFrame(frame);
       frame = requestAnimationFrame(function () {
         frame = 0;
-        var introNow = wantIntro || !animated;
-        wantIntro = false;
-        draw(introNow && !reduced);
+        draw();
       });
     }
 
     function highlight(id) {
       hot = id;
-      svg.querySelectorAll("path.edge").forEach(function (path) {
+      var svg = board.querySelector("[data-map-edges]");
+      if (!svg) return;
+      svg.querySelectorAll("path").forEach(function (path) {
         var on = id && (path.getAttribute("data-a") === id || path.getAttribute("data-b") === id);
         path.classList.toggle("is-hot", !!on);
       });
     }
 
-    canvas.querySelectorAll("[data-node]").forEach(function (node) {
+    board.querySelectorAll("[data-node]").forEach(function (node) {
       var id = node.getAttribute("data-node");
       node.addEventListener("mouseenter", function () { highlight(id); });
       node.addEventListener("mouseleave", function () { highlight(null); });
@@ -614,53 +855,52 @@
     if (reset) {
       reset.addEventListener("click", function () {
         clearProgress();
-        syncProgress();
-        paintCount(readProgress(), "Progress reset.");
-        draw(false);
+        paint("Progress reset.");
+        schedule();
       });
     }
 
     window.addEventListener("storage", function (event) {
       if (event.key !== PROGRESS_KEY) return;
-      syncProgress();
-      draw(false);
+      paint();
+      schedule();
     });
 
     window.addEventListener("pageshow", function (event) {
       if (!event.persisted) return;
-      syncProgress();
-      draw(false);
+      paint();
+      schedule();
     });
 
     if (window.ResizeObserver) {
       var observer = new ResizeObserver(function () {
-        if (!ready) return;
-        schedule(false);
+        if (ready) schedule();
       });
-      observer.observe(canvas);
+      observer.observe(board);
     } else {
       window.addEventListener("resize", function () {
-        if (ready) schedule(false);
+        if (ready) schedule();
       });
     }
 
-    if (narrowQuery.addEventListener) {
-      narrowQuery.addEventListener("change", function () {
-        if (ready) schedule(false);
-      });
-    }
-
-    syncProgress();
-    schedule(true);
-    window.addEventListener("load", function () { draw(false); });
+    paint();
+    schedule();
+    window.addEventListener("load", function () { draw(); });
     requestAnimationFrame(function () {
-      requestAnimationFrame(function () { ready = true; });
+      requestAnimationFrame(function () {
+        ready = true;
+        draw();
+      });
     });
   }
 
   onReady(function () {
     markVisit();
+    initCard();
+    renderLiveCards(document);
+    renderTrackBoard(document);
     document.querySelectorAll("[data-tabs]").forEach(initTabs);
+    document.querySelectorAll("[data-quiz]").forEach(initQuiz);
     document.querySelectorAll("[data-widget='tokens']").forEach(initTokens);
     document.querySelectorAll("[data-widget='context']").forEach(initContext);
     document.querySelectorAll("[data-widget='prompt']").forEach(initPrompt);
@@ -672,3 +912,4 @@
     if (next) initNext(next);
   });
 })();
+
