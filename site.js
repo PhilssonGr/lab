@@ -12,7 +12,7 @@ var BF_SITE = {
       slug: "foundations",
       name: "Foundations",
       summary: "How models read text, how much fits in one request, and how you state the task.",
-      pack: "Practice beside the Foundations cards. Each set is one worked example, one checklist, and one change in a prompt or repo you already have. The first three sets, next to the live cards, are a token budget, a context layout, and a prompt rewrite. The other concepts on this track do not have a practice set yet."
+      pack: "The token budget set is on this page: a worked example of per-request and monthly cost, and a pre-launch cost checklist. Context layout and prompt rewrite are not written yet. The other concepts on this track do not have a practice set yet."
     },
     {
       slug: "retrieval",

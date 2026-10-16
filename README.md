@@ -16,7 +16,7 @@ Concept cards are `free`. `pack` and `all-access` are reserved for future practi
 
 Tracks: Foundations, Retrieval & Grounding, Agents, Ship & Maintain.
 
-Only Tokens, Context Window, and Prompting are live. Coming soon concepts are not links.
+Tokens, Context Window, Prompting, and Temperature are live. Coming soon concepts are not links.
 
 Related concepts on a card are the concepts that list it as a prerequisite. The map draws an arrow along each prerequisite link.
 
@@ -42,12 +42,12 @@ Opened live cards are stored in this browser under `localStorage` key `bf-concep
 ## Pages
 
 - `index.html` — home, Next for you, the live cards, and the track list.
-- `tokens.html`, `context-window.html`, `prompting.html` — the three live cards. Plain-text copies are `tokens.md`, `context-window.md`, and `prompting.md`.
+- `tokens.html`, `context-window.html`, `prompting.html`, `temperature.html` — the live cards. Each has a plain-text `.md` copy.
 - `map.html` — the four tracks. Coming soon names are not links.
 - `tracks/*.html` — one page per track, listing that track's concepts from the registry.
 - `ask.html` — keyword match in the browser. No model and no backend.
 - `pricing.html` — Free, track pack (€39 once), all-access (€15/month or €129/year), and teams (€12/seat/month, minimum 5). No checkout.
-- `packs/*.html` — what each track pack will contain. Marked coming soon.
+- `packs/*.html` — track packs. The Foundations page includes a token budget set. The other packs are marked coming soon.
 - `apply.html` — the four packs and the planned Foundations sets. The waitlist is a mailto link, not a form.
 - `about.html` — what BuildSpark AI is, who it is for, how cards stay current, and support@buildsparkai.com.
 - `llms.txt` — purpose of the site and every live concept, with a one-line summary and URL.

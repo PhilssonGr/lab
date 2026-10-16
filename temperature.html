@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/assets/brand/favicon-32.png" type="image/png" sizes="32x32" />
+  <link rel="icon" href="/assets/brand/favicon-16.png" type="image/png" sizes="16x16" />
+  <link rel="shortcut icon" href="/assets/brand/favicon.ico" />
+  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" sizes="180x180" />
+  <link rel="manifest" href="/assets/brand/site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c0b0a" />
+  <title>Temperature · BuildSpark AI</title>
+  <meta name="description" content="Temperature is a sampling control that shifts how often less likely next tokens are picked. A free BuildSpark AI concept card." />
+  <link rel="canonical" href="https://bf-lab.netlify.app/temperature" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="BuildSpark AI" />
+  <meta property="og:title" content="Temperature · BuildSpark AI" />
+  <meta property="og:description" content="Temperature is a sampling control that shifts how often less likely next tokens are picked. A free BuildSpark AI concept card." />
+  <meta property="og:url" content="https://bf-lab.netlify.app/temperature" />
+  <meta property="og:image" content="https://bf-lab.netlify.app/assets/brand/icon-512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Temperature · BuildSpark AI" />
+  <meta name="twitter:description" content="Temperature is a sampling control that shifts how often less likely next tokens are picked. A free BuildSpark AI concept card." />
+  <meta name="twitter:image" content="https://bf-lab.netlify.app/assets/brand/icon-512.png" />
+  <link rel="stylesheet" href="/concepts.css" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LearningResource",
+      "@id": "https://bf-lab.netlify.app/temperature#card",
+      "name": "Temperature",
+      "description": "Temperature is a sampling control that shifts how often less likely next tokens are picked.",
+      "url": "https://bf-lab.netlify.app/temperature",
+      "learningResourceType": "Concept card",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "provider": {
+        "@type": "Organization",
+        "name": "BuildSpark AI",
+        "url": "https://bf-lab.netlify.app/"
+      },
+      "dateModified": "2026-10-17"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://bf-lab.netlify.app/temperature#faq",
+      "url": "https://bf-lab.netlify.app/temperature",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is temperature?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Temperature is a sampling control that shifts how often less likely next tokens are picked."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does a lower temperature check that a reply is true?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. It changes which next token is more likely. It does not add a source, and a low setting is not a promise that the reply stays the same."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do all current models accept a custom temperature?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. OpenAI documents a range from 0 to 2. Anthropic documents 0.0 to 1.0 on models that still accept it, and says models released after Claude Opus 4.6 reject any value other than 1.0. Gemini's prompting guide says Gemini 4 and Gemini 3.6+ ignore a custom temperature."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body class="concepts" data-concept="temperature">
+  <a class="skip" href="#content">Skip to content</a>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/"><img src="/assets/brand/logo.svg" alt="BuildSpark AI" width="519" height="100" /></a>
+      <nav class="nav" aria-label="Concepts">
+        <a href="/map">Map</a>
+        <a href="/ask">Ask</a>
+        <a href="/apply">Apply</a>
+        <a href="/pricing">Pricing</a>
+      </nav>
+    </header>
+
+    <main id="content" tabindex="-1">
+    <p class="crumb"><a href="/map">Map</a> · <a href="/tracks/foundations">Foundations</a> · <span data-crumb-index>10</span> · Temperature</p>
+
+    <div data-tabs>
+      <div class="card-top">
+        <div>
+          <p class="kicker">Concept card · Foundations</p>
+          <h1>Temperature</h1>
+          <p class="definition" data-definition>Temperature is a sampling control that shifts how often less likely next tokens are picked.</p>
+          <p class="lede" data-summary>A sampling control that shifts how often less likely next tokens are picked.</p>
+        </div>
+        <div class="card-meta">
+          <p>
+            <span class="pill accent" data-last-checked>Last checked 2026-10-17</span>
+            <span class="pill" data-access>Free card</span>
+            <span class="pill">4 min</span>
+          </p>
+          <div class="tabs" role="tablist" aria-label="Depth">
+            <button type="button" role="tab" data-tab="glance" aria-selected="true" aria-controls="panel-glance">Glance</button>
+            <button type="button" role="tab" data-tab="practice" aria-selected="false" tabindex="-1" aria-controls="panel-practice">Practice</button>
+            <button type="button" role="tab" data-tab="deep" aria-selected="false" tabindex="-1" aria-controls="panel-deep">Deep</button>
+          </div>
+          <p class="ask-about"><a href="/ask?q=temperature">Ask about Temperature</a></p>
+        </div>
+      </div>
+
+      <div id="panel-glance" role="tabpanel" data-panel="glance">
+        <div class="changed">
+          <strong>What changed</strong>
+          <p>Oct 17: First card. The picture uses three fixed scores and is not a provider sampler. Sources are the OpenAI Chat reference, the Anthropic Messages API, and Gemini's prompting strategies.</p>
+        </div>
+
+        <div class="card-grid">
+          <div class="card-main">
+            <section class="part">
+              <h2><span class="num">1</span> What it is</h2>
+              <p>Temperature is a number a request can send with the prompt. It changes how the next token is picked. Lower makes the leading candidate more dominant. Higher gives less likely candidates more of a chance. The allowed range is not the same on every model, and some current models ignore a custom value or reject it.</p>
+              <div class="widget panel" data-widget="temperature">
+                <div class="token-bar">
+                  <label class="field" for="temp-slider">Illustration temperature</label>
+                  <p class="token-tally" aria-live="polite"><strong data-temp-value>1.0</strong></p>
+                </div>
+                <input id="temp-slider" type="range" min="2" max="20" step="1" value="10" aria-valuemin="0.2" aria-valuemax="2" aria-valuenow="1.0" aria-valuetext="1.0" />
+                <div class="temp-rows" data-temp-rows></div>
+                <p class="fine" data-temp-note></p>
+                <p class="fine">Three fixed scores, named ship, send, and hold. The picture divides each score by the slider and rescales the three results so they fill the bars. It is not a provider sampler, and these words are not model output.</p>
+              </div>
+            </section>
+
+            <section class="part">
+              <h2><span class="num">2</span> Why it matters</h2>
+              <div class="why-grid">
+                <article>
+                  <h3>Cost</h3>
+                  <p>Temperature is not its own charge. The bill is still the tokens the request reads and writes. You pay more only if the setting makes the reply longer or makes you send the request again.</p>
+                </article>
+                <article>
+                  <h3>Quality</h3>
+                  <p>Lower keeps the reply closer to the leading candidate, which often fits a fixed shape. Higher lets less likely tokens through, which varies the wording. Gemini's prompting guide says earlier Gemini 3 models should keep the default, and that Gemini 4 and Gemini 3.6+ ignore a custom temperature.</p>
+                </article>
+                <article>
+                  <h3>Risk</h3>
+                  <p>A low temperature can still produce a confident wrong sentence. Anthropic's Messages API says that even 0.0 is not fully deterministic on models that accept it. OpenAI says to change temperature or top_p, not both.</p>
+                </article>
+              </div>
+            </section>
+
+            <div class="apply-grid">
+              <section class="apply-card">
+                <h2><span class="num">3</span> How to apply · try today</h2>
+                <p>Take a prompt you already send. If the model accepts temperature, run it once at the default and once lower, and change nothing else. See whether the reply stays in the shape you asked for.</p>
+              </section>
+              <section class="mistake">
+                <h2>Common mistake</h2>
+                <p>Using a low temperature as a fact check, or expecting one number to mean the same thing on every model.</p>
+              </section>
+            </div>
+
+            <section class="check" data-quiz data-note-right="That's the one. Temperature changes how the next token is picked. It is not a line on the bill, and it does not check facts." data-note-wrong="Not this one. Read the definition again.">
+              <h2>Self-check</h2>
+              <p class="check-q">Which of these is temperature?</p>
+              <div class="check-options" role="group" aria-label="Answer">
+                <button type="button" class="check-opt" data-choice="a" aria-pressed="false">A · A separate charge</button>
+                <button type="button" class="check-opt" data-choice="b" data-correct="true" aria-pressed="false">B · A sampling control</button>
+                <button type="button" class="check-opt" data-choice="c" aria-pressed="false">C · A fact check</button>
+              </div>
+              <p class="fine" data-quiz-note></p>
+            </section>
+          </div>
+
+          <aside class="card-side">
+            <section class="side-card">
+              <h2>Prerequisites</h2>
+              <div data-prereqs>
+                <ul class="side-links">
+                  <li><span class="is-muted">Model Selection &amp; Routing</span> <span class="side-tag">Soon</span></li>
+                </ul>
+              </div>
+            </section>
+            <section class="side-card">
+              <h2>Related concepts</h2>
+              <div data-related>
+                <ul class="side-links">
+                  <li><span class="is-muted">Sampling</span> <span class="side-tag">Soon</span></li>
+                </ul>
+              </div>
+            </section>
+            <section class="side-card">
+              <h2>Sources</h2>
+              <ul class="side-links sources">
+                <li><a href="https://developers.openai.com/api/reference/resources/chat">OpenAI, Chat API: temperature</a></li>
+                <li><a href="https://platform.claude.com/docs/en/api/messages">Anthropic, Messages API: temperature</a></li>
+                <li><a href="https://ai.google.dev/gemini-api/docs/prompting-strategies">Gemini, prompting strategies: temperature</a></li>
+              </ul>
+              <p class="fine">Opened 2026-10-17. Each page is a provider doc. The card does not add a rate or a usage count.</p>
+            </section>
+            <section class="side-card side-apply">
+              <h2>Apply pack</h2>
+              <p>The Foundations pack has a token budget set. Temperature is not a price, and this card does not have its own practice set yet.</p>
+              <a href="/packs/foundations">Foundations pack</a>
+            </section>
+          </aside>
+        </div>
+      </div>
+
+      <div id="panel-practice" role="tabpanel" data-panel="practice" hidden>
+        <p class="soon-note">Coming soon. Run one prompt at two temperatures and keep the reply that still matches the shape.</p>
+      </div>
+
+      <div id="panel-deep" role="tabpanel" data-panel="deep" hidden>
+        <p class="soon-note">Coming soon. How a provider rescales token scores before a token is picked, and why a model can ignore the setting.</p>
+      </div>
+    </div>
+
+    <section class="faq" aria-labelledby="temperature-faq">
+      <h2 id="temperature-faq">Questions</h2>
+      <dl>
+        <dt>What is temperature?</dt>
+        <dd>Temperature is a sampling control that shifts how often less likely next tokens are picked.</dd>
+        <dt>Does a lower temperature check that a reply is true?</dt>
+        <dd>No. It changes which next token is more likely. It does not add a source, and a low setting is not a promise that the reply stays the same.</dd>
+        <dt>Do all current models accept a custom temperature?</dt>
+        <dd>No. OpenAI documents a range from 0 to 2. Anthropic documents 0.0 to 1.0 on models that still accept it, and says models released after Claude Opus 4.6 reject any value other than 1.0. Gemini's prompting guide says Gemini 4 and Gemini 3.6+ ignore a custom temperature.</dd>
+      </dl>
+    </section>
+    </main>
+
+    <footer class="foot">
+      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>
+    </footer>
+  </div>
+  <script src="/site.js"></script>
+  <script src="/concepts-data.js"></script>
+  <script src="/concepts.js"></script>
+</body>
+</html>

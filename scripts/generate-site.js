@@ -182,10 +182,16 @@ function liveSentence(list) {
 }
 
 function trackDescription(track, list) {
-  return track.name + " on BuildSpark AI. " + track.summary + " " + list.length + " concepts. Cards are free. The practice pack is coming soon.";
+  var tail = track.slug === "foundations"
+    ? "The Foundations pack includes a token budget set."
+    : "The practice pack is coming soon.";
+  return track.name + " on BuildSpark AI. " + track.summary + " " + list.length + " concepts. Cards are free. " + tail;
 }
 
 function packDescription(track) {
+  if (track.slug === "foundations") {
+    return "A worked token-budget example and a pre-launch cost checklist for Foundations. Example prices are cited. No checkout on BuildSpark AI.";
+  }
   return "The " + track.name + " pack is €39 once, for practice beside the free " + track.name + " cards. Coming soon. No checkout on BuildSpark AI.";
 }
 
@@ -195,7 +201,7 @@ function trackBody(track, list) {
     '      <p class="kicker">Track</p>',
     "      <h1>" + esc(track.name) + "</h1>",
     '      <p class="lede">' + esc(track.summary) + "</p>",
-    "      <p>" + liveSentence(list) + " Concept cards are free, including the ones that are not written yet. Names without a card are not links. Practice for this track is the <a href=\"/packs/" + track.slug + "\">" + esc(track.name) + " pack</a>, and that pack is coming soon.</p>",
+    "      <p>" + liveSentence(list) + " Concept cards are free, including the ones that are not written yet. Names without a card are not links. " + packStatusSentence(track) + "</p>",
     '      <ul class="concept-index">',
     list.map(conceptItem).join("\n"),
     "      </ul>",
@@ -203,18 +209,76 @@ function trackBody(track, list) {
   ].join("\n");
 }
 
+function packStatusSentence(track) {
+  if (track.slug === "foundations") {
+    return "Practice for this track is the <a href=\"/packs/foundations\">Foundations pack</a>. The token budget set is on that page. Context layout and prompt rewrite are not written yet.";
+  }
+  return "Practice for this track is the <a href=\"/packs/" + track.slug + "\">" + esc(track.name) + " pack</a>, and that pack is coming soon.";
+}
+
+function foundationsSets() {
+  return [
+    "      <h2 id=\"token-budget\">Token budget</h2>",
+    "      <p>One worked example of what a request costs, then what a month of those requests costs. The app, the traffic, and the token counts are <strong>illustrative assumptions</strong>. They are not measured usage and not a claim about a product that exists. The prices are <strong>EXAMPLE</strong> rates copied from one official pricing page.</p>",
+    "      <h3>The example app</h3>",
+    "      <p>A support-reply helper. One model request drafts a reply to one ticket. Assumptions used only for this arithmetic:</p>",
+    "      <ul class=\"pack-list\">",
+    "        <li><strong>2,000 uncached input tokens</strong> The new ticket. Billed at the input rate.</li>",
+    "        <li><strong>8,000 cached input tokens</strong> A stable instructions prefix. This example assumes the provider bills these tokens at the cached-input rate.</li>",
+    "        <li><strong>500 output tokens</strong> The draft reply. Billed at the output rate.</li>",
+    "        <li><strong>20,000 requests in a month</strong> An illustrative traffic assumption, not an observed volume.</li>",
+    "      </ul>",
+    "      <h3>EXAMPLE prices</h3>",
+    "      <p>Model <strong>gpt-4.1</strong>. Standard prices, per 1,000,000 tokens, from the short-context columns. Input <strong>$2.00</strong>. Cached input <strong>$0.50</strong>. Output <strong>$8.00</strong>. Cache writes for gpt-4.1 are blank on that table, so this example adds no cache-write charge.</p>",
+    "      <p>Source: <a href=\"https://developers.openai.com/api/docs/pricing\">OpenAI API pricing</a>. Prices checked 2026-10-17, may change. Other models, the batch table, and long-context rates on the same page are different. This example does not use them. Amounts are US dollars, as on that page.</p>",
+    "      <h3>Per request</h3>",
+    "      <div class=\"meter\" role=\"img\" aria-label=\"This example splits $0.012 into three equal charges of $0.004\">",
+    "        <div class=\"seg system\" style=\"width:33.34%\"></div>",
+    "        <div class=\"seg history\" style=\"width:33.33%\"></div>",
+    "        <div class=\"seg documents\" style=\"width:33.33%\"></div>",
+    "      </div>",
+    "      <ul class=\"legend\">",
+    "        <li><i class=\"system\"></i>Uncached input $0.004</li>",
+    "        <li><i class=\"history\"></i>Cached input $0.004</li>",
+    "        <li><i class=\"documents\"></i>Output $0.004</li>",
+    "      </ul>",
+    "      <pre class=\"math\">Uncached input    2,000 × $2.00 ÷ 1,000,000 = $0.004\nCached input      8,000 × $0.50 ÷ 1,000,000 = $0.004\nOutput              500 × $8.00 ÷ 1,000,000 = $0.004\nPer request       $0.004 + $0.004 + $0.004 = $0.012</pre>",
+    "      <p>The three dollar amounts match only because these assumptions were chosen that way. A different token split would not land on three equal charges. The bar is a picture of this example, not a general rule.</p>",
+    "      <h3>The month, under the same assumptions</h3>",
+    "      <pre class=\"math\">Uncached input    20,000 × 2,000 = 40,000,000 tokens\n                  40,000,000 × $2.00 ÷ 1,000,000 = $80.00\nCached input      20,000 × 8,000 = 160,000,000 tokens\n                  160,000,000 × $0.50 ÷ 1,000,000 = $80.00\nOutput            20,000 × 500 = 10,000,000 tokens\n                  10,000,000 × $8.00 ÷ 1,000,000 = $80.00\nMonth             $80.00 + $80.00 + $80.00 = $240.00\nCheck             20,000 × $0.012 = $240.00</pre>",
+    "      <p>Left out of this example on purpose: retries, a second model call, images, tools, cache writes, and any higher rate past a size threshold. If the prefix is not actually billed as cached input, replace the $0.50 rate with the $2.00 input rate and run the same multiplication.</p>",
+    "      <h2 id=\"cost-checklist\">Pre-launch cost checklist</h2>",
+    "      <p>One pass before you ship a feature that calls a model. Each line is something you can do with a request you already send.</p>",
+    "      <ol class=\"check-list\">",
+    "        <li>List every model call one user action makes, including a retry and a second model if you have one.</li>",
+    "        <li>On one real request, write down uncached input tokens, cached input tokens, and output tokens as three numbers.</li>",
+    "        <li>Open the provider's current pricing page. Copy the input, cached-input, and output rates for the model you will ship, and write the date next to them.</li>",
+    "        <li>Multiply each token count by its own rate. Add the three results. That is the cost of one request.</li>",
+    "        <li>Write a monthly request count, and label it as an assumption until you have measured traffic.</li>",
+    "        <li>Multiply the per-request cost by that assumption. That is the monthly estimate.</li>",
+    "        <li>Check whether a longer prompt crosses a size threshold that uses a higher rate. If it does, price that request on the higher rate.</li>",
+    "        <li>Use the cached-input rate only after a real request shows those tokens billed as cached input.</li>",
+    "        <li>If the pricing page lists a cache-write charge, add it. Do not fold it into the cached-input rate.</li>",
+    "        <li>Choose a monthly number that should trigger an alert, and decide what the product does when that number is hit.</li>",
+    "        <li>Open the pricing page again on launch day. The EXAMPLE rates above were checked 2026-10-17 and may already differ.</li>",
+    "      </ol>",
+    "      <h2>Still to come</h2>",
+    "      <ul class=\"pack-list\">",
+    "        <li><strong>Context layout</strong> Decide what stays in the window for one real request, and what to drop. Not written yet.</li>",
+    "        <li><strong>Prompt rewrite</strong> Turn a loose instruction into one a teammate could reuse. Not written yet.</li>",
+    "      </ul>",
+    "      <p>The other concepts on this track do not have a named set yet. They are listed below.</p>"
+  ].join("\n");
+}
+
 function packBody(track, list) {
   var sets = "";
+  var kicker = "Track pack · Coming soon";
+  var note = "Coming soon. This pack is not for sale on this site. The email links open a message to " + esc(site.email) + " with the tier and the track in the subject. There is no form and no payment.";
   if (track.slug === "foundations") {
-    sets = [
-      "      <h2>Planned sets</h2>",
-      "      <ul class=\"pack-list\">",
-      "        <li><strong>Token budget</strong> See what a prompt you already send is spending, and cut what the task does not need. Coming soon.</li>",
-      "        <li><strong>Context layout</strong> Decide what stays in the window for one real request, and what to drop. Coming soon.</li>",
-      "        <li><strong>Prompt rewrite</strong> Turn a loose instruction into one a teammate could reuse. Coming soon.</li>",
-      "      </ul>",
-      "      <p>The other concepts on this track do not have a named set yet. They are listed below.</p>"
-    ].join("\n");
+    kicker = "Track pack";
+    note = "The token budget set on this page is readable now. Context layout and prompt rewrite are not written yet. This pack is not for sale on this site. The email links open a message to " + esc(site.email) + " with the tier and the track in the subject. There is no form and no payment.";
+    sets = foundationsSets();
   } else {
     sets = [
       "      <h2>Planned sets</h2>",
@@ -223,11 +287,11 @@ function packBody(track, list) {
   }
   return [
     '      <p class="crumb"><a href="/pricing">Pricing</a> · ' + esc(track.name) + "</p>",
-    '      <p class="kicker">Track pack · Coming soon</p>',
+    '      <p class="kicker">' + kicker + "</p>",
     "      <h1>" + esc(track.name) + " pack</h1>",
     '      <p class="tier-price">€39 <span>once</span></p>',
     '      <p class="lede">' + esc(track.pack) + "</p>",
-    '      <p class="soon-note">Coming soon. This pack is not for sale on this site. The email links open a message to ' + esc(site.email) + " with the tier and the track in the subject. There is no form and no payment.</p>",
+    '      <p class="soon-note">' + note + "</p>",
     sets,
     "      <h2>Cards this pack sits beside</h2>",
     "      <p>These are the concept cards. The cards are free. " + liveSentence(list) + " A coming soon name is not a card yet.</p>",
@@ -374,6 +438,7 @@ function markdownFor(file, page) {
   var soonRe = /<p class="soon-note">([\s\S]*?)<\/p>/g;
   var soonMatch;
   while ((soonMatch = soonRe.exec(html))) soons.push(stripTags(soonMatch[1]));
+  var sources = sourcesMarkdown(html, file);
   var lines = [
     "# " + concept.title,
     "",
@@ -415,10 +480,36 @@ function markdownFor(file, page) {
     "",
     "## Sources",
     "",
-    "Sources pending. No provider doc is cited on this card yet.",
+    sources,
     ""
   ];
   return lines.join("\n");
+}
+
+function sourcesMarkdown(html, file) {
+  var section = html.match(/<h2>Sources<\/h2>([\s\S]*?)<\/section>/);
+  if (!section) throw new Error(file + " is missing a Sources section");
+  var block = section[1];
+  var links = [];
+  var linkRe = /<a href="([^"]+)">([\s\S]*?)<\/a>/g;
+  var linkMatch;
+  while ((linkMatch = linkRe.exec(block))) {
+    links.push("- [" + stripTags(linkMatch[2]) + "](" + stripTags(linkMatch[1]) + ")");
+  }
+  var paras = [];
+  var paraRe = /<p[^>]*>([\s\S]*?)<\/p>/g;
+  var paraMatch;
+  while ((paraMatch = paraRe.exec(block))) paras.push(stripTags(paraMatch[1]));
+  if (links.length && paras.length) return links.join("\n") + "\n\n" + paras.join("\n\n");
+  if (links.length) return links.join("\n");
+  if (paras.length) return paras.join("\n\n");
+  throw new Error(file + " Sources section is empty");
+}
+
+function conceptLastmod(page) {
+  if (!page.concept) return null;
+  var concept = concepts.filter(function (item) { return item.id === page.concept; })[0];
+  return concept && concept.lastChecked ? concept.lastChecked : null;
 }
 
 var pages = [
@@ -445,7 +536,7 @@ var pages = [
     file: "apply.html",
     path: "/apply",
     title: "Apply packs · BuildSpark AI",
-    description: "Track packs are future practice beside the free BuildSpark AI cards. None are open yet. The waitlist is an email, not a form."
+    description: "The Foundations pack includes a token budget set. Other track packs are not written yet. The waitlist is an email, not a form."
   },
   {
     file: "pricing.html",
@@ -484,6 +575,14 @@ var pages = [
     concept: "prompting"
   },
   {
+    file: "temperature.html",
+    path: "/temperature",
+    title: "Temperature · BuildSpark AI",
+    description: "Temperature is a sampling control that shifts how often less likely next tokens are picked. A free BuildSpark AI concept card.",
+    type: "article",
+    concept: "temperature"
+  },
+  {
     file: "404.html",
     path: "/404",
     title: "Not found · BuildSpark AI",
@@ -505,7 +604,7 @@ pages.forEach(function (page) {
   if (page.org) html = upsertJson(html, organizationLd());
   if (page.concept) html = upsertJson(html, cardLd(html, page));
   fs.writeFileSync(filePath, html);
-  if (page.sitemap !== false) urls.push({ loc: abs(page.path), lastmod: page.concept ? "2026-10-16" : null });
+  if (page.sitemap !== false) urls.push({ loc: abs(page.path), lastmod: conceptLastmod(page) });
   if (!html.includes(LOGO)) throw new Error(page.file + " is missing the logo");
   if (!html.includes('href="/assets/brand/favicon.svg"')) throw new Error(page.file + " is missing favicons");
   if (!html.includes("· BuildSpark AI")) throw new Error(page.file + " title format");
@@ -549,18 +648,22 @@ site.tracks.forEach(function (track) {
 pages.filter(function (page) { return page.concept; }).forEach(function (page) {
   var md = markdownFor(page.file, page);
   fs.writeFileSync(path.join(root, page.concept + ".md"), md);
-  urls.push({ loc: abs(page.path) + ".md", lastmod: "2026-10-16" });
+  urls.push({ loc: abs(page.path) + ".md", lastmod: conceptLastmod(page) });
 });
 
 var live = concepts.filter(function (concept) { return concept.status === "live"; });
-if (live.length !== 3) throw new Error("Expected 3 live concepts");
+var cardIds = pages.filter(function (page) { return page.concept; }).map(function (page) { return page.concept; });
+if (live.length !== cardIds.length) throw new Error("Expected " + cardIds.length + " live concepts, got " + live.length);
+live.forEach(function (concept) {
+  if (cardIds.indexOf(concept.id) === -1) throw new Error("Live concept " + concept.id + " has no page entry");
+});
 
 var llms = [];
 llms.push("# " + site.name);
 llms.push("");
 llms.push("> A practical map and cards for builders who already use AI.");
 llms.push("");
-llms.push("Concept cards, the map, and Ask are free. Track packs are future practice and are not open yet. There is no account and no payment on this site. Coming soon concepts are listed on the track pages and do not have cards yet.");
+llms.push("Concept cards, the map, and Ask are free. The Foundations pack includes a token budget set on its page. The other track packs are not written yet. There is no account and no payment on this site. Coming soon concepts are listed on the track pages and do not have cards yet.");
 llms.push("");
 llms.push("## Live concepts");
 llms.push("");
@@ -577,6 +680,10 @@ llms.push("");
 llms.push("## Packs");
 llms.push("");
 site.tracks.forEach(function (track) {
+  if (track.slug === "foundations") {
+    llms.push("- [" + track.name + " pack](" + abs("/packs/" + track.slug) + "): Token budget set, with a worked cost example and a pre-launch checklist. Listed at €39 once. No checkout.");
+    return;
+  }
   llms.push("- [" + track.name + " pack](" + abs("/packs/" + track.slug) + "): Coming soon. €39 one-off for practice beside the free " + track.name + " cards.");
 });
 llms.push("");

@@ -179,6 +179,56 @@
     draw();
   }
 
+  function initTemperature(root) {
+    var slider = root.querySelector("input[type='range']");
+    var value = root.querySelector("[data-temp-value]");
+    var rows = root.querySelector("[data-temp-rows]");
+    var note = root.querySelector("[data-temp-note]");
+    if (!slider || !value || !rows) return;
+    var scores = [
+      { name: "ship", score: 2 },
+      { name: "send", score: 1 },
+      { name: "hold", score: 0.2 }
+    ];
+
+    function draw() {
+      var tenths = Number(slider.value);
+      if (!isFinite(tenths) || tenths < 2) tenths = 2;
+      var temp = tenths / 10;
+      var label = temp.toFixed(1);
+      value.textContent = label;
+      slider.setAttribute("aria-valuenow", label);
+      slider.setAttribute("aria-valuetext", label);
+      var weights = scores.map(function (item) {
+        return Math.exp(item.score / temp);
+      });
+      var sum = 0;
+      weights.forEach(function (weight) { sum += weight; });
+      rows.replaceChildren();
+      var lead = 0;
+      scores.forEach(function (item, index) {
+        var share = sum ? weights[index] / sum : 0;
+        if (share > lead) lead = share;
+        var row = el("div", "temp-row");
+        row.appendChild(el("span", "temp-name", item.name));
+        var track = el("div", "temp-track");
+        track.setAttribute("aria-hidden", "true");
+        var fill = el("div", "temp-fill");
+        fill.style.width = (share * 100) + "%";
+        track.appendChild(fill);
+        row.appendChild(track);
+        row.appendChild(el("span", "temp-pct", Math.round(share * 100) + "%"));
+        rows.appendChild(row);
+      });
+      if (note) {
+        note.textContent = "At " + label + " on this picture, the tallest bar is " + Math.round(lead * 100) + "% of the three.";
+      }
+    }
+
+    slider.addEventListener("input", draw);
+    draw();
+  }
+
   function initPrompt(root) {
     var buttons = root.querySelectorAll("[data-set]");
     var views = root.querySelectorAll("[data-show]");
@@ -921,6 +971,7 @@
     document.querySelectorAll("[data-widget='tokens']").forEach(initTokens);
     document.querySelectorAll("[data-widget='context']").forEach(initContext);
     document.querySelectorAll("[data-widget='prompt']").forEach(initPrompt);
+    document.querySelectorAll("[data-widget='temperature']").forEach(initTemperature);
     var ask = document.querySelector("[data-widget='ask']");
     if (ask) initAsk(ask);
     var map = document.querySelector("[data-widget='map']");
