@@ -1,0 +1,35 @@
+# One job, Node built-ins only. No install, browser, or secrets.
+# Runs on pull requests into main and on pushes to main.
+# Skipped when every changed file is Markdown (docs or generated cards).
+name: QA
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - "**/*.md"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**/*.md"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qa-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qa:
+    name: Site QA
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check links, pages, registry, and generated files
+        run: node --version && node scripts/qa-check.js
