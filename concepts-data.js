@@ -1,5 +1,8 @@
 /* Curriculum registry. Plain script, no build. Loaded before concepts.js.
-   lastChecked is null when the concept has no card yet. */
+   lastChecked is null when the concept has no card yet.
+   access is "free", "pack", or "all-access".
+   Concept cards are free. Pack and all-access are reserved for future
+   practice items, which are not listed here yet. */
 var BF_CONCEPTS = [
   {
     id: "tokens",
@@ -7,6 +10,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: [],
     status: "live",
+    access: "free",
     summary: "The unit models read, write, and bill in.",
     lastChecked: "2026-10-16",
     keys: ["token", "tokens", "tokenizer", "tokenize", "tokenization", "billing", "bill", "cost", "price", "prices", "split", "character", "characters", "word", "words", "tiktoken", "bpe", "subword", "budget", "spend", "cached", "cache", "threshold"]
@@ -17,6 +21,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["tokens"],
     status: "live",
+    access: "free",
     summary: "The fixed text one request can hold: instructions, history, documents, and the answer.",
     lastChecked: "2026-10-16",
     keys: ["context", "window", "windows", "limit", "limits", "history", "chat", "thread", "document", "documents", "overflow", "truncated", "truncation", "forgotten", "forget", "older", "system"]
@@ -27,6 +32,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["context-window"],
     status: "live",
+    access: "free",
     summary: "How you state the task this turn: the reader, the shape, and what to leave out.",
     lastChecked: "2026-10-16",
     keys: ["prompt", "prompts", "prompting", "instruction", "instructions", "weak", "strong", "format", "constraint", "constraints", "rewrite", "reader", "vague", "specific", "summarize", "summary"]
@@ -37,6 +43,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["tokens", "context-window"],
     status: "coming-soon",
+    access: "free",
     summary: "Reusing an unchanged prefix so a repeated prompt can cost less than sending it from scratch.",
     lastChecked: null,
     keys: ["cache", "caching", "cached", "prefix", "prompt"]
@@ -47,6 +54,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["prompting"],
     status: "coming-soon",
+    access: "free",
     summary: "Picking a model, and sometimes a route between models, for the job in front of you.",
     lastChecked: null,
     keys: ["model", "models", "selection", "routing", "router", "route"]
@@ -57,6 +65,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["model-selection"],
     status: "coming-soon",
+    access: "free",
     summary: "A control some models offer for how much thinking to spend on a request.",
     lastChecked: null,
     keys: ["reasoning", "effort", "thinking", "reason"]
@@ -67,6 +76,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["prompting"],
     status: "coming-soon",
+    access: "free",
     summary: "Asking for a reply that follows a shape, such as fields you name, so code can read it.",
     lastChecked: null,
     keys: ["structured", "output", "outputs", "json", "schema", "format"]
@@ -77,6 +87,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["prompting"],
     status: "coming-soon",
+    access: "free",
     summary: "A reply that states something the prompt and the sources do not support.",
     lastChecked: null,
     keys: ["hallucination", "hallucinate", "hallucinated", "invented", "unsupported"]
@@ -87,6 +98,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["hallucination"],
     status: "coming-soon",
+    access: "free",
     summary: "Checking a model on examples you already know the answer to, before you trust a change.",
     lastChecked: null,
     keys: ["evaluation", "eval", "evals", "evaluate", "basics"]
@@ -97,6 +109,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["model-selection"],
     status: "coming-soon",
+    access: "free",
     summary: "A sampling control that shifts how often less likely next tokens are picked.",
     lastChecked: null,
     keys: ["temperature", "temp"]
@@ -107,6 +120,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["temperature"],
     status: "coming-soon",
+    access: "free",
     summary: "How the next token is chosen from the model's probabilities.",
     lastChecked: null,
     keys: ["sampling", "sample", "top-p", "nucleus"]
@@ -117,6 +131,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["tokens"],
     status: "coming-soon",
+    access: "free",
     summary: "Turning text into a list of numbers so similar texts land near each other.",
     lastChecked: null,
     keys: ["embedding", "embeddings", "vector", "vectors"]
@@ -127,6 +142,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["tokens"],
     status: "coming-soon",
+    access: "free",
     summary: "The specific rules that split text into tokens. Those rules differ by model.",
     lastChecked: null,
     keys: ["tokenization", "tokenizer", "tokenize", "tokenizers"]
@@ -137,6 +153,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["tokens", "context-window"],
     status: "coming-soon",
+    access: "free",
     summary: "Images, audio, and other non-text inputs a model can take alongside text.",
     lastChecked: null,
     keys: ["multimodal", "image", "images", "audio", "vision"]
@@ -147,6 +164,7 @@ var BF_CONCEPTS = [
     track: "Foundations",
     prerequisites: ["model-selection", "tokenization"],
     status: "coming-soon",
+    access: "free",
     summary: "A named model release. A newer version can change behavior and tokenization.",
     lastChecked: null,
     keys: ["version", "versions", "release", "model"]
@@ -157,6 +175,7 @@ var BF_CONCEPTS = [
     track: "Retrieval & Grounding",
     prerequisites: ["chunking", "embeddings-retrieval"],
     status: "coming-soon",
+    access: "free",
     summary: "Retrieve relevant text, then ask the model to answer from that text.",
     lastChecked: null,
     keys: ["rag", "retrieval", "retrieve", "augmented"]
@@ -167,6 +186,7 @@ var BF_CONCEPTS = [
     track: "Retrieval & Grounding",
     prerequisites: ["tokens"],
     status: "coming-soon",
+    access: "free",
     summary: "Splitting documents into pieces that retrieval can store and return.",
     lastChecked: null,
     keys: ["chunk", "chunks", "chunking"]
@@ -177,6 +197,7 @@ var BF_CONCEPTS = [
     track: "Retrieval & Grounding",
     prerequisites: ["embeddings"],
     status: "coming-soon",
+    access: "free",
     summary: "Using embeddings to find stored chunks that are close to a query.",
     lastChecked: null,
     keys: ["embedding", "embeddings", "retrieval", "similarity", "nearest"]
@@ -187,6 +208,7 @@ var BF_CONCEPTS = [
     track: "Retrieval & Grounding",
     prerequisites: ["rag"],
     status: "coming-soon",
+    access: "free",
     summary: "Combining word matching and embedding search so exact terms and paraphrases can both hit.",
     lastChecked: null,
     keys: ["hybrid", "search", "keyword", "bm25"]
@@ -197,6 +219,7 @@ var BF_CONCEPTS = [
     track: "Retrieval & Grounding",
     prerequisites: ["rag", "prompting"],
     status: "coming-soon",
+    access: "free",
     summary: "Turning a follow-up question into a search query that stands on its own.",
     lastChecked: null,
     keys: ["query", "rewriting", "rewrite", "search"]
@@ -207,6 +230,7 @@ var BF_CONCEPTS = [
     track: "Retrieval & Grounding",
     prerequisites: ["hybrid-search"],
     status: "coming-soon",
+    access: "free",
     summary: "A second pass that reorders retrieved chunks before they go into the prompt.",
     lastChecked: null,
     keys: ["rerank", "reranking", "rank"]
@@ -217,6 +241,7 @@ var BF_CONCEPTS = [
     track: "Retrieval & Grounding",
     prerequisites: ["context-window", "rag"],
     status: "coming-soon",
+    access: "free",
     summary: "Choosing between putting the source in the window and retrieving pieces of it.",
     lastChecked: null,
     keys: ["long", "context", "rag", "retrieval"]
@@ -227,6 +252,7 @@ var BF_CONCEPTS = [
     track: "Retrieval & Grounding",
     prerequisites: ["chunking"],
     status: "coming-soon",
+    access: "free",
     summary: "Turning a file, such as a PDF or a page, into text and structure you can chunk.",
     lastChecked: null,
     keys: ["parse", "parsing", "pdf", "document", "documents"]
@@ -237,6 +263,7 @@ var BF_CONCEPTS = [
     track: "Retrieval & Grounding",
     prerequisites: ["embeddings-retrieval"],
     status: "coming-soon",
+    access: "free",
     summary: "A store built to keep embeddings and return the nearest ones.",
     lastChecked: null,
     keys: ["vector", "vectors", "database", "databases", "index"]
@@ -247,6 +274,7 @@ var BF_CONCEPTS = [
     track: "Retrieval & Grounding",
     prerequisites: ["rag", "hallucination"],
     status: "coming-soon",
+    access: "free",
     summary: "Checking that a claim in the reply is tied to a source you actually retrieved.",
     lastChecked: null,
     keys: ["citation", "citations", "cite", "grounding", "grounded", "source", "sources"]
@@ -257,6 +285,7 @@ var BF_CONCEPTS = [
     track: "Retrieval & Grounding",
     prerequisites: ["rag"],
     status: "coming-soon",
+    access: "free",
     summary: "Whether a source is current, and whether this user is allowed to see it.",
     lastChecked: null,
     keys: ["freshness", "fresh", "stale", "access", "permission", "acl"]
@@ -267,6 +296,7 @@ var BF_CONCEPTS = [
     track: "Agents",
     prerequisites: ["tool-calling"],
     status: "coming-soon",
+    access: "free",
     summary: "A cycle of model step, tool result, and another model step, until a stop.",
     lastChecked: null,
     keys: ["agent", "agents", "loop", "loops"]
@@ -277,6 +307,7 @@ var BF_CONCEPTS = [
     track: "Agents",
     prerequisites: ["prompting", "structured-outputs"],
     status: "coming-soon",
+    access: "free",
     summary: "The model asks your code to run a named function, then reads the result.",
     lastChecked: null,
     keys: ["tool", "tools", "calling", "function", "functions"]
@@ -287,6 +318,7 @@ var BF_CONCEPTS = [
     track: "Agents",
     prerequisites: ["tool-calling"],
     status: "coming-soon",
+    access: "free",
     summary: "How a tool is named, described, and exposed, including over MCP.",
     lastChecked: null,
     keys: ["tool", "tools", "mcp", "design", "schema"]
@@ -297,6 +329,7 @@ var BF_CONCEPTS = [
     track: "Agents",
     prerequisites: ["context-window", "prompting"],
     status: "coming-soon",
+    access: "free",
     summary: "Deciding what goes into the window for this step, and what stays out.",
     lastChecked: null,
     keys: ["context", "engineering", "window"]
@@ -307,6 +340,7 @@ var BF_CONCEPTS = [
     track: "Agents",
     prerequisites: ["context-engineering"],
     status: "coming-soon",
+    access: "free",
     summary: "State kept across turns or sessions so the loop does not start from zero.",
     lastChecked: null,
     keys: ["memory", "memories", "remember", "session"]
@@ -317,6 +351,7 @@ var BF_CONCEPTS = [
     track: "Agents",
     prerequisites: ["agent-loop"],
     status: "coming-soon",
+    access: "free",
     summary: "Breaking a job into steps before or during the loop.",
     lastChecked: null,
     keys: ["plan", "planning", "steps"]
@@ -327,6 +362,7 @@ var BF_CONCEPTS = [
     track: "Agents",
     prerequisites: ["prompting"],
     status: "coming-soon",
+    access: "free",
     summary: "Untrusted text that tries to override the instruction or the tool rules.",
     lastChecked: null,
     keys: ["injection", "inject", "untrusted", "override"]
@@ -337,6 +373,7 @@ var BF_CONCEPTS = [
     track: "Agents",
     prerequisites: ["tool-calling"],
     status: "coming-soon",
+    access: "free",
     summary: "What the agent may do alone, and what waits for a person.",
     lastChecked: null,
     keys: ["permission", "permissions", "human", "hitl", "approval", "approve"]
@@ -347,6 +384,7 @@ var BF_CONCEPTS = [
     track: "Agents",
     prerequisites: ["permissions-hitl", "prompt-injection"],
     status: "coming-soon",
+    access: "free",
     summary: "Checks that block or reshape an action or a reply before it lands.",
     lastChecked: null,
     keys: ["guardrail", "guardrails", "policy"]
@@ -357,6 +395,7 @@ var BF_CONCEPTS = [
     track: "Agents",
     prerequisites: ["agent-loop"],
     status: "coming-soon",
+    access: "free",
     summary: "How an agent loop stalls, loops, or acts on a bad tool result.",
     lastChecked: null,
     keys: ["failure", "failures", "stall", "loop"]
@@ -367,6 +406,7 @@ var BF_CONCEPTS = [
     track: "Agents",
     prerequisites: ["agent-loop", "evaluation-basics"],
     status: "coming-soon",
+    access: "free",
     summary: "Scoring an agent on tasks, including whether it used tools well.",
     lastChecked: null,
     keys: ["agent", "evaluation", "eval", "evals"]
@@ -377,6 +417,7 @@ var BF_CONCEPTS = [
     track: "Agents",
     prerequisites: ["agent-loop", "planning"],
     status: "coming-soon",
+    access: "free",
     summary: "More than one agent, with a handoff or a shared task.",
     lastChecked: null,
     keys: ["multi", "multi-agent", "agent", "agents", "handoff"]
@@ -387,6 +428,7 @@ var BF_CONCEPTS = [
     track: "Ship & Maintain",
     prerequisites: ["evaluation-basics"],
     status: "coming-soon",
+    access: "free",
     summary: "A repeatable eval set you run on changes that will face real users.",
     lastChecked: null,
     keys: ["production", "evaluation", "eval", "evals", "evaluate"]
@@ -397,6 +439,7 @@ var BF_CONCEPTS = [
     track: "Ship & Maintain",
     prerequisites: ["production-evaluation"],
     status: "coming-soon",
+    access: "free",
     summary: "Logs and traces of prompts, tool calls, and replies so a failure can be inspected.",
     lastChecked: null,
     keys: ["observability", "logs", "logging", "trace", "traces"]
@@ -407,6 +450,7 @@ var BF_CONCEPTS = [
     track: "Ship & Maintain",
     prerequisites: ["tokens"],
     status: "coming-soon",
+    access: "free",
     summary: "Estimating spend from token volume, rates, and how often a workflow runs.",
     lastChecked: null,
     keys: ["cost", "forecast", "forecasting", "spend", "budget", "price"]
@@ -417,6 +461,7 @@ var BF_CONCEPTS = [
     track: "Ship & Maintain",
     prerequisites: ["model-selection"],
     status: "coming-soon",
+    access: "free",
     summary: "How long a request takes, including retrieval, tools, and the model.",
     lastChecked: null,
     keys: ["latency", "slow", "speed", "timeout"]
@@ -427,6 +472,7 @@ var BF_CONCEPTS = [
     track: "Ship & Maintain",
     prerequisites: ["latency", "model-selection"],
     status: "coming-soon",
+    access: "free",
     summary: "What the product does when a model errors, slows down, or hits a rate limit.",
     lastChecked: null,
     keys: ["fallback", "fallbacks", "rate", "limit", "limits", "retry"]
@@ -437,6 +483,7 @@ var BF_CONCEPTS = [
     track: "Ship & Maintain",
     prerequisites: ["prompting"],
     status: "coming-soon",
+    access: "free",
     summary: "What you send, what is stored, and what should never enter a prompt.",
     lastChecked: null,
     keys: ["privacy", "private", "data", "pii", "retention"]
@@ -447,6 +494,7 @@ var BF_CONCEPTS = [
     track: "Ship & Maintain",
     prerequisites: ["privacy-data"],
     status: "coming-soon",
+    access: "free",
     summary: "Limits on harmful or disallowed use, in the product and in the model.",
     lastChecked: null,
     keys: ["safety", "safe", "harm", "policy"]
@@ -457,6 +505,7 @@ var BF_CONCEPTS = [
     track: "Ship & Maintain",
     prerequisites: ["observability"],
     status: "coming-soon",
+    access: "free",
     summary: "Watching quality and behavior after launch, when data or models change.",
     lastChecked: null,
     keys: ["monitoring", "monitor", "drift"]
@@ -467,6 +516,7 @@ var BF_CONCEPTS = [
     track: "Ship & Maintain",
     prerequisites: ["prompting", "rag"],
     status: "coming-soon",
+    access: "free",
     summary: "Choosing among a prompt change, retrieval, and a trained update.",
     lastChecked: null,
     keys: ["fine-tuning", "finetune", "finetuning", "prompting", "rag"]
@@ -477,6 +527,7 @@ var BF_CONCEPTS = [
     track: "Ship & Maintain",
     prerequisites: ["model-versions"],
     status: "coming-soon",
+    access: "free",
     summary: "What the model and the data allow you to ship.",
     lastChecked: null,
     keys: ["license", "licensing", "licence"]

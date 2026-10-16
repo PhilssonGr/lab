@@ -4,3 +4,11 @@
 /concepts/            /        301
 /concepts             /        301
 /concepts/*           /:splat  301
+
+# Retired pages. /about is the current About page.
+/tools                /        301
+/tools.html           /        301
+/learn                /        301
+/learn.html           /        301
+/status               /        301
+/status.html          /        301
