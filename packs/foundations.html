@@ -68,20 +68,21 @@
         <li><i class="history"></i>Cached input $0.004</li>
         <li><i class="documents"></i>Output $0.004</li>
       </ul>
-      <pre class="math">Uncached input    2,000 × $2.00 ÷ 1,000,000 = $0.004
-Cached input      8,000 × $0.50 ÷ 1,000,000 = $0.004
-Output              500 × $8.00 ÷ 1,000,000 = $0.004
-Per request       $0.004 + $0.004 + $0.004 = $0.012</pre>
+      <ul class="math-lines">
+        <li><span>Uncached input</span>2,000 × $2.00 ÷ 1,000,000 = $0.004</li>
+        <li><span>Cached input</span>8,000 × $0.50 ÷ 1,000,000 = $0.004</li>
+        <li><span>Output</span>500 × $8.00 ÷ 1,000,000 = $0.004</li>
+        <li><span>Per request</span>$0.004 + $0.004 + $0.004 = $0.012</li>
+      </ul>
       <p>The three dollar amounts match only because these assumptions were chosen that way. A different token split would not land on three equal charges. The bar is a picture of this example, not a general rule.</p>
       <h3>The month, under the same assumptions</h3>
-      <pre class="math">Uncached input    20,000 × 2,000 = 40,000,000 tokens
-                  40,000,000 × $2.00 ÷ 1,000,000 = $80.00
-Cached input      20,000 × 8,000 = 160,000,000 tokens
-                  160,000,000 × $0.50 ÷ 1,000,000 = $80.00
-Output            20,000 × 500 = 10,000,000 tokens
-                  10,000,000 × $8.00 ÷ 1,000,000 = $80.00
-Month             $80.00 + $80.00 + $80.00 = $240.00
-Check             20,000 × $0.012 = $240.00</pre>
+      <ul class="math-lines">
+        <li><span>Uncached input</span>20,000 × 2,000 = 40,000,000 tokens<br>40,000,000 × $2.00 ÷ 1,000,000 = $80.00</li>
+        <li><span>Cached input</span>20,000 × 8,000 = 160,000,000 tokens<br>160,000,000 × $0.50 ÷ 1,000,000 = $80.00</li>
+        <li><span>Output</span>20,000 × 500 = 10,000,000 tokens<br>10,000,000 × $8.00 ÷ 1,000,000 = $80.00</li>
+        <li><span>Month</span>$80.00 + $80.00 + $80.00 = $240.00</li>
+        <li><span>Check</span>20,000 × $0.012 = $240.00</li>
+      </ul>
       <p>Left out of this example on purpose: retries, a second model call, images, tools, cache writes, and any higher rate past a size threshold. If the prefix is not actually billed as cached input, replace the $0.50 rate with the $2.00 input rate and run the same multiplication.</p>
       <h2 id="cost-checklist">Pre-launch cost checklist</h2>
       <p>One pass before you ship a feature that calls a model. Each line is something you can do with a request you already send.</p>
