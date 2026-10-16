@@ -26,6 +26,8 @@
 *::before,
 *::after { box-sizing: border-box; }
 
+[hidden] { display: none !important; }
+
 html { color-scheme: dark; }
 
 body.concepts {
@@ -96,9 +98,10 @@ body.concepts::after {
 
 .top {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 0.75rem 1.25rem;
+  gap: 0.35rem 1.25rem;
   padding-bottom: 0.35rem;
   margin-bottom: 1.45rem;
   border-bottom: 1px solid var(--line);
@@ -942,11 +945,11 @@ mark {
   position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 4.5rem;
-  row-gap: 4.75rem;
+  column-gap: 5rem;
+  row-gap: 8rem;
   max-width: 44rem;
   margin: 0 auto;
-  padding: 2.1rem 1.35rem 1.6rem;
+  padding: 2.6rem 1.5rem 1.5rem;
 }
 
 .map-edges {
@@ -1144,7 +1147,11 @@ mark {
   .why li,
   .diff li { grid-template-columns: 1fr; gap: 0.2rem; }
 
-  .top { align-items: flex-start; }
+  .top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+  }
 
   .track-col h2 { min-height: 0; }
 
@@ -1158,10 +1165,10 @@ mark {
 
   .map-canvas {
     grid-template-columns: 1fr;
-    row-gap: 3.15rem;
+    row-gap: 3.6rem;
     column-gap: 0;
-    max-width: 18rem;
-    padding: 1.35rem 0.35rem 1.15rem;
+    max-width: 22rem;
+    padding: 1.25rem 0.35rem 1.1rem;
   }
 
   .map-node,
@@ -1169,8 +1176,8 @@ mark {
   .map-node[data-node="context-window"],
   .map-node[data-node="prompting"] {
     grid-column: auto;
-    justify-self: stretch;
-    width: 100%;
+    justify-self: start;
+    width: calc(100% - 3.4rem);
   }
 
   .rel-list,
@@ -1185,6 +1192,8 @@ mark {
   }
 
   .graph-toolbar button { justify-self: start; }
+
+  .top { flex-direction: column; align-items: flex-start; }
 }
 
 @media (max-width: 640px) {
