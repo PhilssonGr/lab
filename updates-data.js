@@ -5,6 +5,12 @@
 var BF_UPDATES = [
   {
     date: "2026-10-17",
+    title: "Temperature and the Foundations pack",
+    concepts: ["temperature"],
+    line: "Temperature is a live card. The Foundations pack page has a token-budget example and a pre-launch cost checklist. The example prices are labelled and cited. The traffic numbers on that page are labelled assumptions."
+  },
+  {
+    date: "2026-10-17",
     title: "Four Foundations cards",
     concepts: ["prompt-caching", "model-selection", "structured-outputs", "hallucination"],
     line: "Prompt Caching, Model Selection & Routing, Structured Outputs, and Hallucination are live cards. Those four cite vendor API docs. The earlier cards still have no sources."

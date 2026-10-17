@@ -16,7 +16,7 @@ Concept cards are `free`. `pack` and `all-access` are reserved for future practi
 
 Tracks: Foundations, Retrieval & Grounding, Agents, Ship & Maintain.
 
-Tokens, Context Window, Prompting, Prompt Caching, Model Selection & Routing, Structured Outputs, and Hallucination are live. Coming soon concepts are not links.
+Tokens, Context Window, Prompting, Prompt Caching, Model Selection & Routing, Structured Outputs, Hallucination, and Temperature are live. Coming soon concepts are not links.
 
 Related concepts on a card are the concepts that list it as a prerequisite. The map draws an arrow along each prerequisite link.
 
@@ -43,12 +43,12 @@ Opened live cards are stored in this browser under `localStorage` key `bf-concep
 
 - `index.html` — home, a start link, a "what are you trying to do" picker, What's new, Next for you, the live cards, and the track list.
 - `changelog.html` — the updates log. The same entries are in `updates-data.js`, and the home page and the map render that file.
-- `tokens.html`, `context-window.html`, `prompting.html`, `prompt-caching.html`, `model-selection.html`, `structured-outputs.html`, and `hallucination.html` — the live cards. Each has a plain-text `.md` copy.
+- `tokens.html`, `context-window.html`, `prompting.html`, `prompt-caching.html`, `model-selection.html`, `structured-outputs.html`, `hallucination.html`, and `temperature.html` — the live cards. Each has a plain-text `.md` copy.
 - `map.html` — the four tracks. Coming soon names are not links.
 - `tracks/*.html` — one page per track, listing that track's concepts from the registry.
 - `ask.html` — keyword match in the browser over titles, summaries, and live card text. Live matches come first. Coming soon matches are labelled. No model and no backend.
 - `pricing.html` — Free, track pack (€39 once), all-access (€15/month or €129/year), and teams (€12/seat/month, minimum 5). No checkout.
-- `packs/*.html` — what each track pack will contain. Marked coming soon.
+- `packs/*.html` — track packs. The Foundations page includes a token budget set. The other packs are marked coming soon.
 - `apply.html` — the four packs and the planned Foundations sets. The waitlist is a mailto link, not a form.
 - `about.html` — what BuildSpark AI is, who it is for, how cards stay current, and support@buildsparkai.com.
 - `llms.txt` — purpose of the site and every live concept, with a one-line summary and URL.

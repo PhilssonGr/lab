@@ -2,7 +2,7 @@
 
 > A practical map and cards for builders who already use AI.
 
-Concept cards, the map, and Ask are free. Track packs are future practice and are not open yet. There is no account and no payment on this site. Coming soon concepts are listed on the track pages and do not have cards yet.
+Concept cards, the map, and Ask are free. The Foundations pack includes a token budget set on its page. The other track packs are not written yet. There is no account and no payment on this site. Coming soon concepts are listed on the track pages and do not have cards yet.
 
 ## Live concepts
 
@@ -13,6 +13,7 @@ Concept cards, the map, and Ask are free. Track packs are future practice and ar
 - [Model Selection & Routing](https://bf-lab.netlify.app/model-selection): Picking a model, and sometimes a route between models, for the job in front of you. Plain text: https://bf-lab.netlify.app/model-selection.md
 - [Structured Outputs](https://bf-lab.netlify.app/structured-outputs): Asking for a reply that follows a shape, such as fields you name, so code can read it. Plain text: https://bf-lab.netlify.app/structured-outputs.md
 - [Hallucination](https://bf-lab.netlify.app/hallucination): A reply that states something the prompt and the sources do not support. Plain text: https://bf-lab.netlify.app/hallucination.md
+- [Temperature](https://bf-lab.netlify.app/temperature): A sampling control that shifts how often less likely next tokens are picked. Plain text: https://bf-lab.netlify.app/temperature.md
 
 ## Tracks
 
@@ -23,7 +24,7 @@ Concept cards, the map, and Ask are free. Track packs are future practice and ar
 
 ## Packs
 
-- [Foundations pack](https://bf-lab.netlify.app/packs/foundations): Coming soon. €39 one-off for practice beside the free Foundations cards.
+- [Foundations pack](https://bf-lab.netlify.app/packs/foundations): Token budget set, with a worked cost example and a pre-launch checklist. Listed at €39 once. No checkout.
 - [Retrieval & Grounding pack](https://bf-lab.netlify.app/packs/retrieval): Coming soon. €39 one-off for practice beside the free Retrieval & Grounding cards.
 - [Agents pack](https://bf-lab.netlify.app/packs/agents): Coming soon. €39 one-off for practice beside the free Agents cards.
 - [Ship & Maintain pack](https://bf-lab.netlify.app/packs/ship): Coming soon. €39 one-off for practice beside the free Ship & Maintain cards.

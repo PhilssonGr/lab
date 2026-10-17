@@ -108,11 +108,11 @@ var BF_CONCEPTS = [
     title: "Temperature",
     track: "Foundations",
     prerequisites: ["model-selection"],
-    status: "coming-soon",
+    status: "live",
     access: "free",
     summary: "A sampling control that shifts how often less likely next tokens are picked.",
-    lastChecked: null,
-    keys: ["temperature", "temp"]
+    lastChecked: "2026-10-17",
+    keys: ["temperature", "temp", "randomness", "deterministic"]
   },
   {
     id: "sampling",

@@ -16,3 +16,5 @@
 2026-10-17
 - Prompt Caching, Model Selection & Routing, Structured Outputs, and Hallucination are live cards.
 - Those four cards cite vendor API docs. The earlier cards still have no sources.
+- Temperature is a live card. It cites the OpenAI Chat reference, the Anthropic Messages API, and Gemini's prompting strategies.
+- The Foundations pack page includes a token-budget worked example and a pre-launch cost checklist. The prices are example rates from the OpenAI API pricing page, checked 2026-10-17. The traffic figures on that page are labelled assumptions. The pack is not a checkout.
