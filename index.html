@@ -52,15 +52,17 @@
     <main id="content" tabindex="-1">
       <p class="kicker">Concepts</p>
       <h1>The practical map and cards for builders who already use AI.</h1>
-      <p class="lede">Three cards are live. The map lists the rest of the curriculum. Coming soon names are not links.</p>
+      <p class="lede">Seven cards are live. The map lists the rest of the curriculum. Coming soon names are not links.</p>
       <p class="cta-row start-row"><a class="button" data-start-link href="/tokens">Start with Tokens</a></p>
       <p class="fine start-reason" data-start-reason>The unit models read, write, and bill in.</p>
 
       <section class="section" aria-labelledby="intent-title" data-widget="intent">
         <h2 id="intent-title">What are you trying to do?</h2>
         <div class="intent-picks">
-          <a class="intent" data-intent="cost" href="/tokens"><strong>Cut cost</strong><span data-intent-dest>Tokens</span></a>
-          <a class="intent" data-intent="quality" href="/prompting"><strong>Improve answer quality</strong><span data-intent-dest>Prompting</span></a>
+          <a class="intent" data-intent="cost" href="/prompt-caching"><strong>Cut cost</strong><span data-intent-dest>Prompt Caching</span></a>
+          <a class="intent" data-intent="quality" href="/hallucination"><strong>Improve answer quality</strong><span data-intent-dest>Hallucination</span></a>
+          <a class="intent" data-intent="model" href="/model-selection"><strong>Pick a model</strong><span data-intent-dest>Model Selection &amp; Routing</span></a>
+          <a class="intent" data-intent="shape" href="/structured-outputs"><strong>Ask for a shaped reply</strong><span data-intent-dest>Structured Outputs</span></a>
           <a class="intent" data-intent="docs" href="/tracks/retrieval"><strong>Ground answers in my docs</strong><span data-intent-dest>Retrieval &amp; Grounding</span></a>
           <a class="intent" data-intent="agent" href="/tracks/agents"><strong>Build an agent</strong><span data-intent-dest>Agents</span></a>
           <a class="intent" data-intent="ship" href="/tracks/ship"><strong>Ship to production</strong><span data-intent-dest>Ship &amp; Maintain</span></a>
@@ -73,6 +75,14 @@
           <a class="next-map" href="/changelog">Changelog</a>
         </div>
         <ul class="update-strip" data-updates>
+          <li>
+            <time datetime="2026-10-17">2026-10-17</time>
+            <div>
+              <strong>Four Foundations cards</strong>
+              <p class="fine">Prompt Caching, Model Selection &amp; Routing, Structured Outputs, and Hallucination are live cards. Those four cite vendor API docs. The earlier cards still have no sources.</p>
+              <p class="fine update-concepts"><a href="/prompt-caching">Prompt Caching</a>, <a href="/model-selection">Model Selection &amp; Routing</a>, <a href="/structured-outputs">Structured Outputs</a>, <a href="/hallucination">Hallucination</a></p>
+            </div>
+          </li>
           <li>
             <time datetime="2026-10-16">2026-10-16</time>
             <div>
@@ -130,6 +140,26 @@
             <strong>Prompting</strong>
             <p>The same task changes when you name the reader, the shape, and what to leave out.</p>
           </a>
+          <a class="feature" href="/prompt-caching">
+            <span>Foundations</span>
+            <strong>Prompt Caching</strong>
+            <p>Reusing an unchanged prefix so a repeated prompt can cost less than sending it from scratch.</p>
+          </a>
+          <a class="feature" href="/model-selection">
+            <span>Foundations</span>
+            <strong>Model Selection &amp; Routing</strong>
+            <p>Picking a model, and sometimes a route between models, for the job in front of you.</p>
+          </a>
+          <a class="feature" href="/structured-outputs">
+            <span>Foundations</span>
+            <strong>Structured Outputs</strong>
+            <p>Asking for a reply that follows a shape, such as fields you name, so code can read it.</p>
+          </a>
+          <a class="feature" href="/hallucination">
+            <span>Foundations</span>
+            <strong>Hallucination</strong>
+            <p>A reply that states something the prompt and the sources do not support.</p>
+          </a>
         </div>
       </section>
 
@@ -142,6 +172,10 @@
             <a class="node" href="/tokens">Tokens</a>
             <a class="node" href="/context-window">Context Window</a>
             <a class="node" href="/prompting">Prompting</a>
+            <a class="node" href="/prompt-caching">Prompt Caching</a>
+            <a class="node" href="/model-selection">Model Selection &amp; Routing</a>
+            <a class="node" href="/structured-outputs">Structured Outputs</a>
+            <a class="node" href="/hallucination">Hallucination</a>
             <p class="node is-soon">Temperature <small>Coming soon</small></p>
           </section>
           <section class="track-col">

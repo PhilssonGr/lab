@@ -4,6 +4,12 @@
    that is not on the site yet. */
 var BF_UPDATES = [
   {
+    date: "2026-10-17",
+    title: "Four Foundations cards",
+    concepts: ["prompt-caching", "model-selection", "structured-outputs", "hallucination"],
+    line: "Prompt Caching, Model Selection & Routing, Structured Outputs, and Hallucination are live cards. Those four cite vendor API docs. The earlier cards still have no sources."
+  },
+  {
     date: "2026-10-16",
     title: "Tokens and Context Window cost notes",
     concepts: ["tokens", "context-window"],

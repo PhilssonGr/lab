@@ -31,6 +31,22 @@
     <lastmod>2026-10-16</lastmod>
   </url>
   <url>
+    <loc>https://bf-lab.netlify.app/prompt-caching</loc>
+    <lastmod>2026-10-17</lastmod>
+  </url>
+  <url>
+    <loc>https://bf-lab.netlify.app/model-selection</loc>
+    <lastmod>2026-10-17</lastmod>
+  </url>
+  <url>
+    <loc>https://bf-lab.netlify.app/structured-outputs</loc>
+    <lastmod>2026-10-17</lastmod>
+  </url>
+  <url>
+    <loc>https://bf-lab.netlify.app/hallucination</loc>
+    <lastmod>2026-10-17</lastmod>
+  </url>
+  <url>
     <loc>https://bf-lab.netlify.app/tracks/foundations</loc>
   </url>
   <url>
@@ -67,10 +83,26 @@
     <lastmod>2026-10-16</lastmod>
   </url>
   <url>
+    <loc>https://bf-lab.netlify.app/prompt-caching.md</loc>
+    <lastmod>2026-10-17</lastmod>
+  </url>
+  <url>
+    <loc>https://bf-lab.netlify.app/model-selection.md</loc>
+    <lastmod>2026-10-17</lastmod>
+  </url>
+  <url>
+    <loc>https://bf-lab.netlify.app/structured-outputs.md</loc>
+    <lastmod>2026-10-17</lastmod>
+  </url>
+  <url>
+    <loc>https://bf-lab.netlify.app/hallucination.md</loc>
+    <lastmod>2026-10-17</lastmod>
+  </url>
+  <url>
     <loc>https://bf-lab.netlify.app/llms.txt</loc>
   </url>
   <url>
     <loc>https://bf-lab.netlify.app/changelog</loc>
-    <lastmod>2026-10-16</lastmod>
+    <lastmod>2026-10-17</lastmod>
   </url>
 </urlset>

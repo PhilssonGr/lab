@@ -12,3 +12,7 @@
 - Sources stay empty until a card cites a real provider doc.
 - What's new and `/changelog` read `updates-data.js`.
 - Tried cards stay in this browser under `bf-concepts-tried`. Opened cards stay under `bf-concepts-opened`.
+
+2026-10-17
+- Prompt Caching, Model Selection & Routing, Structured Outputs, and Hallucination are live cards.
+- Those four cards cite vendor API docs. The earlier cards still have no sources.
