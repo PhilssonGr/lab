@@ -32,6 +32,7 @@ Concept cards, the map, and Ask are free. Track packs are future practice and ar
 
 - [Home](https://bf-lab.netlify.app/): Practical map and cards for builders who already use AI.
 - [Map](https://bf-lab.netlify.app/map): The curriculum and its prerequisite links.
-- [Ask](https://bf-lab.netlify.app/ask): Keyword match against the concept registry. No model call.
+- [Ask](https://bf-lab.netlify.app/ask): Keyword match against concept titles, summaries, and live card text. No model call.
 - [Pricing](https://bf-lab.netlify.app/pricing): Free cards, €39 track packs, all-access, and teams. No checkout.
 - [About](https://bf-lab.netlify.app/about): What BuildSpark AI is, who it is for, and how cards are sourced.
+- [Changelog](https://bf-lab.netlify.app/changelog): Updates that have shipped on the site.

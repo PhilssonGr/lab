@@ -37,15 +37,16 @@ Each live card uses the v2 template:
 
 The core of a live card is in the HTML. JavaScript fills the summary, the access label, the last-checked date, and the prerequisite and related lists from the registry.
 
-Opened live cards are stored in this browser under `localStorage` key `bf-concepts-opened`.
+Opened live cards are stored in this browser under `localStorage` key `bf-concepts-opened`. A separate Mark as tried toggle on a live card is stored under `bf-concepts-tried`. The map shows both.
 
 ## Pages
 
-- `index.html` — home, Next for you, the live cards, and the track list.
+- `index.html` — home, a start link, a "what are you trying to do" picker, What's new, Next for you, the live cards, and the track list.
+- `changelog.html` — the updates log. The same entries are in `updates-data.js`, and the home page and the map render that file.
 - `tokens.html`, `context-window.html`, `prompting.html`, `prompt-caching.html`, `model-selection.html`, `structured-outputs.html`, and `hallucination.html` — the live cards. Each has a plain-text `.md` copy.
 - `map.html` — the four tracks. Coming soon names are not links.
 - `tracks/*.html` — one page per track, listing that track's concepts from the registry.
-- `ask.html` — keyword match in the browser. No model and no backend.
+- `ask.html` — keyword match in the browser over titles, summaries, and live card text. Live matches come first. Coming soon matches are labelled. No model and no backend.
 - `pricing.html` — Free, track pack (€39 once), all-access (€15/month or €129/year), and teams (€12/seat/month, minimum 5). No checkout.
 - `packs/*.html` — what each track pack will contain. Marked coming soon.
 - `apply.html` — the four packs and the planned Foundations sets. The waitlist is a mailto link, not a form.
