@@ -509,6 +509,109 @@
     }
   }
 
+  function pressGroup(root, selector, attr, apply) {
+    var buttons = root.querySelectorAll(selector);
+    if (!buttons.length) return;
+    function select(state) {
+      root.setAttribute("data-state", state);
+      buttons.forEach(function (btn) {
+        btn.setAttribute("aria-pressed", btn.getAttribute(attr) === state ? "true" : "false");
+      });
+      apply(state);
+    }
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () { select(btn.getAttribute(attr)); });
+    });
+    var initial = root.getAttribute("data-state") || buttons[0].getAttribute(attr);
+    select(initial);
+  }
+
+  function initCache(root) {
+    var prefix = root.querySelector("[data-cache-prefix]");
+    var tag = root.querySelector("[data-cache-prefix-tag]");
+    var note = root.querySelector("[data-cache-note]");
+    if (!prefix || !tag || !note) return;
+    pressGroup(root, "[data-cache]", "data-cache", function (state) {
+      if (state === "same") {
+        prefix.textContent = "Instructions and the document";
+        tag.textContent = "Can be reused";
+        note.textContent = "The prefix matches the previous request, so a provider can reuse it. The new question is still sent fresh.";
+        return;
+      }
+      prefix.textContent = "Instructions and a different document";
+      tag.textContent = "Sent again";
+      note.textContent = "The prefix changed, so the earlier cache does not apply. This request is processed from the start.";
+    });
+  }
+
+  function initRoute(root) {
+    var task = root.querySelector("[data-route-task]");
+    var dest = root.querySelector("[data-route-dest]");
+    var note = root.querySelector("[data-route-note]");
+    if (!task || !dest || !note) return;
+    var copy = {
+      label: {
+        task: "Label this short review",
+        dest: "A faster model",
+        note: "A narrow task can go to a faster model, after you have seen it succeed on examples like this one."
+      },
+      draft: {
+        task: "Draft from this long brief",
+        dest: "A more capable model",
+        note: "A harder draft can start on a more capable model. You still compare the reply with the brief."
+      },
+      both: {
+        task: "The same example, two models",
+        dest: "Both models",
+        note: "Run the same prompt on two models and keep the one that does this task."
+      }
+    };
+    pressGroup(root, "[data-route]", "data-route", function (state) {
+      var row = copy[state] || copy.label;
+      task.textContent = row.task;
+      dest.textContent = row.dest;
+      note.textContent = row.note;
+    });
+  }
+
+  function initSchema(root) {
+    var out = root.querySelector("[data-schema-out]");
+    var note = root.querySelector("[data-schema-note]");
+    if (!out || !note) return;
+    pressGroup(root, "[data-schema]", "data-schema", function (state) {
+      if (state === "miss") {
+        out.textContent = '{\n  "name": "Ada"\n}';
+        out.classList.add("is-bad");
+        note.textContent = "This is JSON, and status is missing. A schema that requires name and status would not accept it.";
+        return;
+      }
+      out.textContent = '{\n  "name": "Ada",\n  "status": "done"\n}';
+      out.classList.remove("is-bad");
+      note.textContent = "Both fields the schema names are present. Code can read name and status.";
+    });
+  }
+
+  function initHallucination(root) {
+    var buttons = root.querySelectorAll("[data-claim]");
+    var note = root.querySelector("[data-claim-note]");
+    if (!buttons.length || !note) return;
+    var copy = {
+      hours: "Supported. The source says the warehouse closes at 18:00.",
+      sunday: "Not supported. The source does not mention Sunday. That claim is a hallucination."
+    };
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-claim");
+        buttons.forEach(function (b) {
+          b.classList.remove("is-supported", "is-unsupported");
+          b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+        });
+        btn.classList.add(id === "hours" ? "is-supported" : "is-unsupported");
+        note.textContent = copy[id] || "";
+      });
+    });
+  }
+
   function initQuiz(root) {
     var buttons = root.querySelectorAll("[data-choice]");
     var note = root.querySelector("[data-quiz-note]");
@@ -921,6 +1024,10 @@
     document.querySelectorAll("[data-widget='tokens']").forEach(initTokens);
     document.querySelectorAll("[data-widget='context']").forEach(initContext);
     document.querySelectorAll("[data-widget='prompt']").forEach(initPrompt);
+    document.querySelectorAll("[data-widget='cache']").forEach(initCache);
+    document.querySelectorAll("[data-widget='route']").forEach(initRoute);
+    document.querySelectorAll("[data-widget='schema']").forEach(initSchema);
+    document.querySelectorAll("[data-widget='hallucination']").forEach(initHallucination);
     var ask = document.querySelector("[data-widget='ask']");
     if (ask) initAsk(ask);
     var map = document.querySelector("[data-widget='map']");

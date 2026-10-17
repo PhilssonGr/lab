@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/assets/brand/favicon-32.png" type="image/png" sizes="32x32" />
+  <link rel="icon" href="/assets/brand/favicon-16.png" type="image/png" sizes="16x16" />
+  <link rel="shortcut icon" href="/assets/brand/favicon.ico" />
+  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" sizes="180x180" />
+  <link rel="manifest" href="/assets/brand/site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c0b0a" />
+  <title>Structured Outputs · BuildSpark AI</title>
+  <meta name="description" content="Structured outputs ask the model for a reply that follows a schema, such as named fields, so code can read it. A free BuildSpark AI concept card." />
+  <link rel="canonical" href="https://bf-lab.netlify.app/structured-outputs" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="BuildSpark AI" />
+  <meta property="og:title" content="Structured Outputs · BuildSpark AI" />
+  <meta property="og:description" content="Structured outputs ask the model for a reply that follows a schema, such as named fields, so code can read it. A free BuildSpark AI concept card." />
+  <meta property="og:url" content="https://bf-lab.netlify.app/structured-outputs" />
+  <meta property="og:image" content="https://bf-lab.netlify.app/assets/brand/icon-512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Structured Outputs · BuildSpark AI" />
+  <meta name="twitter:description" content="Structured outputs ask the model for a reply that follows a schema, such as named fields, so code can read it. A free BuildSpark AI concept card." />
+  <meta name="twitter:image" content="https://bf-lab.netlify.app/assets/brand/icon-512.png" />
+  <link rel="stylesheet" href="/concepts.css" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LearningResource",
+      "@id": "https://bf-lab.netlify.app/structured-outputs#card",
+      "name": "Structured Outputs",
+      "description": "Structured outputs ask the model for a reply that follows a schema, such as named fields, so code can read it.",
+      "url": "https://bf-lab.netlify.app/structured-outputs",
+      "learningResourceType": "Concept card",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "provider": {
+        "@type": "Organization",
+        "name": "BuildSpark AI",
+        "url": "https://bf-lab.netlify.app/"
+      },
+      "dateModified": "2026-10-17"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://bf-lab.netlify.app/structured-outputs#faq",
+      "url": "https://bf-lab.netlify.app/structured-outputs",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What are structured outputs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Structured outputs ask the model for a reply that follows a schema, such as named fields, so code can read it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is \"return JSON\" the same as a schema?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. A JSON check can pass on text that is valid JSON and still missing the fields you need. A schema names those fields."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does a schema make the values true?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. A field can be present and still say something the source does not support."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body class="concepts" data-concept="structured-outputs">
+  <a class="skip" href="#content">Skip to content</a>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="/"><img src="/assets/brand/logo.svg" alt="BuildSpark AI" width="519" height="100" /></a>
+      <nav class="nav" aria-label="Concepts">
+        <a href="/map">Map</a>
+        <a href="/ask">Ask</a>
+        <a href="/apply">Apply</a>
+        <a href="/pricing">Pricing</a>
+      </nav>
+    </header>
+
+    <main id="content" tabindex="-1">
+    <p class="crumb"><a href="/map">Map</a> · <a href="/tracks/foundations">Foundations</a> · <span data-crumb-index>07</span> · Structured Outputs</p>
+
+    <div data-tabs>
+      <div class="card-top">
+        <div>
+          <p class="kicker">Concept card · Foundations</p>
+          <h1>Structured Outputs</h1>
+          <p class="definition" data-definition>Structured outputs ask the model for a reply that follows a schema, such as named fields, so code can read it.</p>
+          <p class="lede" data-summary>Asking for a reply that follows a shape, such as fields you name, so code can read it.</p>
+        </div>
+        <div class="card-meta">
+          <p>
+            <span class="pill accent" data-last-checked>Last checked 2026-10-17</span>
+            <span class="pill" data-access>Free card</span>
+            <span class="pill">4 min</span>
+          </p>
+          <div class="tabs" role="tablist" aria-label="Depth">
+            <button type="button" role="tab" data-tab="glance" aria-selected="true" aria-controls="panel-glance">Glance</button>
+            <button type="button" role="tab" data-tab="practice" aria-selected="false" tabindex="-1" aria-controls="panel-practice">Practice</button>
+            <button type="button" role="tab" data-tab="deep" aria-selected="false" tabindex="-1" aria-controls="panel-deep">Deep</button>
+          </div>
+          <p class="ask-about"><a href="/ask?q=structured+outputs">Ask about Structured Outputs</a></p>
+        </div>
+      </div>
+
+      <div id="panel-glance" role="tabpanel" data-panel="glance">
+        <div class="changed">
+          <strong>What changed</strong>
+          <p>Oct 17: First card. The picture shows a reply that matches a schema and JSON that is missing a field. Sources are the OpenAI, Anthropic, and Gemini structured output guides.</p>
+        </div>
+
+        <div class="card-grid">
+          <div class="card-main">
+            <section class="part">
+              <h2><span class="num">1</span> What it is</h2>
+              <p>A schema names the fields and the types you expect, for example a name and a status. Structured outputs tell the API to keep the reply inside that shape. A sentence can hold the same facts and still be hard for code to read.</p>
+              <div class="widget panel" data-widget="schema" data-state="match">
+                <p class="fine">A picture, not a live validator. The schema asks for two fields: name, a string, and status, one of open or done.</p>
+                <div class="toggle" role="group" aria-label="Reply shape">
+                  <button type="button" class="ghost" data-schema="match" aria-pressed="true">Matches the schema</button>
+                  <button type="button" class="ghost" data-schema="miss" aria-pressed="false">Missing a field</button>
+                </div>
+                <div class="schema-grid">
+                  <pre class="schema-card" aria-label="Schema">{
+  "name": string,
+  "status": "open" or "done"
+}</pre>
+                  <pre class="schema-card" data-schema-out aria-label="Reply" aria-live="polite">{
+  "name": "Ada",
+  "status": "done"
+}</pre>
+                </div>
+                <p class="fine" data-schema-note>Both fields the schema names are present. Code can read name and status.</p>
+              </div>
+            </section>
+
+            <section class="part">
+              <h2><span class="num">2</span> Why it matters</h2>
+              <div class="why-grid">
+                <article>
+                  <h3>Cost</h3>
+                  <p>The schema does not remove the tokens in the prompt. It can save a later turn whose only job was to fix the shape.</p>
+                </article>
+                <article>
+                  <h3>Quality</h3>
+                  <p>Code can read a field by name. Prose has to be parsed, and a small wording change can break that parse.</p>
+                </article>
+                <article>
+                  <h3>Risk</h3>
+                  <p>A schema constrains the shape, not the truth of the values. A field can be present and still be unsupported by the source.</p>
+                </article>
+              </div>
+            </section>
+
+            <div class="apply-grid">
+              <section class="apply-card">
+                <h2><span class="num">3</span> How to apply · try today</h2>
+                <p>Take one reply you parse by hand. Write down the fields you actually read, and request those fields with the provider's schema option.</p>
+              </section>
+              <section class="mistake">
+                <h2>Common mistake</h2>
+                <p>Treating the words "return JSON" in a prompt, or a mode that only checks that the text is JSON, as the same thing as a schema the API enforces.</p>
+              </section>
+            </div>
+
+            <section class="check" data-quiz data-note-right="That's the one. A schema names the fields. The words return JSON do not enforce them." data-note-wrong="Not this one. Read the common mistake again.">
+              <h2>Self-check</h2>
+              <p class="check-q">Code needs a name and a status. What should you send?</p>
+              <div class="check-options" role="group" aria-label="Answer">
+                <button type="button" class="check-opt" data-choice="a" data-correct="true" aria-pressed="false">A · A schema that names those fields, through the provider's structured output option</button>
+                <button type="button" class="check-opt" data-choice="b" aria-pressed="false">B · Only the words "return JSON"</button>
+                <button type="button" class="check-opt" data-choice="c" aria-pressed="false">C · A longer paragraph with no fields</button>
+              </div>
+              <p class="fine" data-quiz-note></p>
+            </section>
+          </div>
+
+          <aside class="card-side">
+            <section class="side-card">
+              <h2>Prerequisites</h2>
+              <div data-prereqs>
+                <ul class="side-links">
+                  <li><a href="/prompting">Prompting</a></li>
+                </ul>
+              </div>
+            </section>
+            <section class="side-card">
+              <h2>Related concepts</h2>
+              <div data-related>
+                <ul class="side-links">
+                  <li><span class="is-muted">Tool calling</span> <span class="side-tag">Soon</span></li>
+                </ul>
+              </div>
+            </section>
+            <section class="side-card">
+              <h2>Sources</h2>
+              <ul class="side-links sources">
+                <li><a href="https://developers.openai.com/api/docs/guides/structured-outputs">OpenAI, Structured outputs</a></li>
+                <li><a href="https://platform.claude.com/docs/en/build-with-claude/structured-outputs">Anthropic, Structured outputs</a></li>
+                <li><a href="https://ai.google.dev/gemini-api/docs/structured-output">Gemini API, Structured outputs</a></li>
+              </ul>
+              <p class="fine">Vendor API documentation.</p>
+            </section>
+            <section class="side-card side-apply">
+              <h2>Apply pack</h2>
+              <p>Not open yet. Practice for this track will be the Foundations pack.</p>
+              <a href="/packs/foundations">Foundations pack</a>
+            </section>
+          </aside>
+        </div>
+      </div>
+
+      <div id="panel-practice" role="tabpanel" data-panel="practice" hidden>
+        <p class="soon-note">Coming soon. One reply you already parse, rewritten as a schema with the fields you read.</p>
+      </div>
+
+      <div id="panel-deep" role="tabpanel" data-panel="deep" hidden>
+        <p class="soon-note">Coming soon. How OpenAI, Anthropic, and Gemini each attach a JSON schema to a request.</p>
+      </div>
+    </div>
+
+    <section class="faq" aria-labelledby="structured-outputs-faq">
+      <h2 id="structured-outputs-faq">Questions</h2>
+      <dl>
+        <dt>What are structured outputs?</dt>
+        <dd>Structured outputs ask the model for a reply that follows a schema, such as named fields, so code can read it.</dd>
+        <dt>Is "return JSON" the same as a schema?</dt>
+        <dd>No. A JSON check can pass on text that is valid JSON and still missing the fields you need. A schema names those fields.</dd>
+        <dt>Does a schema make the values true?</dt>
+        <dd>No. A field can be present and still say something the source does not support.</dd>
+      </dl>
+    </section>
+    </main>
+
+    <footer class="foot">
+      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>
+    </footer>
+  </div>
+  <script src="/site.js"></script>
+  <script src="/concepts-data.js"></script>
+  <script src="/concepts.js"></script>
+</body>
+</html>

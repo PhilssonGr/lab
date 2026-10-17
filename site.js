@@ -12,7 +12,7 @@ var BF_SITE = {
       slug: "foundations",
       name: "Foundations",
       summary: "How models read text, how much fits in one request, and how you state the task.",
-      pack: "Practice beside the Foundations cards. Each set is one worked example, one checklist, and one change in a prompt or repo you already have. The first three sets, next to the live cards, are a token budget, a context layout, and a prompt rewrite. The other concepts on this track do not have a practice set yet."
+      pack: "Practice beside the Foundations cards. Each set is one worked example, one checklist, and one change in a prompt or repo you already have. The first three sets are a token budget, a context layout, and a prompt rewrite, next to Tokens, Context Window, and Prompting. The other concepts on this track do not have a practice set yet."
     },
     {
       slug: "retrieval",

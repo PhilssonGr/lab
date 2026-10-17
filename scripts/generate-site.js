@@ -175,7 +175,7 @@ function conceptItem(concept) {
 
 function liveSentence(list) {
   var n = list.filter(function (concept) { return concept.status === "live"; }).length;
-  var words = ["No", "One", "Two", "Three", "Four", "Five", "Six"];
+  var words = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven"];
   if (n === 0) return "No cards on this track are live yet.";
   if (n === 1) return "One card on this track is live.";
   return (words[n] || String(n)) + " cards on this track are live.";
@@ -252,7 +252,7 @@ function stripSeo(html) {
 
 function ensureHead(html, page) {
   html = stripSeo(html);
-  if (!new RegExp("<title>" + page.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "</title>").test(html)) {
+  if (mustMatch(html, /<title>([\s\S]*?)<\/title>/, page.file + " title") !== page.title) {
     throw new Error(page.file + " title is not " + page.title);
   }
   var description = '<meta name="description" content="' + esc(page.description) + '" />';
@@ -374,6 +374,7 @@ function markdownFor(file, page) {
   var soonRe = /<p class="soon-note">([\s\S]*?)<\/p>/g;
   var soonMatch;
   while ((soonMatch = soonRe.exec(html))) soons.push(stripTags(soonMatch[1]));
+  var sources = sourcesMarkdown(html, file);
   var lines = [
     "# " + concept.title,
     "",
@@ -415,10 +416,36 @@ function markdownFor(file, page) {
     "",
     "## Sources",
     "",
-    "Sources pending. No provider doc is cited on this card yet.",
+    sources,
     ""
   ];
   return lines.join("\n");
+}
+
+function sourcesMarkdown(html, file) {
+  var section = html.match(/<h2>Sources<\/h2>([\s\S]*?)<\/section>/);
+  if (!section) throw new Error(file + " is missing a Sources section");
+  var block = section[1];
+  var links = [];
+  var linkRe = /<a href="([^"]+)">([\s\S]*?)<\/a>/g;
+  var linkMatch;
+  while ((linkMatch = linkRe.exec(block))) {
+    links.push("- [" + stripTags(linkMatch[2]) + "](" + stripTags(linkMatch[1]) + ")");
+  }
+  var paras = [];
+  var paraRe = /<p[^>]*>([\s\S]*?)<\/p>/g;
+  var paraMatch;
+  while ((paraMatch = paraRe.exec(block))) paras.push(stripTags(paraMatch[1]));
+  if (links.length && paras.length) return links.join("\n") + "\n\n" + paras.join("\n\n");
+  if (links.length) return links.join("\n");
+  if (paras.length) return paras.join("\n\n");
+  throw new Error(file + " Sources section is empty");
+}
+
+function conceptLastmod(page) {
+  if (!page.concept) return null;
+  var concept = concepts.filter(function (item) { return item.id === page.concept; })[0];
+  return concept && concept.lastChecked ? concept.lastChecked : null;
 }
 
 var pages = [
@@ -484,6 +511,38 @@ var pages = [
     concept: "prompting"
   },
   {
+    file: "prompt-caching.html",
+    path: "/prompt-caching",
+    title: "Prompt Caching · BuildSpark AI",
+    description: "Prompt caching reuses an unchanged prefix of a prompt so a later request can skip processing that part again. A free BuildSpark AI concept card.",
+    type: "article",
+    concept: "prompt-caching"
+  },
+  {
+    file: "model-selection.html",
+    path: "/model-selection",
+    title: "Model Selection & Routing · BuildSpark AI",
+    description: "Model selection is choosing which model handles a request, and routing is sending different requests to different models. A free BuildSpark AI concept card.",
+    type: "article",
+    concept: "model-selection"
+  },
+  {
+    file: "structured-outputs.html",
+    path: "/structured-outputs",
+    title: "Structured Outputs · BuildSpark AI",
+    description: "Structured outputs ask the model for a reply that follows a schema, such as named fields, so code can read it. A free BuildSpark AI concept card.",
+    type: "article",
+    concept: "structured-outputs"
+  },
+  {
+    file: "hallucination.html",
+    path: "/hallucination",
+    title: "Hallucination · BuildSpark AI",
+    description: "A hallucination is a reply that states something the prompt and the sources do not support. A free BuildSpark AI concept card.",
+    type: "article",
+    concept: "hallucination"
+  },
+  {
     file: "404.html",
     path: "/404",
     title: "Not found · BuildSpark AI",
@@ -505,7 +564,7 @@ pages.forEach(function (page) {
   if (page.org) html = upsertJson(html, organizationLd());
   if (page.concept) html = upsertJson(html, cardLd(html, page));
   fs.writeFileSync(filePath, html);
-  if (page.sitemap !== false) urls.push({ loc: abs(page.path), lastmod: page.concept ? "2026-10-16" : null });
+  if (page.sitemap !== false) urls.push({ loc: abs(page.path), lastmod: conceptLastmod(page) });
   if (!html.includes(LOGO)) throw new Error(page.file + " is missing the logo");
   if (!html.includes('href="/assets/brand/favicon.svg"')) throw new Error(page.file + " is missing favicons");
   if (!html.includes("· BuildSpark AI")) throw new Error(page.file + " title format");
@@ -549,11 +608,11 @@ site.tracks.forEach(function (track) {
 pages.filter(function (page) { return page.concept; }).forEach(function (page) {
   var md = markdownFor(page.file, page);
   fs.writeFileSync(path.join(root, page.concept + ".md"), md);
-  urls.push({ loc: abs(page.path) + ".md", lastmod: "2026-10-16" });
+  urls.push({ loc: abs(page.path) + ".md", lastmod: conceptLastmod(page) });
 });
 
 var live = concepts.filter(function (concept) { return concept.status === "live"; });
-if (live.length !== 3) throw new Error("Expected 3 live concepts");
+if (live.length !== 7) throw new Error("Expected 7 live concepts, got " + live.length);
 
 var llms = [];
 llms.push("# " + site.name);
