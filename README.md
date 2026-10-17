@@ -16,7 +16,7 @@ Concept cards are `free`. `pack` and `all-access` are reserved for future practi
 
 Tracks: Foundations, Retrieval & Grounding, Agents, Ship & Maintain.
 
-Tokens, Context Window, Prompting, and Temperature are live. Coming soon concepts are not links.
+Tokens, Context Window, Prompting, Prompt Caching, Model Selection & Routing, Structured Outputs, Hallucination, and Temperature are live. Coming soon concepts are not links.
 
 Related concepts on a card are the concepts that list it as a prerequisite. The map draws an arrow along each prerequisite link.
 
@@ -30,22 +30,23 @@ Each live card uses the v2 template:
 4. How to apply: one thing to try today.
 5. A separate common-mistake block.
 6. A self-check question.
-7. Sources. Pending until a claim cites a provider doc.
+7. Sources. A card cites a provider doc, or it says sources are pending.
 8. Prerequisites and related concepts, filled from the registry.
 9. Last checked date and a What changed note.
 10. A visible question section. The same questions are in the page's JSON-LD.
 
 The core of a live card is in the HTML. JavaScript fills the summary, the access label, the last-checked date, and the prerequisite and related lists from the registry.
 
-Opened live cards are stored in this browser under `localStorage` key `bf-concepts-opened`.
+Opened live cards are stored in this browser under `localStorage` key `bf-concepts-opened`. A separate Mark as tried toggle on a live card is stored under `bf-concepts-tried`. The map shows both.
 
 ## Pages
 
-- `index.html` — home, Next for you, the live cards, and the track list.
-- `tokens.html`, `context-window.html`, `prompting.html`, `temperature.html` — the live cards. Each has a plain-text `.md` copy.
+- `index.html` — home, a start link, a "what are you trying to do" picker, What's new, Next for you, the live cards, and the track list.
+- `changelog.html` — the updates log. The same entries are in `updates-data.js`, and the home page and the map render that file.
+- `tokens.html`, `context-window.html`, `prompting.html`, `prompt-caching.html`, `model-selection.html`, `structured-outputs.html`, `hallucination.html`, and `temperature.html` — the live cards. Each has a plain-text `.md` copy.
 - `map.html` — the four tracks. Coming soon names are not links.
 - `tracks/*.html` — one page per track, listing that track's concepts from the registry.
-- `ask.html` — keyword match in the browser. No model and no backend.
+- `ask.html` — keyword match in the browser over titles, summaries, and live card text. Live matches come first. Coming soon matches are labelled. No model and no backend.
 - `pricing.html` — Free, track pack (€39 once), all-access (€15/month or €129/year), and teams (€12/seat/month, minimum 5). No checkout.
 - `packs/*.html` — track packs. The Foundations page includes a token budget set. The other packs are marked coming soon.
 - `apply.html` — the four packs and the planned Foundations sets. The waitlist is a mailto link, not a form.

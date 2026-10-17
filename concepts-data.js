@@ -42,22 +42,22 @@ var BF_CONCEPTS = [
     title: "Prompt Caching",
     track: "Foundations",
     prerequisites: ["tokens", "context-window"],
-    status: "coming-soon",
+    status: "live",
     access: "free",
     summary: "Reusing an unchanged prefix so a repeated prompt can cost less than sending it from scratch.",
-    lastChecked: null,
-    keys: ["cache", "caching", "cached", "prefix", "prompt"]
+    lastChecked: "2026-10-17",
+    keys: ["cache", "caching", "cached", "prefix", "prompt", "reuse", "reused", "breakpoint", "document"]
   },
   {
     id: "model-selection",
     title: "Model Selection & Routing",
     track: "Foundations",
     prerequisites: ["prompting"],
-    status: "coming-soon",
+    status: "live",
     access: "free",
     summary: "Picking a model, and sometimes a route between models, for the job in front of you.",
-    lastChecked: null,
-    keys: ["model", "models", "selection", "routing", "router", "route"]
+    lastChecked: "2026-10-17",
+    keys: ["model", "models", "selection", "routing", "router", "route", "capable", "faster", "label", "draft"]
   },
   {
     id: "reasoning-effort",
@@ -75,22 +75,22 @@ var BF_CONCEPTS = [
     title: "Structured Outputs",
     track: "Foundations",
     prerequisites: ["prompting"],
-    status: "coming-soon",
+    status: "live",
     access: "free",
     summary: "Asking for a reply that follows a shape, such as fields you name, so code can read it.",
-    lastChecked: null,
-    keys: ["structured", "output", "outputs", "json", "schema", "format"]
+    lastChecked: "2026-10-17",
+    keys: ["structured", "output", "outputs", "json", "schema", "format", "json_schema", "fields", "parse", "strict"]
   },
   {
     id: "hallucination",
     title: "Hallucination",
     track: "Foundations",
     prerequisites: ["prompting"],
-    status: "coming-soon",
+    status: "live",
     access: "free",
     summary: "A reply that states something the prompt and the sources do not support.",
-    lastChecked: null,
-    keys: ["hallucination", "hallucinate", "hallucinated", "invented", "unsupported"]
+    lastChecked: "2026-10-17",
+    keys: ["hallucination", "hallucinate", "hallucinated", "invented", "unsupported", "claim", "claims", "source", "fluent"]
   },
   {
     id: "evaluation-basics",

@@ -41,8 +41,8 @@
     <main id="content" tabindex="-1">
     <p class="kicker">Ask</p>
     <h1>Match a card.</h1>
-    <p class="lede">Type in your own words. This page matches keywords against the concept registry. Live cards link through. Other names are listed as coming soon. It does not call a model, and it sends nothing to a server.</p>
-    <p class="fine prose-links">Live cards: <a href="/tokens">Tokens</a>, <a href="/context-window">Context Window</a>, <a href="/prompting">Prompting</a>.</p>
+    <p class="lede">Type in your own words. This page matches keywords against concept titles, summaries, and the text of live cards. Live cards are listed first. Other names are labelled coming soon. It does not call a model, and it sends nothing to a server.</p>
+    <p class="fine prose-links">Live cards: <a href="/tokens">Tokens</a>, <a href="/context-window">Context Window</a>, <a href="/prompting">Prompting</a>, <a href="/prompt-caching">Prompt Caching</a>, <a href="/model-selection">Model Selection &amp; Routing</a>, <a href="/structured-outputs">Structured Outputs</a>, <a href="/hallucination">Hallucination</a>.</p>
 
     <form class="panel" data-widget="ask" action="/ask" method="get">
       <label class="field" for="ask-q">Question</label>
@@ -58,11 +58,12 @@
     </main>
 
     <footer class="foot">
-      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>
+      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/changelog">Changelog</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>
     </footer>
   </div>
   <script src="/site.js"></script>
   <script src="/concepts-data.js"></script>
+  <script src="/card-text.js"></script>
   <script src="/concepts.js"></script>
 </body>
 </html>

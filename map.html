@@ -43,33 +43,79 @@
       <h1 data-map-title>Four tracks.</h1>
       <p class="lede prose-links">Arrows point from a prerequisite to the concept it unlocks. Open a live card to mark it in this browser. Names without a card are not links. Track pages list every concept in HTML: <a href="/tracks/foundations">Foundations</a>, <a href="/tracks/retrieval">Retrieval &amp; Grounding</a>, <a href="/tracks/agents">Agents</a>, <a href="/tracks/ship">Ship &amp; Maintain</a>.</p>
 
+      <section class="section whats-new" aria-labelledby="map-new-title" data-widget="updates">
+        <div class="next-head">
+          <h2 id="map-new-title">What's new</h2>
+          <a class="next-map" href="/changelog">Changelog</a>
+        </div>
+        <ul class="update-strip" data-updates>
+          <li>
+            <time datetime="2026-10-17">2026-10-17</time>
+            <div>
+              <strong>Four Foundations cards</strong>
+              <p class="fine">Prompt Caching, Model Selection &amp; Routing, Structured Outputs, and Hallucination are live cards. Those four cite vendor API docs. The earlier cards still have no sources.</p>
+              <p class="fine update-concepts"><a href="/prompt-caching">Prompt Caching</a>, <a href="/model-selection">Model Selection &amp; Routing</a>, <a href="/structured-outputs">Structured Outputs</a>, <a href="/hallucination">Hallucination</a></p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2026-10-16">2026-10-16</time>
+            <div>
+              <strong>Tokens and Context Window cost notes</strong>
+              <p class="fine">Cost on Tokens covers output versus input, cached input, and a higher rate past a size threshold. Cost on Context Window notes that resending the same history or documents adds up, and that prompt caching can make the repeated part cheaper.</p>
+              <p class="fine update-concepts"><a href="/tokens">Tokens</a>, <a href="/context-window">Context Window</a></p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2026-10-16">2026-10-16</time>
+            <div>
+              <strong>Card template v2</strong>
+              <p class="fine">Live cards use the v2 layout. Prerequisites and related concepts come from the registry.</p>
+              <p class="fine update-concepts"><a href="/tokens">Tokens</a>, <a href="/context-window">Context Window</a>, <a href="/prompting">Prompting</a></p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2026-10-16">2026-10-16</time>
+            <div>
+              <strong>Concepts site at the root</strong>
+              <p class="fine">The concepts product is the site root.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
       <div class="section graph-bay" data-widget="map">
         <div class="graph-toolbar">
           <p class="graph-track" id="map-label">Curriculum</p>
-          <p class="graph-count" data-progress-count aria-live="polite">Visited 0 of 3</p>
+          <p class="graph-count" data-progress-count aria-live="polite">Visited 0 of 7 · Tried 0 of 7</p>
           <button type="button" class="ghost tiny" data-reset-progress disabled>Reset progress</button>
         </div>
+        <div class="map-filters" data-map-filters role="group" aria-label="Filter the map"></div>
         <ul class="map-key">
+          <li><i class="swatch live"></i>Live</li>
           <li><i class="swatch visited"></i>Visited</li>
+          <li><i class="swatch tried"></i>Tried</li>
           <li><i class="swatch next"></i>Next</li>
           <li><i class="swatch locked"></i>Coming soon</li>
         </ul>
         <div class="cmap" data-map-board role="group" aria-labelledby="map-label"></div>
+        <p class="edge-readout" data-edge-readout>Lines run from a prerequisite to the concept that requires it.</p>
+        <p class="fine" data-map-empty hidden>Nothing in this filter.</p>
         <details class="rel-details">
           <summary>Prerequisite links</summary>
           <ul data-rel-list></ul>
         </details>
       </div>
       <noscript>
-        <p class="fine">JavaScript draws the map from the concept registry and saves opened cards in this browser. Live cards: <a href="/tokens">Tokens</a>, <a href="/context-window">Context Window</a>, <a href="/prompting">Prompting</a>, <a href="/temperature">Temperature</a>. Track lists: <a href="/tracks/foundations">Foundations</a>, <a href="/tracks/retrieval">Retrieval &amp; Grounding</a>, <a href="/tracks/agents">Agents</a>, <a href="/tracks/ship">Ship &amp; Maintain</a>.</p>
+        <p class="fine">JavaScript draws the map from the concept registry and saves opened cards in this browser. Live cards: <a href="/tokens">Tokens</a>, <a href="/context-window">Context Window</a>, <a href="/prompting">Prompting</a>, <a href="/prompt-caching">Prompt Caching</a>, <a href="/model-selection">Model Selection &amp; Routing</a>, <a href="/structured-outputs">Structured Outputs</a>, <a href="/hallucination">Hallucination</a>, <a href="/temperature">Temperature</a>. Track lists: <a href="/tracks/foundations">Foundations</a>, <a href="/tracks/retrieval">Retrieval &amp; Grounding</a>, <a href="/tracks/agents">Agents</a>, <a href="/tracks/ship">Ship &amp; Maintain</a>.</p>
       </noscript>
     </main>
 
     <footer class="foot">
-      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>
+      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/changelog">Changelog</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>
     </footer>
   </div>
   <script src="/site.js"></script>
+  <script src="/updates-data.js"></script>
   <script src="/concepts-data.js"></script>
   <script src="/concepts.js"></script>
 </body>

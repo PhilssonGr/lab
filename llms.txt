@@ -9,6 +9,10 @@ Concept cards, the map, and Ask are free. The Foundations pack includes a token 
 - [Tokens](https://bf-lab.netlify.app/tokens): The unit models read, write, and bill in. Plain text: https://bf-lab.netlify.app/tokens.md
 - [Context Window](https://bf-lab.netlify.app/context-window): The fixed text one request can hold: instructions, history, documents, and the answer. Plain text: https://bf-lab.netlify.app/context-window.md
 - [Prompting](https://bf-lab.netlify.app/prompting): How you state the task this turn: the reader, the shape, and what to leave out. Plain text: https://bf-lab.netlify.app/prompting.md
+- [Prompt Caching](https://bf-lab.netlify.app/prompt-caching): Reusing an unchanged prefix so a repeated prompt can cost less than sending it from scratch. Plain text: https://bf-lab.netlify.app/prompt-caching.md
+- [Model Selection & Routing](https://bf-lab.netlify.app/model-selection): Picking a model, and sometimes a route between models, for the job in front of you. Plain text: https://bf-lab.netlify.app/model-selection.md
+- [Structured Outputs](https://bf-lab.netlify.app/structured-outputs): Asking for a reply that follows a shape, such as fields you name, so code can read it. Plain text: https://bf-lab.netlify.app/structured-outputs.md
+- [Hallucination](https://bf-lab.netlify.app/hallucination): A reply that states something the prompt and the sources do not support. Plain text: https://bf-lab.netlify.app/hallucination.md
 - [Temperature](https://bf-lab.netlify.app/temperature): A sampling control that shifts how often less likely next tokens are picked. Plain text: https://bf-lab.netlify.app/temperature.md
 
 ## Tracks
@@ -29,6 +33,7 @@ Concept cards, the map, and Ask are free. The Foundations pack includes a token 
 
 - [Home](https://bf-lab.netlify.app/): Practical map and cards for builders who already use AI.
 - [Map](https://bf-lab.netlify.app/map): The curriculum and its prerequisite links.
-- [Ask](https://bf-lab.netlify.app/ask): Keyword match against the concept registry. No model call.
+- [Ask](https://bf-lab.netlify.app/ask): Keyword match against concept titles, summaries, and live card text. No model call.
 - [Pricing](https://bf-lab.netlify.app/pricing): Free cards, €39 track packs, all-access, and teams. No checkout.
 - [About](https://bf-lab.netlify.app/about): What BuildSpark AI is, who it is for, and how cards are sourced.
+- [Changelog](https://bf-lab.netlify.app/changelog): Updates that have shipped on the site.

@@ -52,7 +52,70 @@
     <main id="content" tabindex="-1">
       <p class="kicker">Concepts</p>
       <h1>The practical map and cards for builders who already use AI.</h1>
-      <p class="lede">Four cards are live. The map lists the rest of the curriculum. Coming soon names are not links.</p>
+      <p class="lede">Eight cards are live. The map lists the rest of the curriculum. Coming soon names are not links.</p>
+      <p class="cta-row start-row"><a class="button" data-start-link href="/tokens">Start with Tokens</a></p>
+      <p class="fine start-reason" data-start-reason>The unit models read, write, and bill in.</p>
+
+      <section class="section" aria-labelledby="intent-title" data-widget="intent">
+        <h2 id="intent-title">What are you trying to do?</h2>
+        <div class="intent-picks">
+          <a class="intent" data-intent="cost" href="/prompt-caching"><strong>Cut cost</strong><span data-intent-dest>Prompt Caching</span></a>
+          <a class="intent" data-intent="quality" href="/hallucination"><strong>Improve answer quality</strong><span data-intent-dest>Hallucination</span></a>
+          <a class="intent" data-intent="model" href="/model-selection"><strong>Pick a model</strong><span data-intent-dest>Model Selection &amp; Routing</span></a>
+          <a class="intent" data-intent="shape" href="/structured-outputs"><strong>Ask for a shaped reply</strong><span data-intent-dest>Structured Outputs</span></a>
+          <a class="intent" data-intent="docs" href="/tracks/retrieval"><strong>Ground answers in my docs</strong><span data-intent-dest>Retrieval &amp; Grounding</span></a>
+          <a class="intent" data-intent="agent" href="/tracks/agents"><strong>Build an agent</strong><span data-intent-dest>Agents</span></a>
+          <a class="intent" data-intent="ship" href="/tracks/ship"><strong>Ship to production</strong><span data-intent-dest>Ship &amp; Maintain</span></a>
+        </div>
+      </section>
+
+      <section class="section whats-new" aria-labelledby="new-title" data-widget="updates">
+        <div class="next-head">
+          <h2 id="new-title">What's new</h2>
+          <a class="next-map" href="/changelog">Changelog</a>
+        </div>
+        <ul class="update-strip" data-updates>
+          <li>
+            <time datetime="2026-10-17">2026-10-17</time>
+            <div>
+              <strong>Temperature and the Foundations pack</strong>
+              <p class="fine">Temperature is a live card. The Foundations pack page has a token-budget example and a pre-launch cost checklist. The example prices are labelled and cited. The traffic numbers on that page are labelled assumptions.</p>
+              <p class="fine update-concepts"><a href="/temperature">Temperature</a></p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2026-10-17">2026-10-17</time>
+            <div>
+              <strong>Four Foundations cards</strong>
+              <p class="fine">Prompt Caching, Model Selection &amp; Routing, Structured Outputs, and Hallucination are live cards. Those four cite vendor API docs. The earlier cards still have no sources.</p>
+              <p class="fine update-concepts"><a href="/prompt-caching">Prompt Caching</a>, <a href="/model-selection">Model Selection &amp; Routing</a>, <a href="/structured-outputs">Structured Outputs</a>, <a href="/hallucination">Hallucination</a></p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2026-10-16">2026-10-16</time>
+            <div>
+              <strong>Tokens and Context Window cost notes</strong>
+              <p class="fine">Cost on Tokens covers output versus input, cached input, and a higher rate past a size threshold. Cost on Context Window notes that resending the same history or documents adds up, and that prompt caching can make the repeated part cheaper.</p>
+              <p class="fine update-concepts"><a href="/tokens">Tokens</a>, <a href="/context-window">Context Window</a></p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2026-10-16">2026-10-16</time>
+            <div>
+              <strong>Card template v2</strong>
+              <p class="fine">Live cards use the v2 layout. Prerequisites and related concepts come from the registry.</p>
+              <p class="fine update-concepts"><a href="/tokens">Tokens</a>, <a href="/context-window">Context Window</a>, <a href="/prompting">Prompting</a></p>
+            </div>
+          </li>
+          <li>
+            <time datetime="2026-10-16">2026-10-16</time>
+            <div>
+              <strong>Concepts site at the root</strong>
+              <p class="fine">The concepts product is the site root.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
 
       <section class="section next-module" aria-labelledby="next-title" data-widget="next">
         <div class="next-head">
@@ -85,6 +148,26 @@
             <strong>Prompting</strong>
             <p>The same task changes when you name the reader, the shape, and what to leave out.</p>
           </a>
+          <a class="feature" href="/prompt-caching">
+            <span>Foundations</span>
+            <strong>Prompt Caching</strong>
+            <p>Reusing an unchanged prefix so a repeated prompt can cost less than sending it from scratch.</p>
+          </a>
+          <a class="feature" href="/model-selection">
+            <span>Foundations</span>
+            <strong>Model Selection &amp; Routing</strong>
+            <p>Picking a model, and sometimes a route between models, for the job in front of you.</p>
+          </a>
+          <a class="feature" href="/structured-outputs">
+            <span>Foundations</span>
+            <strong>Structured Outputs</strong>
+            <p>Asking for a reply that follows a shape, such as fields you name, so code can read it.</p>
+          </a>
+          <a class="feature" href="/hallucination">
+            <span>Foundations</span>
+            <strong>Hallucination</strong>
+            <p>A reply that states something the prompt and the sources do not support.</p>
+          </a>
           <a class="feature" href="/temperature">
             <span>Foundations</span>
             <strong>Temperature</strong>
@@ -102,6 +185,10 @@
             <a class="node" href="/tokens">Tokens</a>
             <a class="node" href="/context-window">Context Window</a>
             <a class="node" href="/prompting">Prompting</a>
+            <a class="node" href="/prompt-caching">Prompt Caching</a>
+            <a class="node" href="/model-selection">Model Selection &amp; Routing</a>
+            <a class="node" href="/structured-outputs">Structured Outputs</a>
+            <a class="node" href="/hallucination">Hallucination</a>
             <a class="node" href="/temperature">Temperature</a>
           </section>
           <section class="track-col">
@@ -130,7 +217,7 @@
             <button type="submit">Match cards</button>
           </div>
         </form>
-        <p class="fine">Keyword match against the registry. Live cards link through. Other names are listed as coming soon. No model is called.</p>
+        <p class="fine">Keyword match against titles, summaries, and the text of live cards. Live cards come first. Other names are labelled coming soon. No model is called.</p>
       </section>
 
       <section class="section" aria-labelledby="apply-title">
@@ -141,10 +228,11 @@
     </main>
 
     <footer class="foot">
-      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>
+      <a href="/">Home</a> · <a href="/map">Map</a> · <a href="/changelog">Changelog</a> · <a href="/pricing">Pricing</a> · <a href="/about">About</a>
     </footer>
   </div>
   <script src="/site.js"></script>
+  <script src="/updates-data.js"></script>
   <script src="/concepts-data.js"></script>
   <script src="/concepts.js"></script>
 </body>
